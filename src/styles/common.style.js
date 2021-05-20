@@ -1,4 +1,6 @@
-import {StyleSheet} from 'react-native';
+import { StyleSheet } from 'react-native'
+
+import colors from './colors'
 
 export default StyleSheet.create({
     borderModel: {
@@ -6,12 +8,14 @@ export default StyleSheet.create({
         borderWidth: 4,
     },
     text: {
-        color: 'white',
+        color: colors.text,
     },
     foreground: {
-        backgroundColor: '#2f3136',
+        backgroundColor: colors.cor_primaria,
         borderRadius: 10,
-        borderColor: '#2c2e33',
-        borderWidth: 3,
     },
-});
+    centerText: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+})
