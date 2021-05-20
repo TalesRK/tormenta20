@@ -7,6 +7,7 @@ import {
     FlatList,
     Image,
     TouchableOpacity,
+    ScrollView,
 } from 'react-native'
 import colors from '../styles/colors'
 
@@ -143,7 +144,7 @@ const Characters = ({ navigation }) => {
 
     const renderSpells = () => {
         return (
-            <View style={styles.spellContainer}>
+            <View>
                 <View style={styles.spellListHeaderContainer}>
                     <View style={styles.spellListHeaderTextContainer}>
                         <Text style={styles.textColor}>Nome</Text>
@@ -164,22 +165,22 @@ const Characters = ({ navigation }) => {
                     renderItem={({ item }) => (
                         <TouchableOpacity style={[styles.spellList]}>
                             <View style={styles.spellItemTitle}>
-                                <Text style={styles.spellTextColor}>
+                                <Text style={styles.textColor}>
                                     {item.title}
                                 </Text>
                             </View>
                             <View style={styles.spellItem}>
-                                <Text style={styles.spellTextColor}>
+                                <Text style={styles.textColor}>
                                     {item.school}
                                 </Text>
                             </View>
                             <View style={styles.spellItem}>
-                                <Text style={styles.spellTextColor}>
+                                <Text style={styles.textColor}>
                                     {item.spellCost}
                                 </Text>
                             </View>
                             <View style={styles.spellItem}>
-                                <Text style={styles.spellTextColor}>
+                                <Text style={styles.textColor}>
                                     {item.spellDice}
                                 </Text>
                             </View>
@@ -187,9 +188,6 @@ const Characters = ({ navigation }) => {
                     )}
                     keyExtractor={(item, index) => index.toString()}
                 />
-                <Text>{selectedTab}</Text>
-                <Text>{selectedTab}</Text>
-                <Text>{selectedTab}</Text>
             </View>
         )
     }
@@ -208,7 +206,14 @@ const Characters = ({ navigation }) => {
         if (!isSelectedTab) {
             return (
                 <TouchableOpacity
-                    style={styles.sheetBox}
+                    key={item.key}
+                    style={[
+                        styles.tabHeader,
+                        {
+                            borderBottomColor: 'red',
+                            borderBottomWidth: 3,
+                        },
+                    ]}
                     onPress={() => setSelectedTab(item.key)}
                 >
                     <Text style={styles.textColor}>{item.title}</Text>
@@ -217,24 +222,11 @@ const Characters = ({ navigation }) => {
         } else {
             return (
                 <TouchableOpacity
-                    style={[
-                        styles.sheetBox,
-                        styles.selectedTabStyle,
-                        { zIndex: 1 },
-                    ]}
+                    key={item.key}
+                    style={[styles.tabHeader, styles.selectedTabStyle]}
                     onPress={() => setSelectedTab(item.key)}
                 >
                     <Text style={styles.textColor}>{item.title}</Text>
-                    <View
-                        style={{
-                            position: 'absolute',
-                            width: '100%',
-                            height: '100%',
-                            backgroundColor: 'blue',
-                            top: 25,
-                            zIndex: 1,
-                        }}
-                    />
                 </TouchableOpacity>
             )
         }
@@ -252,18 +244,16 @@ const Characters = ({ navigation }) => {
                     </View>
                     <View style={styles.attributeBox}>
                         <View style={styles.attributeGroup}>
-                            <Text style={styles.attributeInfo}>Força</Text>
-                            <Text style={styles.attributeValue}>18</Text>
+                            <Text style={styles.textColor}>Força</Text>
+                            <Text style={styles.textColor}>18</Text>
                         </View>
                         <View style={styles.attributeGroup}>
-                            <Text style={styles.attributeInfo}>Destreza</Text>
-                            <Text style={styles.attributeValue}>18</Text>
+                            <Text style={styles.textColor}>Destreza</Text>
+                            <Text style={styles.textColor}>18</Text>
                         </View>
                         <View style={styles.attributeGroup}>
-                            <Text style={styles.attributeInfo}>
-                                Constituição
-                            </Text>
-                            <Text style={styles.attributeValue}>18</Text>
+                            <Text style={styles.textColor}>Constituição</Text>
+                            <Text style={styles.textColor}>18</Text>
                         </View>
                     </View>
                 </View>
@@ -286,18 +276,16 @@ const Characters = ({ navigation }) => {
                     </View>
                     <View style={styles.attributeBox}>
                         <View style={styles.attributeGroup}>
-                            <Text style={styles.attributeInfo}>
-                                Inteligência
-                            </Text>
-                            <Text style={styles.attributeValue}>18</Text>
+                            <Text style={styles.textColor}>Inteligência</Text>
+                            <Text style={styles.textColor}>18</Text>
                         </View>
                         <View style={styles.attributeGroup}>
-                            <Text style={styles.attributeInfo}>Sabedoria</Text>
-                            <Text style={styles.attributeValue}>18</Text>
+                            <Text style={styles.textColor}>Sabedoria</Text>
+                            <Text style={styles.textColor}>18</Text>
                         </View>
                         <View style={styles.attributeGroup}>
-                            <Text style={styles.attributeInfo}>Carisma</Text>
-                            <Text style={styles.attributeValue}>18</Text>
+                            <Text style={styles.textColor}>Carisma</Text>
+                            <Text style={styles.textColor}>18</Text>
                         </View>
                     </View>
                 </View>
@@ -315,24 +303,14 @@ const Characters = ({ navigation }) => {
                     </Text>
                 </View>
             </View>
-            <View
-                style={{ zIndex: 1 /*position: 'relative', minHeight: 68,*/ }}
+            <ScrollView
+                style={styles.characterPages}
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
             >
-                <View style={[styles.characterPages, { zIndex: 1 }]}>
-                    <FlatList
-                        horizontal={true}
-                        showsHorizontalScrollIndicator={false}
-                        data={characterTabs}
-                        renderItem={({ item }) => renderTabOptions(item)}
-                        keyExtractor={(item, index) => index.toString()}
-                    />
-                </View>
-            </View>
-            {renderTab()}
-            <Button
-                onPress={() => navigation.navigate('Notifications')}
-                title="Go to volta"
-            />
+                {characterTabs.map((item) => renderTabOptions(item))}
+            </ScrollView>
+            <View style={styles.tabContainer}>{renderTab()}</View>
         </View>
     )
 }
@@ -343,6 +321,9 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         backgroundColor: colors.cor_terciaria,
         flex: 1,
+    },
+    textColor: {
+        ...common.text,
     },
     mainCharacterInfo: {
         height: '38%',
@@ -358,6 +339,12 @@ const styles = StyleSheet.create({
     attributeBox: {
         ...common.centerText,
         width: '100%',
+    },
+    attributeGroup: {
+        width: '70%',
+        ...common.foreground,
+        ...common.centerText,
+        marginBottom: 5,
     },
     statsBox: {
         width: 85,
@@ -376,54 +363,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         width: '34%',
     },
-    characterTextData: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%',
-    },
-    characterRaceAndClass: {
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        width: '100%',
-    },
-    textColor: {
-        ...common.text,
-    },
-    characterPages: {
-        marginTop: 13,
-        flexDirection: 'row',
-        // position: 'absolute',
-    },
-    sheetBox: {
-        width: 90,
-        height: 55,
-        ...common.foreground,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    selectedTabStyle: {
-        backgroundColor: colors.cor_secundaria,
-        borderBottomRightRadius: 0,
-        borderBottomLeftRadius: 0,
-        borderColor: colors.cor_quaternaria,
-        borderWidth: 3,
-        borderBottomWidth: 0,
-        // height: 55,
-        position: 'relative',
-        // height: '50%',
-    },
-    attributeInfo: {
-        ...common.text,
-    },
-    attributeValue: {
-        ...common.text,
-    },
-    attributeGroup: {
-        width: '70%',
-        ...common.foreground,
-        ...common.centerText,
-        marginBottom: 5,
-    },
     characterImage: {
         width: '100%',
         height: '100%',
@@ -431,6 +370,38 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderWidth: 3,
         borderColor: colors.cor_primaria,
+    },
+    characterTextData: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '100%',
+        bottom: 8,
+    },
+    characterRaceAndClass: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly',
+        width: '100%',
+    },
+    characterPages: {
+        marginTop: 13,
+        minHeight: 55,
+        maxHeight: 55,
+    },
+    tabHeader: {
+        width: 90,
+        height: 55,
+        ...common.foreground,
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderBottomRightRadius: 0,
+        borderBottomLeftRadius: 0,
+    },
+    selectedTabStyle: {
+        backgroundColor: colors.cor_secundaria,
+        borderColor: colors.cor_quaternaria,
+        borderWidth: 3,
+        borderBottomWidth: 0,
+        position: 'relative',
     },
     spellListHeaderContainer: {
         flexDirection: 'row',
@@ -458,39 +429,18 @@ const styles = StyleSheet.create({
         width: '25%',
         ...common.centerText,
     },
-    spellContainer: {
-        ...common.foreground,
-        paddingRight: 10,
-        paddingLeft: 10,
-        backgroundColor: colors.cor_secundaria,
-        borderColor: colors.cor_quaternaria,
-        borderWidth: 3,
-    },
     spellListHeaderTextContainer: {
         width: '25%',
         ...common.centerText,
     },
-    spellTextColor: {
-        ...common.text,
+    tabContainer: {
+        backgroundColor: colors.cor_secundaria,
+        paddingRight: 10,
+        paddingLeft: 10,
+        flex: 1,
+        width: '100%',
+        height: '100%',
     },
 })
 
 export default Characters
-
-/*
-
-                    ItemSeparatorComponent={
-                        undefined
-                        //     () => {
-                        //     return (
-                        //         <View
-                        //             style={{
-                        //                 height: '100%',
-                        //                 width: 20,
-                        //                 backgroundColor: '#CED0CE',
-                        //             }}
-                        //         />
-                        //     );
-                        // }
-                    }
-*/
