@@ -3,51 +3,7 @@ import { View, Text, StyleSheet, Image } from 'react-native'
 
 import colors from '../styles/colors'
 import common from '../styles/common.style'
-
-const attributes = {
-    life: {
-        mainStat: {
-            label: 'Vida',
-            value: 18,
-            textColor: colors.life,
-        },
-        attributes: [
-            {
-                label: 'Força',
-                value: 18,
-            },
-            {
-                label: 'Destreza',
-                value: 18,
-            },
-            {
-                label: 'Constituição',
-                value: 18,
-            },
-        ],
-    },
-    mana: {
-        mainStat: {
-            label: 'Mana',
-            value: 18,
-            textColor: colors.mana,
-        },
-        attributes: [
-            {
-                label: 'Inteligência',
-                value: 18,
-            },
-            {
-                label: 'Sabedoria',
-                value: 18,
-            },
-            {
-                label: 'Carisma',
-                value: 18,
-            },
-        ],
-    },
-}
+import { attributes } from '../resources/constants'
 
 const CharactersMainInfo = (props) => {
     const renderAttributeColumn = (attribute) => {

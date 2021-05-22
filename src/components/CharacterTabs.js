@@ -10,107 +10,8 @@ import {
 import colors from '../styles/colors'
 
 import common from '../styles/common.style'
-
-const characterTabs = [
-    { title: 'Combate', key: 'COMBAT' },
-    { title: 'Proficiência', key: 'PROFICIENCY' },
-    { title: 'Magias', key: 'SPELLS' },
-    { title: 'Itens', key: 'ITEMS' },
-    { title: 'Notas', key: 'NOTES' },
-]
-
-const spells = [
-    {
-        title: 'Aliado Animal',
-        spellCost: 15,
-        spellDice: '1d8',
-        school: 'Conv',
-    },
-    {
-        title: 'Enxame de Pestes',
-        spellCost: 20,
-        spellDice: '1d20',
-        school: 'Ilusão',
-    },
-    {
-        title: 'Controlar Fogo',
-        spellCost: 10,
-        spellDice: '1d6',
-        school: 'Adiv',
-    },
-    {
-        title: 'Raio Solar',
-        spellCost: 0,
-        spellDice: '3d4',
-        school: 'Evoc',
-    },
-    {
-        title: 'Conjurar Mortos-Vivos',
-        spellCost: 30,
-        spellDice: '2d12',
-        school: 'Necro',
-    },
-    {
-        title: 'Aliado Animal',
-        spellCost: 15,
-        spellDice: '1d8',
-        school: 'Conv',
-    },
-    {
-        title: 'Enxame de Pestes',
-        spellCost: 20,
-        spellDice: '1d20',
-        school: 'Ilusão',
-    },
-    {
-        title: 'Controlar Fogo',
-        spellCost: 10,
-        spellDice: '1d6',
-        school: 'Adiv',
-    },
-    {
-        title: 'Raio Solar',
-        spellCost: 0,
-        spellDice: '3d4',
-        school: 'Evoc',
-    },
-    {
-        title: 'Conjurar Mortos-Vivos',
-        spellCost: 30,
-        spellDice: '2d12',
-        school: 'Necro',
-    },
-    {
-        title: 'Aliado Animal',
-        spellCost: 15,
-        spellDice: '1d8',
-        school: 'Conv',
-    },
-    {
-        title: 'Enxame de Pestes',
-        spellCost: 20,
-        spellDice: '1d20',
-        school: 'Ilusão',
-    },
-    {
-        title: 'Controlar Fogo',
-        spellCost: 10,
-        spellDice: '1d6',
-        school: 'Adiv',
-    },
-    {
-        title: 'Raio Solar',
-        spellCost: 0,
-        spellDice: '3d4',
-        school: 'Evoc',
-    },
-    {
-        title: 'Conjurar Mortos-Vivos',
-        spellCost: 30,
-        spellDice: '2d12',
-        school: 'Necro',
-    },
-]
+import { characterTabs, spells } from '../resources/constants'
+import SpellsTab from './SpellsTab'
 
 const CharacterTabs = (props) => {
     const [selectedTab, setSelectedTab] = useState('SPELLS')
@@ -122,7 +23,7 @@ const CharacterTabs = (props) => {
             case 'PROFICIENCY':
                 return renderProficiency()
             case 'SPELLS':
-                return renderSpells()
+                return <SpellsTab />
             case 'ITEMS':
                 return renderItems()
             case 'NOTES':
@@ -138,56 +39,6 @@ const CharacterTabs = (props) => {
 
     const renderProficiency = () => {
         return <Text>{selectedTab}</Text>
-    }
-
-    const renderSpells = () => {
-        return (
-            <View>
-                <View style={styles.spellListHeaderContainer}>
-                    <View style={styles.spellListHeaderTextContainer}>
-                        <Text style={styles.textColor}>Nome</Text>
-                    </View>
-                    <View style={styles.spellListHeaderTextContainer}>
-                        <Text style={styles.textColor}>Escola</Text>
-                    </View>
-                    <View style={styles.spellListHeaderTextContainer}>
-                        <Text style={styles.textColor}>Custo</Text>
-                    </View>
-                    <View style={styles.spellListHeaderTextContainer}>
-                        <Text style={styles.textColor}>Ataque</Text>
-                    </View>
-                </View>
-                <FlatList
-                    showsHorizontalScrollIndicator={false}
-                    data={spells}
-                    renderItem={({ item }) => (
-                        <TouchableOpacity style={[styles.spellList]}>
-                            <View style={styles.spellItemTitle}>
-                                <Text style={styles.textColor}>
-                                    {item.title}
-                                </Text>
-                            </View>
-                            <View style={styles.spellItem}>
-                                <Text style={styles.textColor}>
-                                    {item.school}
-                                </Text>
-                            </View>
-                            <View style={styles.spellItem}>
-                                <Text style={styles.textColor}>
-                                    {item.spellCost}
-                                </Text>
-                            </View>
-                            <View style={styles.spellItem}>
-                                <Text style={styles.textColor}>
-                                    {item.spellDice}
-                                </Text>
-                            </View>
-                        </TouchableOpacity>
-                    )}
-                    keyExtractor={(item, index) => index.toString()}
-                />
-            </View>
-        )
     }
 
     const renderItems = () => {
@@ -246,12 +97,8 @@ const CharacterTabs = (props) => {
 
 const styles = StyleSheet.create({
     container: {
-        // flexDirection: 'column',
-        // alignItems: 'flex-start',
-        // backgroundColor: colors.black_1,
-        // flex: 1,
-        // width: '100%',
-        // height: '100%',
+        flex: 1,
+        width: '100%',
     },
     textColor: {
         ...common.text,
@@ -275,36 +122,6 @@ const styles = StyleSheet.create({
         borderWidth: 3,
         borderBottomWidth: 0,
         position: 'relative',
-    },
-    spellListHeaderContainer: {
-        flexDirection: 'row',
-        width: '100%',
-        ...common.foreground,
-        marginTop: 10,
-        height: 30,
-        ...common.centerText,
-    },
-    spellListHeader: {
-        width: '25%',
-    },
-    spellList: {
-        minHeight: 35,
-        borderBottomColor: colors.black_2,
-        borderBottomWidth: 2,
-        flexDirection: 'row',
-    },
-    spellItemTitle: {
-        width: '25%',
-        justifyContent: 'center',
-        paddingLeft: 5,
-    },
-    spellItem: {
-        width: '25%',
-        ...common.centerText,
-    },
-    spellListHeaderTextContainer: {
-        width: '25%',
-        ...common.centerText,
     },
     tabContainer: {
         backgroundColor: colors.black_3,
