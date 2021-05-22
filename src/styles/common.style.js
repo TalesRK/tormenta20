@@ -3,15 +3,16 @@ import { StyleSheet } from 'react-native'
 import colors from './colors'
 
 export default StyleSheet.create({
-    borderModel: {
+    showStuff: {
         borderColor: 'white',
         borderWidth: 4,
+        backgroundColor: 'green',
     },
     text: {
-        color: colors.text,
+        color: colors.white_1,
     },
     foreground: {
-        backgroundColor: colors.cor_primaria,
+        backgroundColor: colors.black_2,
         borderRadius: 10,
     },
     centerText: {

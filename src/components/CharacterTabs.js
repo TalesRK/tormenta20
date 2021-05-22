@@ -1,11 +1,9 @@
 import React, { useState } from 'react'
 import {
-    Button,
     View,
     Text,
     StyleSheet,
     FlatList,
-    Image,
     TouchableOpacity,
     ScrollView,
 } from 'react-native'
@@ -114,7 +112,7 @@ const spells = [
     },
 ]
 
-const Characters = ({ navigation }) => {
+const CharacterTabs = (props) => {
     const [selectedTab, setSelectedTab] = useState('SPELLS')
 
     const renderTab = () => {
@@ -210,7 +208,7 @@ const Characters = ({ navigation }) => {
                     style={[
                         styles.tabHeader,
                         {
-                            borderBottomColor: 'red',
+                            borderBottomColor: colors.red_1,
                             borderBottomWidth: 3,
                         },
                     ]}
@@ -233,76 +231,7 @@ const Characters = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.container}>
-            <View style={styles.mainCharacterInfo}>
-                <View style={styles.attributeColumn}>
-                    <View style={styles.statsBox}>
-                        <Text style={styles.textColor}>Vida</Text>
-                        <Text style={{ color: '#d40000', fontSize: 30 }}>
-                            25
-                        </Text>
-                    </View>
-                    <View style={styles.attributeBox}>
-                        <View style={styles.attributeGroup}>
-                            <Text style={styles.textColor}>Força</Text>
-                            <Text style={styles.textColor}>18</Text>
-                        </View>
-                        <View style={styles.attributeGroup}>
-                            <Text style={styles.textColor}>Destreza</Text>
-                            <Text style={styles.textColor}>18</Text>
-                        </View>
-                        <View style={styles.attributeGroup}>
-                            <Text style={styles.textColor}>Constituição</Text>
-                            <Text style={styles.textColor}>18</Text>
-                        </View>
-                    </View>
-                </View>
-                <View style={styles.characterImageColumn}>
-                    <View style={styles.characterImageContainer}>
-                        <Image
-                            style={styles.characterImage}
-                            source={{
-                                uri: 'https://uploads.spiritfanfiction.com/fanfics/capitulos/201908/uma-vida-no-rpg-17303169-200820192004.jpg',
-                            }}
-                        />
-                    </View>
-                </View>
-                <View style={styles.attributeColumn}>
-                    <View style={styles.statsBox}>
-                        <Text style={styles.textColor}>Mana</Text>
-                        <Text style={{ color: '#005eeb', fontSize: 30 }}>
-                            25
-                        </Text>
-                    </View>
-                    <View style={styles.attributeBox}>
-                        <View style={styles.attributeGroup}>
-                            <Text style={styles.textColor}>Inteligência</Text>
-                            <Text style={styles.textColor}>18</Text>
-                        </View>
-                        <View style={styles.attributeGroup}>
-                            <Text style={styles.textColor}>Sabedoria</Text>
-                            <Text style={styles.textColor}>18</Text>
-                        </View>
-                        <View style={styles.attributeGroup}>
-                            <Text style={styles.textColor}>Carisma</Text>
-                            <Text style={styles.textColor}>18</Text>
-                        </View>
-                    </View>
-                </View>
-            </View>
-            <View style={styles.characterTextData}>
-                <View>
-                    <Text style={styles.textColor}>
-                        Nome: Nome Completo do Personagem
-                    </Text>
-                </View>
-                <View style={styles.characterRaceAndClass}>
-                    <Text style={styles.textColor}>Raça: Raça do PJ</Text>
-                    <Text style={styles.textColor}>
-                        Classe: Classe do PJ nível 3
-                    </Text>
-                </View>
-            </View>
+        <View style={[styles.container, props.style]}>
             <ScrollView
                 style={styles.characterPages}
                 horizontal={true}
@@ -317,73 +246,17 @@ const Characters = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        backgroundColor: colors.cor_terciaria,
-        flex: 1,
+        // flexDirection: 'column',
+        // alignItems: 'flex-start',
+        // backgroundColor: colors.black_1,
+        // flex: 1,
+        // width: '100%',
+        // height: '100%',
     },
     textColor: {
         ...common.text,
     },
-    mainCharacterInfo: {
-        height: '38%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    },
-    attributeColumn: {
-        width: '33%',
-        flex: 1,
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-    },
-    attributeBox: {
-        ...common.centerText,
-        width: '100%',
-    },
-    attributeGroup: {
-        width: '70%',
-        ...common.foreground,
-        ...common.centerText,
-        marginBottom: 5,
-    },
-    statsBox: {
-        width: 85,
-        height: 85,
-        ...common.foreground,
-        ...common.centerText,
-    },
-    characterImageContainer: {
-        height: '80%',
-        alignItems: 'center',
-        display: 'flex',
-        justifyContent: 'space-around',
-        textAlign: 'center',
-    },
-    characterImageColumn: {
-        justifyContent: 'center',
-        width: '34%',
-    },
-    characterImage: {
-        width: '100%',
-        height: '100%',
-        resizeMode: 'cover',
-        borderRadius: 10,
-        borderWidth: 3,
-        borderColor: colors.cor_primaria,
-    },
-    characterTextData: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        width: '100%',
-        bottom: 8,
-    },
-    characterRaceAndClass: {
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        width: '100%',
-    },
     characterPages: {
-        marginTop: 13,
         minHeight: 55,
         maxHeight: 55,
     },
@@ -397,8 +270,8 @@ const styles = StyleSheet.create({
         borderBottomLeftRadius: 0,
     },
     selectedTabStyle: {
-        backgroundColor: colors.cor_secundaria,
-        borderColor: colors.cor_quaternaria,
+        backgroundColor: colors.black_3,
+        borderColor: colors.red_1,
         borderWidth: 3,
         borderBottomWidth: 0,
         position: 'relative',
@@ -416,7 +289,7 @@ const styles = StyleSheet.create({
     },
     spellList: {
         minHeight: 35,
-        borderBottomColor: colors.cor_primaria,
+        borderBottomColor: colors.black_2,
         borderBottomWidth: 2,
         flexDirection: 'row',
     },
@@ -434,7 +307,7 @@ const styles = StyleSheet.create({
         ...common.centerText,
     },
     tabContainer: {
-        backgroundColor: colors.cor_secundaria,
+        backgroundColor: colors.black_3,
         paddingRight: 10,
         paddingLeft: 10,
         flex: 1,
@@ -443,4 +316,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default Characters
+export default CharacterTabs

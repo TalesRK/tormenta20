@@ -6,7 +6,7 @@ const color_array = [
     '#2a2a2a',
     '#191919',
     '#111111',
-    '#df1720',
+    '#570004',
     '#000000',
     '#000000',
     '#000000',
@@ -25,12 +25,14 @@ const color_array = [
 // '#df1720',
 
 const colors = {
-    cor_primaria: '#2a2a2a',
-    cor_secundaria: '#383838',
-    cor_terciaria: '#191919',
-    cor_quaternaria: '#df1720',
-    cor_quintenaria: '',
-    text: '#FFFFFF',
+    black_1: '#191919',
+    black_2: '#2a2a2a',
+    black_3: '#383838',
+    red_1: '#df1720',
+    red_2: '#570004',
+    white_1: '#FFFFFF',
+    life: '#d40000',
+    mana: '#005eeb',
 }
 
 //cores originais ['#2f3136','#393c43','#36393f']
