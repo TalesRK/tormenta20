@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     mainCharacterInfo: {
-        height: '40%',
+        height: '45%',
     },
 })
 

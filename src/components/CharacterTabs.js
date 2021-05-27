@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
         minHeight: 55,
         maxHeight: 55,
     },
+    //todo substituir tamanhos fixos por percentual
     tabHeader: {
         width: 90,
         height: 55,

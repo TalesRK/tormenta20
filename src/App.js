@@ -1,9 +1,12 @@
 import * as React from 'react'
-import { Button, View } from 'react-native'
+import { Button, View, StatusBar } from 'react-native'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { NavigationContainer } from '@react-navigation/native'
 
 import Character from './pages/Character'
+
+import colors from './styles/colors'
+import CreateCharacter from './pages/CreateCharacter'
 
 function HomeScreen({ navigation }) {
     return (
@@ -32,15 +35,54 @@ const Drawer = createDrawerNavigator()
 
 export default function App() {
     return (
-        <NavigationContainer>
-            <Drawer.Navigator initialRouteName="Home">
-                <Drawer.Screen name="Home" component={HomeScreen} />
-                <Drawer.Screen
-                    name="Notifications"
-                    component={NotificationsScreen}
-                />
-                <Drawer.Screen name="Personagens" component={Character} />
-            </Drawer.Navigator>
-        </NavigationContainer>
+        <>
+            <StatusBar
+                backgroundColor={colors.black_1}
+                barStyle={'light-content'}
+            />
+            <NavigationContainer>
+                <Drawer.Navigator
+                    initialRouteName="Personagens"
+                    drawerStyle={{
+                        backgroundColor: colors.black_2,
+                        borderRightColor: colors.red_2,
+                        borderRightWidth: 3,
+                    }}
+                    drawerContentOptions={{
+                        activeTintColor: colors.red_1,
+                        activeBackgroundColor: colors.black_1,
+                        inactiveTintColor: colors.white_1,
+                        inactiveBackgroundColor: 'transparent',
+                        labelStyle: {
+                            fontSize: 15,
+                            marginLeft: 10,
+                        },
+                    }}
+                >
+                    <Drawer.Screen
+                        name="Personagens"
+                        component={Character}
+                        options={{
+                            headerShown: true,
+                            headerStyle: {
+                                backgroundColor: colors.black_2,
+                            },
+                            headerTintColor: '#fff',
+                            headerTitleStyle: {
+                                // color: 'white',
+                                // fontWeight: 'bold',
+                            },
+                        }}
+                    />
+                    <Drawer.Screen name="Home" component={HomeScreen} />
+                    <Drawer.Screen name="Criar" component={CreateCharacter} />
+                    <Drawer.Screen
+                        name="Notifications"
+                        options={{ title: 'My home' }}
+                        component={NotificationsScreen}
+                    />
+                </Drawer.Navigator>
+            </NavigationContainer>
+        </>
     )
 }
