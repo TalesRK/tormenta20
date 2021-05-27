@@ -17,6 +17,7 @@ const CreateCharacter = () => {
     const { width: screenWidth } = Dimensions.get('window')
     const scrollViewRef = useRef()
     const [currentPage, setCurrentPage] = useState(0)
+    const [racesState, setRace] = useState(races)
 
     useEffect(() => {
         scrollViewRef.current.scrollTo({
@@ -35,21 +36,41 @@ const CreateCharacter = () => {
                 : currentPage + 1
         )
     }
+    const expandRaceItem = (index) => {
+        const updateRace = [...racesState]
+        updateRace[index].expanded = !updateRace[index].expanded
+        updateRace.push(updateRace[0])
+        setRace(updateRace)
+    }
 
     const renderRacePage = () => {
         return (
-            <View
-                style={{
-                    flex: 1,
-                }}
-            >
+            <View style={{ flex: 1 }}>
                 <ScrollView contentContainerStyle={{}}>
-                    {races.map((race, index) => (
-                        <View style={styles.raceItem}>
-                            <Text style={styles.itemTextColor}>
-                                {race.label}
-                            </Text>
-                        </View>
+                    {racesState.map((race, index) => (
+                        <>
+                            <TouchableOpacity
+                                style={styles.raceItem}
+                                key={race + index}
+                                onPress={() => {
+                                    expandRaceItem(index)
+                                }}
+                            >
+                                <Text style={styles.itemTextColor}>
+                                    {race.label}
+                                </Text>
+                            </TouchableOpacity>
+                            {race.expanded && (
+                                <View
+                                    style={[
+                                        { flex: 1, height: screenWidth / 3 },
+                                        { ...commonStyle.showStuff },
+                                    ]}
+                                >
+                                    <Text>TESTE</Text>
+                                </View>
+                            )}
+                        </>
                     ))}
                 </ScrollView>
             </View>
