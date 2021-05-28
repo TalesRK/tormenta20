@@ -2,6 +2,7 @@ import * as React from 'react'
 import { Button, View, StatusBar } from 'react-native'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import { NavigationContainer } from '@react-navigation/native'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import Character from './pages/Character'
 import CreateCharacterRace from './pages/CreateCharacterRace'
@@ -34,7 +35,7 @@ const Drawer = createDrawerNavigator()
 
 export default function App() {
     return (
-        <>
+        <SafeAreaProvider>
             <StatusBar
                 backgroundColor={colors.black_1}
                 barStyle={'light-content'}
@@ -81,6 +82,6 @@ export default function App() {
                     />
                 </Drawer.Navigator>
             </NavigationContainer>
-        </>
+        </SafeAreaProvider>
     )
 }

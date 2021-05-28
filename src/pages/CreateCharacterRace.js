@@ -12,7 +12,7 @@ import {
 import colors from '../styles/colors'
 import commonStyle from '../styles/common.style'
 import { creationCharacterPages, races } from '../resources/constants'
-import { color } from 'react-native-reanimated'
+import { Icon, CheckBox } from 'react-native-elements'
 
 const CreateCharacterRace = () => {
     const [racesState, setRace] = useState(races)
@@ -20,7 +20,13 @@ const CreateCharacterRace = () => {
     const expandRaceItem = (index) => {
         const updateRace = [...racesState]
         updateRace[index].expanded = !updateRace[index].expanded
-        updateRace.push(updateRace[0])
+        setRace(updateRace)
+    }
+
+    const selectRaceItem = (index) => {
+        const updateRace = [...racesState]
+        updateRace.forEach((raceItem) => (raceItem.selected = false))
+        updateRace[index].selected = true
         setRace(updateRace)
     }
 
@@ -28,6 +34,7 @@ const CreateCharacterRace = () => {
         return (
             <>
                 <TouchableOpacity
+                    key={race + index}
                     style={{
                         flex: 1,
                         borderWidth: 3,
@@ -36,16 +43,24 @@ const CreateCharacterRace = () => {
                         marginBottom: 10,
                         height: 40,
                         justifyContent: 'center',
+                        alignItems: 'center',
                         paddingHorizontal: 15,
                         backgroundColor: colors.black_3,
                         width: '100%',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
                     }}
                     key={race + index}
                     onPress={() => {
                         expandRaceItem(index)
                     }}
                 >
-                    <Text style={styles.itemTextColor}>{race.label}</Text>
+                    <Text style={[styles.itemTextColor]}>{race.label}</Text>
+                    <Icon
+                        name="caret-down"
+                        type="font-awesome"
+                        color={colors.red_2}
+                    />
                 </TouchableOpacity>
             </>
         )
@@ -55,30 +70,66 @@ const CreateCharacterRace = () => {
         return (
             <>
                 <TouchableOpacity
+                    key={race + index}
                     style={{
                         flex: 1,
                         borderWidth: 3,
-                        borderColor: colors.red_2,
+                        borderColor: race.selected
+                            ? colors.red_1
+                            : colors.red_2,
                         borderRadius: 10,
                         height: 40,
                         justifyContent: 'center',
+                        alignItems: 'center',
                         paddingHorizontal: 15,
                         backgroundColor: colors.black_3,
                         width: '100%',
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
                     }}
-                    style={styles.raceItemShort}
                     key={race + index}
                     onPress={() => {
                         expandRaceItem(index)
                     }}
                 >
-                    <Text style={styles.itemTextColor}>{race.label}</Text>
-                </TouchableOpacity>
-                {race.expanded && (
-                    <View style={[styles.raceItemExpandedContent]}>
-                        <Text>TESTE</Text>
+                    <Text style={[styles.itemTextColor]}>{race.label}</Text>
+                    <View style={{ flexDirection: 'row' }}>
+                        <Icon
+                            name="check-box-outline"
+                            type="material-community-icons"
+                            color={race.selected ? colors.red_1 : colors.red_2}
+                        />
+                        <Icon
+                            name="caret-up"
+                            type="font-awesome"
+                            color={race.selected ? colors.red_1 : colors.red_2}
+                        />
                     </View>
-                )}
+                </TouchableOpacity>
+                <View
+                    style={{
+                        marginBottom: 10,
+                        backgroundColor: colors.black_3,
+                        width: '90%',
+                        borderBottomRightRadius: 10,
+                        borderBottomLeftRadius: 10,
+                        padding: '2%',
+                    }}
+                >
+                    <Text>TESTE</Text>
+                    <TouchableOpacity
+                        style={[
+                            {
+                                margin: 10,
+                                height: 30,
+                            },
+                            commonStyle.foreground,
+                        ]}
+                        onPress={() => selectRaceItem(index)}
+                    >
+                        <Text>Selecionar este</Text>
+                    </TouchableOpacity>
+                </View>
             </>
         )
     }
