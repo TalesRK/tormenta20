@@ -4,9 +4,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer'
 import { NavigationContainer } from '@react-navigation/native'
 
 import Character from './pages/Character'
-
+import CreateCharacterRace from './pages/CreateCharacterRace'
 import colors from './styles/colors'
-import CreateCharacter from './pages/CreateCharacter'
 
 function HomeScreen({ navigation }) {
     return (
@@ -68,14 +67,13 @@ export default function App() {
                                 backgroundColor: colors.black_2,
                             },
                             headerTintColor: '#fff',
-                            headerTitleStyle: {
-                                // color: 'white',
-                                // fontWeight: 'bold',
-                            },
                         }}
                     />
+                    <Drawer.Screen
+                        name="Criar personagem"
+                        component={CreateCharacterRace}
+                    />
                     <Drawer.Screen name="Home" component={HomeScreen} />
-                    <Drawer.Screen name="Criar" component={CreateCharacter} />
                     <Drawer.Screen
                         name="Notifications"
                         options={{ title: 'My home' }}

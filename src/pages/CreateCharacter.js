@@ -13,6 +13,7 @@ import colors from '../styles/colors'
 import commonStyle from '../styles/common.style'
 import { creationCharacterPages, races } from '../resources/constants'
 
+//deprecated
 const CreateCharacter = () => {
     const { width: screenWidth } = Dimensions.get('window')
     const scrollViewRef = useRef()
@@ -43,35 +44,62 @@ const CreateCharacter = () => {
         setRace(updateRace)
     }
 
+    const renderRaceItemExpanded = (race, index) => {
+        return (
+            <>
+                <TouchableOpacity
+                    style={styles.raceItemShort}
+                    key={race + index}
+                    onPress={() => {
+                        expandRaceItem(index)
+                    }}
+                >
+                    <Text style={styles.itemTextColor}>{race.label}</Text>
+                </TouchableOpacity>
+                {race.expanded && (
+                    <View
+                        style={[
+                            { height: screenWidth / 3 },
+                            styles.raceItemExpandedContent,
+                        ]}
+                    >
+                        <Text>TESTE</Text>
+                    </View>
+                )}
+            </>
+        )
+    }
+
+    const renderRaceItem = (race, index) => {
+        return (
+            <>
+                <TouchableOpacity
+                    style={styles.raceItem}
+                    key={race + index}
+                    onPress={() => {
+                        expandRaceItem(index)
+                    }}
+                >
+                    <Text style={styles.itemTextColor}>{race.label}</Text>
+                </TouchableOpacity>
+            </>
+        )
+    }
+
     const renderRacePage = () => {
         return (
             <View style={{ flex: 1 }}>
-                <ScrollView contentContainerStyle={{}}>
-                    {racesState.map((race, index) => (
-                        <>
-                            <TouchableOpacity
-                                style={styles.raceItem}
-                                key={race + index}
-                                onPress={() => {
-                                    expandRaceItem(index)
-                                }}
-                            >
-                                <Text style={styles.itemTextColor}>
-                                    {race.label}
-                                </Text>
-                            </TouchableOpacity>
-                            {race.expanded && (
-                                <View
-                                    style={[
-                                        { flex: 1, height: screenWidth / 3 },
-                                        { ...commonStyle.showStuff },
-                                    ]}
-                                >
-                                    <Text>TESTE</Text>
-                                </View>
-                            )}
-                        </>
-                    ))}
+                <ScrollView
+                    contentContainerStyle={{
+                        alignItems: 'center',
+                        width: '100%',
+                    }}
+                >
+                    {racesState.map((race, index) =>
+                        race.expanded
+                            ? renderRaceItemExpanded(race, index)
+                            : renderRaceItem(race, index)
+                    )}
                 </ScrollView>
             </View>
         )
@@ -176,6 +204,22 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingHorizontal: 15,
         backgroundColor: colors.black_3,
+    },
+    raceItemShort: {
+        flex: 1,
+        borderWidth: 3,
+        borderColor: colors.red_2,
+        borderRadius: 10,
+        height: 40,
+        justifyContent: 'center',
+        paddingHorizontal: 15,
+        backgroundColor: colors.black_3,
+        width: '100%',
+    },
+    raceItemExpandedContent: {
+        flex: 1,
+        ...commonStyle.showStuff,
+        width: '95%',
     },
     itemTextColor: {
         color: 'white',
