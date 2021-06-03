@@ -5,6 +5,7 @@ const colors = {
     red_1: '#df1720',
     red_2: '#570004',
     white_1: '#FFFFFF',
+    gold_1: '#ebbc00',
     life: '#d40000',
     mana: '#005eeb',
 }

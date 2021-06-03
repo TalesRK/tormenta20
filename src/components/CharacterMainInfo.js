@@ -1,12 +1,38 @@
 import React from 'react'
-import { View, Text, StyleSheet, Image } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 
 import colors from '../styles/colors'
 import common from '../styles/common.style'
 import { attributes } from '../resources/constants'
+import { useStateValue } from '../context/ContextProvider'
 
 const CharactersMainInfo = (props) => {
+    const [{ character }, dispatch] = useStateValue()
+
+    const adicionarVida = () => {
+        const updatedChar = Object.assign({}, character)
+        updatedChar.vida++
+
+        dispatch({
+            type: 'updateCharacter',
+            value: updatedChar,
+        })
+    }
+
+    const subtrairVida = () => {
+        const updatedChar = Object.assign({}, character)
+        updatedChar.vida--
+
+        dispatch({
+            type: 'updateCharacter',
+            value: updatedChar,
+        })
+    }
+
     const renderAttributeColumn = (attribute) => {
+        const valorAtributo =
+            attribute.mainStat.label === 'Vida' ? character.vida : 20
+
         return (
             <View style={styles.attributeColumn}>
                 <View style={styles.statsContainer}>
@@ -20,7 +46,7 @@ const CharactersMainInfo = (props) => {
                                 fontSize: 30,
                             }}
                         >
-                            {attribute.mainStat.value}
+                            {valorAtributo}
                         </Text>
                     </View>
                 </View>
@@ -57,17 +83,23 @@ const CharactersMainInfo = (props) => {
             </View>
             <View style={styles.characterTextData}>
                 <View>
-                    <View style={styles.characterFullnameText}>
+                    <TouchableOpacity
+                        onPress={adicionarVida}
+                        style={styles.characterFullnameText}
+                    >
                         <Text style={styles.textColor}>
                             Nome: Nome Completo do Personagem
                         </Text>
-                    </View>
-                    <View style={styles.characterRaceAndClassText}>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={subtrairVida}
+                        style={styles.characterRaceAndClassText}
+                    >
                         <Text style={styles.textColor}>Raça: Raça do PJ</Text>
                         <Text style={styles.textColor}>
                             Classe: Classe do PJ nível 3
                         </Text>
-                    </View>
+                    </TouchableOpacity>
                 </View>
             </View>
         </View>

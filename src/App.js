@@ -1,12 +1,19 @@
-import * as React from 'react'
+import React, { useEffect } from 'react'
 import { Button, View, StatusBar } from 'react-native'
 import { createDrawerNavigator } from '@react-navigation/drawer'
+import {
+    CardStyleInterpolators,
+    createStackNavigator,
+} from '@react-navigation/stack'
 import { NavigationContainer } from '@react-navigation/native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import Character from './pages/Character'
 import CreateCharacterRace from './pages/CreateCharacterRace'
+import CreateCharacterClass from './pages/CreateCharacterClass'
+import CreateCharacterPoints from './pages/CreateCharacterPoints'
 import colors from './styles/colors'
+import { useStateValue, getData } from './context/ContextProvider'
 
 function HomeScreen({ navigation }) {
     return (
@@ -31,9 +38,66 @@ function NotificationsScreen({ navigation }) {
     )
 }
 
+function CharacterCreate() {
+    return (
+        <Stack.Navigator screenOptions={screenOptionsHeaderDisable}>
+            <Stack.Screen
+                name="CreateCharacterRace"
+                component={CreateCharacterRace}
+                title="Escolha de raça"
+            />
+            <Stack.Screen
+                name="CreateCharacterClass"
+                component={CreateCharacterClass}
+            />
+            <Stack.Screen
+                name="CreateCharacterPoints"
+                component={CreateCharacterPoints}
+            />
+        </Stack.Navigator>
+    )
+}
+const screenOptionsHeaderDisable = {
+    headerShown: false,
+    cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+}
+
+const screenOptionsHeaderStyle = {
+    headerShown: true,
+    headerStyle: {
+        backgroundColor: colors.black_2,
+    },
+    headerTintColor: '#fff',
+}
+
 const Drawer = createDrawerNavigator()
+const Stack = createStackNavigator()
 
 export default function App() {
+    const initialState = {
+        character: {
+            vida: 0,
+            mana: 0,
+        },
+    }
+
+    const [, dispatch] = useStateValue()
+
+    useEffect(() => {
+        const loadInitialData = async () => {
+            const storedCharacter = await getData('character')
+
+            if (storedCharacter) {
+                dispatch({
+                    type: 'updateCharacter',
+                    value: storedCharacter,
+                })
+            }
+        }
+
+        loadInitialData()
+    }, [])
+
     return (
         <SafeAreaProvider>
             <StatusBar
@@ -58,21 +122,17 @@ export default function App() {
                             marginLeft: 10,
                         },
                     }}
+                    screenOptions={screenOptionsHeaderStyle}
                 >
                     <Drawer.Screen
                         name="Personagens"
                         component={Character}
-                        options={{
-                            headerShown: true,
-                            headerStyle: {
-                                backgroundColor: colors.black_2,
-                            },
-                            headerTintColor: '#fff',
-                        }}
+                        options={screenOptionsHeaderStyle}
                     />
                     <Drawer.Screen
-                        name="Criar personagem"
-                        component={CreateCharacterRace}
+                        name="CharacterCreate"
+                        component={CharacterCreate}
+                        options={{ title: 'Criar personagem' }}
                     />
                     <Drawer.Screen name="Home" component={HomeScreen} />
                     <Drawer.Screen
