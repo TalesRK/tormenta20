@@ -13,13 +13,18 @@ export default function Index() {
                 constituicao: 0,
                 inteligencia: 0,
                 carisma: 0,
+                sabedoria: 0,
             },
-            nome: 'Easter',
+            nome: '',
             classe: {
-                label: 'Egg',
+                nome: '',
                 nivel: 0,
             },
-            raca: 'Humano',
+            raca: '',
+            proficiencias: [],
+            magias: [],
+            itens: [],
+            notas: '',
         },
     }
 

@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 
 import colors from '../styles/colors'
 import common from '../styles/common.style'
-import { attributes } from '../resources/constants'
 import { useStateValue } from '../context/ContextProvider'
 
 const CharactersMainInfo = (props) => {
@@ -30,34 +29,49 @@ const CharactersMainInfo = (props) => {
     }
 
     const renderAttributeColumn = (attribute) => {
-        const valorAtributo =
-            attribute.mainStat.label === 'Vida' ? character.vida : 20
-
+        const isLife = attribute === 'life'
+        const mainAttColor = isLife ? colors.life : colors.mana
+        const mainAttLabel = isLife ? 'Vida' : 'Mana'
+        const mainAttValue = isLife ? character.vida : character.mana
+        const secAttLabels = isLife
+            ? ['Força', 'Destreza', 'Constituicao']
+            : ['Inteligência', 'Sabedoria', 'Carisma']
+        const secAttValues = isLife
+            ? [
+                  character.atributos.forca,
+                  character.atributos.destreza,
+                  character.atributos.constituicao,
+              ]
+            : [
+                  character.atributos.inteligencia,
+                  character.atributos.sabedoria,
+                  character.atributos.carisma,
+              ]
         return (
             <View style={styles.attributeColumn}>
                 <View style={styles.statsContainer}>
                     <View style={styles.statsBox}>
-                        <Text style={styles.textColor}>
-                            {attribute.mainStat.label}
-                        </Text>
+                        <Text style={styles.textColor}>{mainAttLabel}</Text>
                         <Text
                             style={{
-                                color: attribute.mainStat.textColor,
+                                color: mainAttColor,
                                 fontSize: 30,
                             }}
                         >
-                            {valorAtributo}
+                            {mainAttValue}
                         </Text>
                     </View>
                 </View>
                 <View style={styles.attributeBox}>
-                    {attribute.attributes.map((att, index) => (
+                    {secAttLabels.map((secAttLabel, index) => (
                         <View
-                            key={att.label + index}
+                            key={secAttLabel + index}
                             style={styles.attributeGroup}
                         >
-                            <Text style={styles.textColor}>{att.label}</Text>
-                            <Text style={styles.textColor}>{att.value}</Text>
+                            <Text style={styles.textColor}>{secAttLabel}</Text>
+                            <Text style={styles.textColor}>
+                                {secAttValues[index]}
+                            </Text>
                         </View>
                     ))}
                 </View>
@@ -68,7 +82,7 @@ const CharactersMainInfo = (props) => {
     return (
         <View style={props.style}>
             <View style={styles.mainCharacterInfo}>
-                {renderAttributeColumn(attributes.life)}
+                {renderAttributeColumn('life')}
                 <View style={styles.characterImageColumn}>
                     <View style={styles.characterImageContainer}>
                         <Image
@@ -79,7 +93,7 @@ const CharactersMainInfo = (props) => {
                         />
                     </View>
                 </View>
-                {renderAttributeColumn(attributes.mana)}
+                {renderAttributeColumn('mana')}
             </View>
             <View style={styles.characterTextData}>
                 <View>
@@ -87,17 +101,15 @@ const CharactersMainInfo = (props) => {
                         onPress={adicionarVida}
                         style={styles.characterFullnameText}
                     >
-                        <Text style={styles.textColor}>
-                            Nome: Nome Completo do Personagem
-                        </Text>
+                        <Text style={styles.textColor}>{character.nome}</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         onPress={subtrairVida}
                         style={styles.characterRaceAndClassText}
                     >
-                        <Text style={styles.textColor}>Raça: Raça do PJ</Text>
+                        <Text style={styles.textColor}>{character.raca}</Text>
                         <Text style={styles.textColor}>
-                            Classe: Classe do PJ nível 3
+                            {`${character.classe.nome} nível ${character.classe.nivel}`}
                         </Text>
                     </TouchableOpacity>
                 </View>
