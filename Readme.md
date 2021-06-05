@@ -5,13 +5,13 @@ Funcionalidades já desenvolvidas:
 -Seleção de Classe
 -Controle de estado da aplicação [3h] -> [done in 4h]
 -Atualização dinâmica da tela de ficha [1h] -> [done in 22m]
+-Tela de geração de pontos de atributo [4h] -> [done in 7h]
 
 Funcionalidades pendentes:
--Salvar nome do personagem na seleção de raça [2h]
--Tela de geração de pontos de atributo [4h]
 -Tela de seleção de proficiências [3h]
 -Tela de seleção de magias [4h]
 -Tela de seleção de equipamentos [4h]
+-Salvar nome do personagem na seleção de raça [2h]
 -Aba de Combate [5h]
 -Aba de Proficiência [2h]
 -Aba de Magias [2h]
@@ -30,5 +30,6 @@ Na edição do personagem, permitir subir de nível
 Permitir alterar a vida do personagem
 Receber uma imagem do personagem
 Logo do App
+Exibir vida e mana atual e máxima
 
 Total: 53 horas, 14 dias

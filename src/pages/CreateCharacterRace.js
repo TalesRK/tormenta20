@@ -65,7 +65,6 @@ const CreateCharacterRace = ({ navigation }) => {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                     }}
-                    key={race + index}
                     onPress={() => selectRaceItem(index)}
                 >
                     <Text
@@ -110,7 +109,6 @@ const CreateCharacterRace = ({ navigation }) => {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                     }}
-                    key={race + index}
                     onPress={() => selectRaceItem(index)}
                 >
                     <Text
@@ -305,23 +303,3 @@ const styles = StyleSheet.create({
 })
 
 export default CreateCharacterRace
-
-/*
-
-            <View
-                style={{
-                    height: '15%',
-                    width: '100%',
-                    flexDirection: 'row',
-                    justifyContent: 'space-evenly',
-                    alignItems: 'center',
-                }}
-            >
-                <TouchableOpacity onPress={showPrevious} style={styles.button}>
-                    <Text style={styles.buttonText}>Anterior</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={showNext} style={styles.button}>
-                    <Text style={styles.buttonText}>Próximo</Text>
-                </TouchableOpacity>
-            </View>
-*/

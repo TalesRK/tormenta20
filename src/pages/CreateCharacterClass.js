@@ -52,7 +52,7 @@ const CreateCharacterClass = ({ navigation }) => {
         return (
             <>
                 <TouchableOpacity
-                    key={characterClass.label + index}
+                    key={characterClass.label + index + 'short'}
                     style={{
                         flex: 1,
                         borderWidth: 3,
@@ -70,7 +70,6 @@ const CreateCharacterClass = ({ navigation }) => {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                     }}
-                    key={characterClass + index}
                     onPress={() => selectCharacterClassItem(index)}
                 >
                     <Text
@@ -102,7 +101,7 @@ const CreateCharacterClass = ({ navigation }) => {
         return (
             <>
                 <TouchableOpacity
-                    key={characterClass.label + index}
+                    key={characterClass.label + index + 'expanded'}
                     style={{
                         flex: 1,
                         borderWidth: 3,
@@ -119,7 +118,6 @@ const CreateCharacterClass = ({ navigation }) => {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                     }}
-                    key={characterClass + index}
                     onPress={() => selectCharacterClassItem(index)}
                 >
                     <Text
@@ -160,16 +158,6 @@ const CreateCharacterClass = ({ navigation }) => {
     }
 
     const renderClassData = (characterClass) => {
-        /*
-        data: {
-            pontos_vida: {
-                inicial: 8,
-                por_nivel: 2,
-            },
-            pontos_mana: {
-                por_nivel: 6,
-            },
-        }, */
         const data = characterClass?.data
 
         if (data) {

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {
     SafeAreaView,
     ScrollView,
@@ -6,58 +6,49 @@ import {
     StyleSheet,
     View,
     TouchableOpacity,
+    TextInput,
 } from 'react-native'
 
 import colors from '../styles/colors'
 import commonStyle from '../styles/common.style'
-import { translateKey } from '../resources/constants'
-import { characterClass } from '../resources/classes'
+import {
+    attributeMapType,
+    buyAttributes,
+    rollAttributes,
+    fillAttributes,
+} from '../resources/constants'
 import { Icon } from 'react-native-elements'
+import {
+    calcCostByAttribute,
+    calcModifierByAttribute,
+    rollDice,
+} from '../resources/formulas'
 
 const CreateCharacterPoints = ({ navigation }) => {
-    const [characterClassState, setCharacterClass] = useState(characterClass)
-    const [canProceed, setCanProceed] = useState(false)
+    const [attMapTypeState, setAttMapType] = useState(attributeMapType)
+    const [pointBuy, setPointBuy] = useState(buyAttributes)
+    const [rollPoints, setRollPoints] = useState(rollAttributes)
+    const [fillPoints, setFillPoints] = useState(fillAttributes)
 
-    useEffect(() => {
-        setCanProceed(
-            characterClassState.some(
-                (characterClassFiltered) => characterClassFiltered.selected
-            )
-        )
-    }, [characterClassState])
+    const selectAttMapType = (index) => {
+        const newAttMapType = [...attMapTypeState]
+        newAttMapType.forEach((item) => (item.selected = false))
 
-    const expandCharacterClassItem = (index) => {
-        const updateCharacterClass = [...characterClassState]
-        updateCharacterClass[index].expanded =
-            !updateCharacterClass[index].expanded
-        setCharacterClass(updateCharacterClass)
+        const selectedAttMapType = newAttMapType[index]
+        selectedAttMapType.selected = true
+
+        setAttMapType(newAttMapType)
     }
 
-    const selectCharacterClassItem = (index) => {
-        const updateCharacterClass = [...characterClassState]
-        const selectedCharacterClass = updateCharacterClass[index]
-        if (selectedCharacterClass.selected) {
-            selectedCharacterClass.selected = false
-        } else {
-            updateCharacterClass.forEach(
-                (characterClassItem) => (characterClassItem.selected = false)
-            )
-            selectedCharacterClass.selected = true
-        }
-        setCharacterClass(updateCharacterClass)
-    }
-
-    const renderCharacterClassItem = (characterClass, index) => {
+    const renderType = (attMapType, index) => {
         return (
             <>
                 <TouchableOpacity
-                    key={characterClass.label + index}
+                    key={attMapType.label + index + 'default'}
                     style={{
                         flex: 1,
                         borderWidth: 3,
-                        borderColor: characterClass.selected
-                            ? colors.red_1
-                            : colors.red_2,
+                        borderColor: colors.red_2,
                         borderRadius: 10,
                         marginBottom: 10,
                         height: 40,
@@ -69,45 +60,27 @@ const CreateCharacterPoints = ({ navigation }) => {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                     }}
-                    key={characterClass + index}
-                    onPress={() => selectCharacterClassItem(index)}
+                    onPress={() => selectAttMapType(index)}
                 >
                     <Text
                         style={[styles.itemTextColor, { color: colors.gold_1 }]}
                     >
-                        {characterClass.label}
+                        {attMapType.label}
                     </Text>
-                    <TouchableOpacity
-                        onPress={() => expandCharacterClassItem(index)}
-                        hitSlop={{ left: 20, right: 20 }}
-                    >
-                        <Icon
-                            size={30}
-                            name="caret-down"
-                            type="font-awesome"
-                            color={
-                                characterClass.selected
-                                    ? colors.red_1
-                                    : colors.red_2
-                            }
-                        />
-                    </TouchableOpacity>
                 </TouchableOpacity>
             </>
         )
     }
 
-    const renderCharacterClassItemExpanded = (characterClass, index) => {
+    const renderTypeSelected = (attMapType, index) => {
         return (
             <>
                 <TouchableOpacity
-                    key={characterClass.label + index}
+                    key={attMapType.label + index}
                     style={{
                         flex: 1,
                         borderWidth: 3,
-                        borderColor: characterClass.selected
-                            ? colors.red_1
-                            : colors.red_2,
+                        borderColor: colors.red_1,
                         borderRadius: 10,
                         height: 40,
                         justifyContent: 'center',
@@ -118,29 +91,13 @@ const CreateCharacterPoints = ({ navigation }) => {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                     }}
-                    key={characterClass + index}
-                    onPress={() => selectCharacterClassItem(index)}
+                    onPress={() => selectAttMapType(index)}
                 >
                     <Text
                         style={[styles.itemTextColor, { color: colors.gold_1 }]}
                     >
-                        {characterClass.label}
+                        {attMapType.label}
                     </Text>
-                    <TouchableOpacity
-                        onPress={() => expandCharacterClassItem(index)}
-                        hitSlop={{ left: 20, right: 20 }}
-                    >
-                        <Icon
-                            size={30}
-                            name="caret-up"
-                            type="font-awesome"
-                            color={
-                                characterClass.selected
-                                    ? colors.red_1
-                                    : colors.red_2
-                            }
-                        />
-                    </TouchableOpacity>
                 </TouchableOpacity>
                 <View
                     style={{
@@ -152,93 +109,448 @@ const CreateCharacterPoints = ({ navigation }) => {
                         padding: '2%',
                     }}
                 >
-                    {renderClassData(characterClass)}
+                    {renderAttData(attMapType)}
                 </View>
             </>
         )
     }
 
-    const renderClassData = (characterClass) => {
-        /*
-        data: {
-            pontos_vida: {
-                inicial: 8,
-                por_nivel: 2,
-            },
-            pontos_mana: {
-                por_nivel: 6,
-            },
-        }, */
-        const data = characterClass?.data
+    const renderAttData = (attMapType) => {
+        if (attMapType.key === 'compra') return renderBuyPoints()
+        if (attMapType.key === 'rolar') return renderRollPoints()
+        if (attMapType.key === 'preencher') return renderFillPoints()
+    }
 
-        if (data) {
-            return (
+    const renderFillPoints = () => {
+        return (
+            <View>
                 <View>
-                    <Text style={{ color: colors.white_1, marginBottom: 15 }}>
-                        {data.descricao}
-                    </Text>
-                    <View style={{ flexDirection: 'row' }}>
-                        <View style={{ width: '50%' }}>
-                            <Text style={{ color: colors.white_1 }}>
-                                Pontos de vida:
-                            </Text>
+                    {fillPoints.attributes.map((opt, idx) => {
+                        const modifier =
+                            calcModifierByAttribute(opt.currentAttribute) || 0
+                        return (
                             <View
+                                key={opt.label + 'fillPoints'}
                                 style={{
-                                    width: '100%',
-                                    paddingHorizontal: '5%',
+                                    flexDirection: 'row',
+                                    paddingHorizontal: 10,
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
                                 }}
                             >
-                                <Text style={{ color: colors.white_1 }}>
-                                    {`Inicial: ${data.pontos_vida.inicial}\nPor nível: ${data.pontos_vida.por_nivel}`}
-                                </Text>
-                            </View>
+                                <View
+                                    style={{
+                                        alignItems: 'center',
+                                        width: '20%',
+                                    }}
+                                >
+                                    <Text style={[{ color: colors.white_1 }]}>
+                                        {opt.label}
+                                    </Text>
+                                    {opt.icon}
+                                </View>
 
-                            <Text style={{ color: colors.white_1 }}>
-                                Pontos de mana:
-                            </Text>
+                                <View
+                                    style={{
+                                        width: '50%',
+                                        justifyContent: 'center',
+                                    }}
+                                >
+                                    <View
+                                        style={{
+                                            borderBottomColor: opt.hasFilled
+                                                ? colors.red_1
+                                                : colors.red_2,
+                                            borderBottomWidth: 1.3,
+                                        }}
+                                    >
+                                        <TextInput
+                                            placeholder="Atributo"
+                                            onChangeText={(value) =>
+                                                handleAttributeChange(
+                                                    value,
+                                                    idx
+                                                )
+                                            }
+                                            value={opt.currentAttribute}
+                                            autoCompleteType={'off'}
+                                            autoCorrect={false}
+                                            keyboardType={'numeric'}
+                                            textAlign={'center'}
+                                            textContentType={'none'}
+                                            maxLength={4}
+                                            style={[
+                                                {
+                                                    color: colors.white_1,
+                                                    fontSize: 18,
+                                                    padding: 0,
+                                                },
+                                            ]}
+                                            placeholderTextColor={
+                                                colors.black_4
+                                            }
+                                        />
+                                    </View>
+                                </View>
+                                <View
+                                    style={{
+                                        width: '20%',
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-evenly',
+                                        alignItems: 'center',
+                                    }}
+                                >
+                                    <Text style={{ color: colors.white_1 }}>
+                                        =
+                                    </Text>
+                                    <Text style={{ color: colors.white_1 }}>
+                                        {modifier > 0
+                                            ? `+${modifier}`
+                                            : modifier}
+                                    </Text>
+                                </View>
+                            </View>
+                        )
+                    })}
+                </View>
+            </View>
+        )
+    }
+
+    const handleAttributeChange = (value, idx) => {
+        if (value > 9999) {
+            return
+        }
+        const newFillPoints = Object.assign({}, fillPoints)
+        newFillPoints.attributes[idx].currentAttribute = value
+        newFillPoints.attributes[idx].hasFilled = true
+        setFillPoints(newFillPoints)
+    }
+
+    const renderRollPoints = () => {
+        return (
+            <View>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-evenly',
+                    }}
+                >
+                    {rollPoints.attributes.map((opt, idx) => {
+                        const modifier = calcModifierByAttribute(
+                            opt.currentAttribute
+                        )
+                        return (
                             <View
-                                style={{
-                                    width: '100%',
-                                    paddingHorizontal: '5%',
-                                }}
+                                key={opt.label + 'rollPoints'}
+                                style={[{ alignItems: 'center', width: '15%' }]}
                             >
+                                <Text style={[{ color: colors.white_1 }]}>
+                                    {opt.label}
+                                </Text>
+                                {opt.icon}
+                                <Text style={[{ color: colors.white_1 }]}>
+                                    {opt.currentAttribute}
+                                </Text>
+
+                                <View
+                                    style={{
+                                        width: '100%',
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-evenly',
+                                    }}
+                                >
+                                    <Icon
+                                        size={30}
+                                        name="caret-left"
+                                        type="font-awesome"
+                                        color={colors.red_1}
+                                        onPress={() =>
+                                            replateToSide('left', idx)
+                                        }
+                                    />
+                                    <Icon
+                                        size={30}
+                                        name="caret-right"
+                                        type="font-awesome"
+                                        color={colors.red_1}
+                                        onPress={() =>
+                                            replateToSide('right', idx)
+                                        }
+                                    />
+                                </View>
+
+                                <Text style={{ color: colors.white_1 }}>=</Text>
                                 <Text style={{ color: colors.white_1 }}>
-                                    {`Por nível: ${data.pontos_mana.por_nivel}`}
+                                    {modifier > 0 ? `+${modifier}` : modifier}
                                 </Text>
                             </View>
-                        </View>
-                        <View style={{ width: '50%' }}>
-                            <Text style={{ color: colors.white_1 }}>
-                                Perícias:
-                            </Text>
-                            <View
-                                style={{
-                                    width: '100%',
-                                    paddingHorizontal: '5%',
-                                }}
-                            >
-                                {data.pericias.map((pericia) => {
-                                    return (
-                                        <View>
-                                            <Text
-                                                style={{
-                                                    color: colors.white_1,
-                                                }}
-                                            >{`${pericia}`}</Text>
-                                        </View>
-                                    )
-                                })}
-                            </View>
-                        </View>
-                    </View>
+                        )
+                    })}
                 </View>
-            )
+                <View style={{ alignItems: 'center', width: '100%' }}>
+                    <TouchableOpacity
+                        style={[
+                            commonStyle.foreground,
+                            {
+                                height: 50,
+                                marginTop: 10,
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                backgroundColor: colors.black_3,
+                                borderWidth: 3,
+                                borderColor: colors.red_1,
+                                flexDirection: 'row',
+                                width: '50%',
+                            },
+                        ]}
+                        onPress={rollDices}
+                    >
+                        <Text style={[commonStyle.text, { marginRight: 15 }]}>
+                            Rolar dados
+                        </Text>
+                        <Icon
+                            size={30}
+                            name="dice"
+                            type="font-awesome-5"
+                            color={colors.red_1}
+                        />
+                    </TouchableOpacity>
+                </View>
+            </View>
+        )
+    }
+
+    const rollDices = () => {
+        let dicesRolledSum = []
+        let totalModifiers = 0
+        for (let i = 1; i <= 6; i++) {
+            const rolls = [
+                rollDice('1d6'),
+                rollDice('1d6'),
+                rollDice('1d6'),
+                rollDice('1d6'),
+            ]
+
+            rolls.sort(function (a, b) {
+                return b - a
+            })
+            dicesRolledSum.push(rolls[0] + rolls[1] + rolls[2])
         }
+        dicesRolledSum.forEach((val) => {
+            totalModifiers += calcModifierByAttribute(val)
+        })
+
+        while (totalModifiers < 6) {
+            dicesRolledSum.sort(function (a, b) {
+                return b - a
+            })
+            dicesRolledSum.splice(5, 1)
+            totalModifiers = 0
+
+            const rolls = [
+                rollDice('1d6'),
+                rollDice('1d6'),
+                rollDice('1d6'),
+                rollDice('1d6'),
+            ]
+
+            rolls.sort(function (a, b) {
+                return b - a
+            })
+            dicesRolledSum.push(rolls[0] + rolls[1] + rolls[2])
+
+            dicesRolledSum.forEach((val) => {
+                totalModifiers += calcModifierByAttribute(val)
+            })
+        }
+
+        dicesRolledSum.sort(function (a, b) {
+            return b - a
+        })
+
+        const newRollPoints = Object.assign({}, rollPoints)
+        newRollPoints.attributes.map((att, idx) => {
+            att.currentAttribute = dicesRolledSum[idx]
+        })
+        newRollPoints.hasRolled = true
+
+        setRollPoints(newRollPoints)
+    }
+
+    const replateToSide = (side, actualIndex) => {
+        const isLeft = side === 'left'
+        let toIndex
+        if (actualIndex === 0 && isLeft) {
+            toIndex = 5
+        } else if (actualIndex === 5 && isRight) {
+            toIndex = 0
+        } else {
+            toIndex = isLeft ? actualIndex - 1 : actualIndex + 1
+        }
+
+        const newRollPoints = Object.assign({}, rollPoints)
+        const aux = newRollPoints.attributes[actualIndex].currentAttribute
+        newRollPoints.attributes[actualIndex].currentAttribute =
+            newRollPoints.attributes[toIndex].currentAttribute
+        newRollPoints.attributes[toIndex].currentAttribute = aux
+
+        setRollPoints(newRollPoints)
+    }
+
+    const renderBuyPoints = () => {
+        return (
+            <View>
+                <View
+                    style={{
+                        width: '100%',
+                        alignItems: 'center',
+                        margin: 5,
+                    }}
+                >
+                    <Text
+                        style={{ color: colors.white_1, fontSize: 18 }}
+                    >{`Pontos restantes: ${pointBuy.pointsLeft}`}</Text>
+                </View>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-evenly',
+                    }}
+                >
+                    {pointBuy.attributes.map((opt, idx) => {
+                        const canGoDown = canChangeAttribute(opt, 'sell')
+                        const canGoUp = canChangeAttribute(opt, 'buy')
+                        const modifier = calcModifierByAttribute(
+                            opt.currentAttribute
+                        )
+
+                        return (
+                            <View
+                                key={opt.label + 'pointBuy'}
+                                style={[
+                                    // commonStyle.showStuff,
+                                    { alignItems: 'center', width: '15%' },
+                                ]}
+                            >
+                                <Text style={[{ color: colors.white_1 }]}>
+                                    {opt.label}
+                                </Text>
+                                {opt.icon}
+                                <Text style={[{ color: colors.white_1 }]}>
+                                    {opt.currentAttribute}
+                                </Text>
+
+                                <Icon
+                                    size={30}
+                                    name="caret-up"
+                                    type="font-awesome"
+                                    color={
+                                        canGoUp ? colors.red_1 : colors.red_2
+                                    }
+                                    onPress={() =>
+                                        canGoUp && buyPoint('buy', idx)
+                                    }
+                                />
+
+                                <Text style={{ color: colors.white_1 }}>
+                                    {opt.pointsBought}
+                                </Text>
+
+                                <Icon
+                                    size={30}
+                                    name="caret-down"
+                                    type="font-awesome"
+                                    color={
+                                        canGoDown ? colors.red_1 : colors.red_2
+                                    }
+                                    onPress={() =>
+                                        canGoDown && buyPoint('sell', idx)
+                                    }
+                                />
+
+                                <Text style={{ color: colors.white_1 }}>=</Text>
+                                <Text style={{ color: colors.white_1 }}>
+                                    {modifier > 0 ? `+${modifier}` : modifier}
+                                </Text>
+                            </View>
+                        )
+                    })}
+                </View>
+            </View>
+        )
+    }
+
+    const canChangeAttribute = (attribute, action) => {
+        const isBuy = action === 'buy'
+
+        if (
+            (isBuy && attribute.currentAttribute + 1 > 18) ||
+            (!isBuy && attribute.currentAttribute - 1 < 8)
+        )
+            return false
+
+        let desiredAttributeQuantity = isBuy
+            ? attribute.currentAttribute + 1
+            : attribute.currentAttribute - 1
+        const lastCost = calcCostByAttribute(attribute.currentAttribute)
+        const cost = calcCostByAttribute(desiredAttributeQuantity)
+
+        const costDifference = cost - lastCost
+        return pointBuy.pointsLeft - costDifference >= 0
+    }
+
+    const buyPoint = (action, idx) => {
+        const newPoints = Object.assign({}, pointBuy)
+        const att = newPoints.attributes[idx]
+        let desiredAttributeQuantity = att.currentAttribute
+        const lastCost = calcCostByAttribute(att.currentAttribute)
+        let cost
+
+        if (action === 'buy') {
+            att.pointsBought++
+            desiredAttributeQuantity++
+        } else {
+            att.pointsBought--
+            desiredAttributeQuantity--
+        }
+
+        att.currentAttribute = desiredAttributeQuantity
+        cost = calcCostByAttribute(desiredAttributeQuantity)
+
+        const costDifference = cost - lastCost
+
+        newPoints.pointsLeft -= costDifference
+        setPointBuy(newPoints)
     }
 
     const showNext = () => {}
     const showPrevious = () => {
         navigation.goBack()
+    }
+
+    const canProceed = () => {
+        const isPointBuy = attMapTypeState.some(
+            (item) => item.selected && item.key === 'compra'
+        )
+        const hasNoPointsLeft = pointBuy.pointsLeft === 0
+
+        const isRoll = attMapTypeState.some(
+            (item) => item.selected && item.key === 'rolar'
+        )
+        const hasRolled = rollPoints.hasRolled
+
+        const isFill = attMapTypeState.some(
+            (item) => item.selected && item.key === 'preencher'
+        )
+        const hasFilledAll = fillPoints.attributes.every(
+            (item) => item.hasFilled
+        )
+        return (
+            (isPointBuy && hasNoPointsLeft) ||
+            (isRoll && hasRolled) ||
+            (isFill && hasFilledAll)
+        )
     }
 
     return (
@@ -271,13 +583,10 @@ const CreateCharacterPoints = ({ navigation }) => {
                         paddingHorizontal: '5%',
                     }}
                 >
-                    {characterClassState.map((characterClass, index) =>
-                        characterClass.expanded
-                            ? renderCharacterClassItemExpanded(
-                                  characterClass,
-                                  index
-                              )
-                            : renderCharacterClassItem(characterClass, index)
+                    {attMapTypeState.map((type, index) =>
+                        type.selected
+                            ? renderTypeSelected(type, index)
+                            : renderType(type, index)
                     )}
                 </ScrollView>
             </View>
@@ -298,7 +607,10 @@ const CreateCharacterPoints = ({ navigation }) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                     onPress={showNext}
-                    style={[styles.button, canProceed && styles.buttonSelected]}
+                    style={[
+                        styles.button,
+                        canProceed() && styles.buttonSelected,
+                    ]}
                 >
                     <Text style={styles.buttonText}>Próximo</Text>
                 </TouchableOpacity>
@@ -313,12 +625,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly',
         backgroundColor: colors.black_1,
-    },
-    infoText: {
-        fontSize: 100,
-    },
-    pagesContainer: {
-        height: '90%',
     },
     buttons: {
         height: '7%',
@@ -342,32 +648,6 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         ...commonStyle.text,
-    },
-    pageContainer: {
-        ...commonStyle.centerText,
-    },
-    pageForeground: {
-        flex: 1,
-        width: '95%',
-        ...commonStyle.foreground,
-        padding: '3%',
-    },
-    characterClassItem: {},
-    characterClassItemShort: {
-        flex: 1,
-        borderWidth: 3,
-        borderColor: colors.red_2,
-        borderRadius: 10,
-        height: 40,
-        justifyContent: 'center',
-        paddingHorizontal: 15,
-        backgroundColor: colors.black_3,
-        width: '100%',
-    },
-    characterClassItemExpandedContent: {
-        flex: 1,
-        ...commonStyle.showStuff,
-        width: '95%',
     },
     itemTextColor: {
         color: 'white',

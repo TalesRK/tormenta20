@@ -1,4 +1,6 @@
+import React from 'react'
 import colors from '../styles/colors'
+import { Icon } from 'react-native-elements'
 
 export const characterTabs = [
     { title: 'Combate', key: 'COMBAT' },
@@ -403,3 +405,263 @@ export const races = [
         label: 'Trog',
     },
 ]
+
+export const attributeMapType = [
+    {
+        key: 'compra',
+        label: 'Comprar pontos',
+    },
+    {
+        key: 'rolar',
+        label: 'Rolar dados',
+    },
+    {
+        key: 'preencher',
+        label: 'Preencher manualmente',
+    },
+]
+
+export const buyAttributes = {
+    pointsLeft: 20,
+    attributes: [
+        {
+            label: 'FOR',
+            currentAttribute: 10,
+            pointsBought: 0,
+            icon: (
+                <Icon
+                    size={30}
+                    name="arm-flex"
+                    type="material-community"
+                    color={colors.red_1}
+                />
+            ),
+        },
+        {
+            label: 'DES',
+            currentAttribute: 10,
+            pointsBought: 0,
+            icon: (
+                <Icon
+                    size={30}
+                    name="run"
+                    type="material-community"
+                    color={colors.red_1}
+                />
+            ),
+        },
+        {
+            label: 'CON',
+            currentAttribute: 10,
+            pointsBought: 0,
+            icon: (
+                <Icon
+                    size={30}
+                    name="heartbeat"
+                    type="font-awesome-5"
+                    color={colors.red_1}
+                />
+            ),
+        },
+        {
+            label: 'INT',
+            currentAttribute: 10,
+            pointsBought: 0,
+            icon: (
+                <Icon
+                    size={30}
+                    name="brain"
+                    type="font-awesome-5"
+                    color={colors.red_1}
+                />
+            ),
+        },
+        {
+            label: 'SAB',
+            currentAttribute: 10,
+            pointsBought: 0,
+            icon: (
+                <Icon
+                    size={30}
+                    name="meditation"
+                    type="material-community"
+                    color={colors.red_1}
+                />
+            ),
+        },
+        {
+            label: 'CAR',
+            currentAttribute: 10,
+            pointsBought: 0,
+            icon: (
+                <Icon
+                    size={30}
+                    name="grin-wink"
+                    type="font-awesome-5"
+                    color={colors.red_1}
+                />
+            ),
+        },
+    ],
+}
+
+export const rollAttributes = {
+    hasRolled: false,
+    attributes: [
+        {
+            label: 'FOR',
+            currentAttribute: 10,
+            hasFilled: false,
+            icon: (
+                <Icon
+                    size={30}
+                    name="arm-flex"
+                    type="material-community"
+                    color={colors.red_1}
+                />
+            ),
+        },
+        {
+            label: 'DES',
+            currentAttribute: 10,
+            hasFilled: false,
+            icon: (
+                <Icon
+                    size={30}
+                    name="run"
+                    type="material-community"
+                    color={colors.red_1}
+                />
+            ),
+        },
+        {
+            label: 'CON',
+            currentAttribute: 10,
+            hasFilled: false,
+            icon: (
+                <Icon
+                    size={30}
+                    name="heartbeat"
+                    type="font-awesome-5"
+                    color={colors.red_1}
+                />
+            ),
+        },
+        {
+            label: 'INT',
+            currentAttribute: 10,
+            hasFilled: false,
+            icon: (
+                <Icon
+                    size={30}
+                    name="brain"
+                    type="font-awesome-5"
+                    color={colors.red_1}
+                />
+            ),
+        },
+        {
+            label: 'SAB',
+            currentAttribute: 10,
+            hasFilled: false,
+            icon: (
+                <Icon
+                    size={30}
+                    name="meditation"
+                    type="material-community"
+                    color={colors.red_1}
+                />
+            ),
+        },
+        {
+            label: 'CAR',
+            currentAttribute: 10,
+            hasFilled: false,
+            icon: (
+                <Icon
+                    size={30}
+                    name="grin-wink"
+                    type="font-awesome-5"
+                    color={colors.red_1}
+                />
+            ),
+        },
+    ],
+}
+
+export const fillAttributes = {
+    attributes: [
+        {
+            label: 'FOR',
+            currentAttribute: 10,
+            icon: (
+                <Icon
+                    size={30}
+                    name="arm-flex"
+                    type="material-community"
+                    color={colors.red_1}
+                />
+            ),
+        },
+        {
+            label: 'DES',
+            currentAttribute: 10,
+            icon: (
+                <Icon
+                    size={30}
+                    name="run"
+                    type="material-community"
+                    color={colors.red_1}
+                />
+            ),
+        },
+        {
+            label: 'CON',
+            currentAttribute: 10,
+            icon: (
+                <Icon
+                    size={30}
+                    name="heartbeat"
+                    type="font-awesome-5"
+                    color={colors.red_1}
+                />
+            ),
+        },
+        {
+            label: 'INT',
+            currentAttribute: 10,
+            icon: (
+                <Icon
+                    size={30}
+                    name="brain"
+                    type="font-awesome-5"
+                    color={colors.red_1}
+                />
+            ),
+        },
+        {
+            label: 'SAB',
+            currentAttribute: 10,
+            icon: (
+                <Icon
+                    size={30}
+                    name="meditation"
+                    type="material-community"
+                    color={colors.red_1}
+                />
+            ),
+        },
+        {
+            label: 'CAR',
+            currentAttribute: 10,
+            icon: (
+                <Icon
+                    size={30}
+                    name="grin-wink"
+                    type="font-awesome-5"
+                    color={colors.red_1}
+                />
+            ),
+        },
+    ],
+}
