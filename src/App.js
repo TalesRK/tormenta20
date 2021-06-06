@@ -12,8 +12,12 @@ import Character from './pages/Character'
 import CreateCharacterRace from './pages/CreateCharacterRace'
 import CreateCharacterClass from './pages/CreateCharacterClass'
 import CreateCharacterPoints from './pages/CreateCharacterPoints'
+import CreateCharacterProficiencies from './pages/CreateCharacterProficiencies'
+import CreateCharacterSpells from './pages/CreateCharacterSpells'
+
 import colors from './styles/colors'
 import { useStateValue, getData } from './context/ContextProvider'
+import CreateCharacterDetails from './pages/CreateCharacterDetails'
 
 function HomeScreen({ navigation }) {
     return (
@@ -42,9 +46,12 @@ function CharacterCreate() {
     return (
         <Stack.Navigator screenOptions={screenOptionsHeaderDisable}>
             <Stack.Screen
+                name="CreateCharacterDetails1"
+                component={CreateCharacterDetails}
+            />
+            <Stack.Screen
                 name="CreateCharacterRace"
                 component={CreateCharacterRace}
-                title="Escolha de raça"
             />
             <Stack.Screen
                 name="CreateCharacterClass"
@@ -53,6 +60,18 @@ function CharacterCreate() {
             <Stack.Screen
                 name="CreateCharacterPoints"
                 component={CreateCharacterPoints}
+            />
+            <Stack.Screen
+                name="CreateCharacterProficiencies"
+                component={CreateCharacterProficiencies}
+            />
+            <Stack.Screen
+                name="CreateCharacterSpells"
+                component={CreateCharacterSpells}
+            />
+            <Stack.Screen
+                name="CreateCharacterDetails"
+                component={CreateCharacterDetails}
             />
         </Stack.Navigator>
     )

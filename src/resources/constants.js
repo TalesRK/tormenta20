@@ -408,8 +408,9 @@ export const races = [
 
 export const attributeMapType = [
     {
-        key: 'compra',
+        key: 'comprar',
         label: 'Comprar pontos',
+        selected: true,
     },
     {
         key: 'rolar',
@@ -426,6 +427,7 @@ export const buyAttributes = {
     attributes: [
         {
             label: 'FOR',
+            key: 'forca',
             currentAttribute: 10,
             pointsBought: 0,
             icon: (
@@ -439,6 +441,7 @@ export const buyAttributes = {
         },
         {
             label: 'DES',
+            key: 'destreza',
             currentAttribute: 10,
             pointsBought: 0,
             icon: (
@@ -452,6 +455,7 @@ export const buyAttributes = {
         },
         {
             label: 'CON',
+            key: 'constituicao',
             currentAttribute: 10,
             pointsBought: 0,
             icon: (
@@ -465,6 +469,7 @@ export const buyAttributes = {
         },
         {
             label: 'INT',
+            key: 'inteligencia',
             currentAttribute: 10,
             pointsBought: 0,
             icon: (
@@ -478,6 +483,7 @@ export const buyAttributes = {
         },
         {
             label: 'SAB',
+            key: 'sabedoria',
             currentAttribute: 10,
             pointsBought: 0,
             icon: (
@@ -491,6 +497,7 @@ export const buyAttributes = {
         },
         {
             label: 'CAR',
+            key: 'carisma',
             currentAttribute: 10,
             pointsBought: 0,
             icon: (
@@ -510,6 +517,7 @@ export const rollAttributes = {
     attributes: [
         {
             label: 'FOR',
+            key: 'forca',
             currentAttribute: 10,
             hasFilled: false,
             icon: (
@@ -523,6 +531,7 @@ export const rollAttributes = {
         },
         {
             label: 'DES',
+            key: 'destreza',
             currentAttribute: 10,
             hasFilled: false,
             icon: (
@@ -536,6 +545,7 @@ export const rollAttributes = {
         },
         {
             label: 'CON',
+            key: 'constituicao',
             currentAttribute: 10,
             hasFilled: false,
             icon: (
@@ -549,6 +559,7 @@ export const rollAttributes = {
         },
         {
             label: 'INT',
+            key: 'inteligencia',
             currentAttribute: 10,
             hasFilled: false,
             icon: (
@@ -562,6 +573,7 @@ export const rollAttributes = {
         },
         {
             label: 'SAB',
+            key: 'sabedoria',
             currentAttribute: 10,
             hasFilled: false,
             icon: (
@@ -575,6 +587,7 @@ export const rollAttributes = {
         },
         {
             label: 'CAR',
+            key: 'carisma',
             currentAttribute: 10,
             hasFilled: false,
             icon: (
@@ -593,6 +606,7 @@ export const fillAttributes = {
     attributes: [
         {
             label: 'FOR',
+            key: 'forca',
             currentAttribute: 10,
             icon: (
                 <Icon
@@ -605,6 +619,7 @@ export const fillAttributes = {
         },
         {
             label: 'DES',
+            key: 'destreza',
             currentAttribute: 10,
             icon: (
                 <Icon
@@ -617,6 +632,7 @@ export const fillAttributes = {
         },
         {
             label: 'CON',
+            key: 'constituicao',
             currentAttribute: 10,
             icon: (
                 <Icon
@@ -629,6 +645,7 @@ export const fillAttributes = {
         },
         {
             label: 'INT',
+            key: 'inteligencia',
             currentAttribute: 10,
             icon: (
                 <Icon
@@ -641,6 +658,7 @@ export const fillAttributes = {
         },
         {
             label: 'SAB',
+            key: 'sabedoria',
             currentAttribute: 10,
             icon: (
                 <Icon
@@ -653,6 +671,7 @@ export const fillAttributes = {
         },
         {
             label: 'CAR',
+            key: 'carisma',
             currentAttribute: 10,
             icon: (
                 <Icon
@@ -665,3 +684,61 @@ export const fillAttributes = {
         },
     ],
 }
+
+export const spellsSchools = [
+    {
+        key: 'ABJUR',
+        label: 'Abjuração (Abjur)',
+        labelAbrev: 'Abjur',
+        description:
+            'Magias de proteção, que anulam outras magias ou expulsam criaturas invocadas de volta a seus planos de existência nativos.',
+    },
+    {
+        key: 'ADIV',
+        label: 'Adivinhação (Adiv)',
+        labelAbrev: 'Adiv',
+        description: 'Magias de detecção ou que vasculham passado e futuro.',
+    },
+    {
+        key: 'CONV',
+        label: 'Convocação (Conv)',
+        labelAbrev: 'Conv',
+        description:
+            'Magias que transportam matéria. Esse transporte é realizado através dos Plano Astral, um espaço que existe entre os mundos; por isso, qualquer efeito que bloqueia viagens astrais também impede convocações. Criaturas convocadas, quando destruídas, desaparecem e são devolvidas a seus mundos nativos.',
+    },
+    {
+        key: 'ENCAN',
+        label: 'Encantamento (Encan)',
+        labelAbrev: 'Encan',
+        description:
+            'Magias que afetam a mente. Não afetam criaturas com Inteligência nula, como alguns construtos e mortos-vivos.',
+    },
+    {
+        key: 'EVOC',
+        label: 'Evocação (Evoc)',
+        labelAbrev: 'Evoc',
+        description:
+            'Magias que manipulam ou geram energia pura. Ácido, eletricidade, fogo e frio são as energias geradas pelos quatro elementos, respectivamente terra, ar, fogo e água. Magias de fogo funcionam sob a água, mas criam vapor quente em vez de chamas abertas. Luz é a manifestação de energia positiva, capaz de iluminar e curar. Por fim, essência é energia mágica pura.',
+    },
+    {
+        key: 'ILUSAO',
+        label: 'Ilusão',
+        labelAbrev: 'Ilusão',
+        description:
+            'Essas magias fazem outros perceberem algo que não existe ou ignorarem algo real. Assim como encantamentos, ilusões não afetam criaturas sem mente (com Inteligência nula).',
+    },
+    {
+        key: 'NECRO',
+        label: 'Necromancia (Necro)',
+        labelAbrev: 'Necro',
+        description:
+            'Magias que canalizam energia negativa, criando escuridão, drenando a força vital de criaturas vivas e criando mortos-vivos. Magias de necromancia causam dano de trevas.',
+    },
+    {
+        key: 'TRANS',
+        label: 'Transmutação (Trans)',
+        labelAbrev: 'Trans',
+        description:
+            'Magias que alteram as propriedades físicas de uma criatura ou objeto.',
+    },
+]

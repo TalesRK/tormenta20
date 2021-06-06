@@ -7,65 +7,91 @@ import {
     View,
     TouchableOpacity,
 } from 'react-native'
+import { Icon } from 'react-native-elements'
 
 import colors from '../styles/colors'
 import commonStyle from '../styles/common.style'
-import { races, translateKey } from '../resources/constants'
-import { Icon } from 'react-native-elements'
+import { proficiencies } from '../resources/proficiencies'
 import { useStateValue } from '../context/ContextProvider'
+import { getClassByKey } from '../resources/classes'
+import { calcModifierByAttribute } from '../resources/formulas'
 
-const CreateCharacterRace = ({ navigation }) => {
-    const [racesState, setRace] = useState(races)
+const CreateCharacterProficiencies = ({ navigation }) => {
+    const [proficienciesState, setProficiencies] = useState(proficiencies)
+    const [remainingSelect, setRemainingSelect] = useState(0)
     const [canProceed, setCanProceed] = useState(false)
     const [{ characterCreation }, dispatch] = useStateValue()
 
     useEffect(() => {
-        setCanProceed(racesState.some((raceFiltered) => raceFiltered.selected))
-    }, [racesState])
+        mapInitialProficiencyData()
+        mapInitialProficiencyPoints()
+    }, [])
 
-    const goToNextPage = () => {
-        if (canProceed) {
-            const selectedRace = racesState.find(
-                (raceFiltered) => raceFiltered.selected
+    useEffect(() => {
+        setCanProceed(remainingSelect === 0)
+    }, [remainingSelect])
+
+    const mapInitialProficiencyData = () => {
+        const classe = getClassByKey(characterCreation.classe)
+        const newProficienciesState = [...proficienciesState]
+
+        newProficienciesState.forEach((prof) => {
+            const hasInClass = classe.data.pericias.some(
+                (item) => item === prof.key
             )
-            const newCharacterCreation = Object.assign({}, characterCreation)
-            newCharacterCreation.raca = selectedRace.key
+            prof.selected = hasInClass
+            prof.isFromClass = hasInClass
+        })
+        setProficiencies(newProficienciesState)
+    }
 
-            dispatch({
-                type: 'updateCharacterCreation',
-                value: newCharacterCreation,
-            })
-            navigation.navigate('CreateCharacterClass')
+    const mapInitialProficiencyPoints = () => {
+        const inteligenceBonus = calcModifierByAttribute(
+            characterCreation.atributos.inteligencia
+        )
+        setRemainingSelect(inteligenceBonus)
+    }
+
+    const showNext = () => {
+        if (canProceed) navigation.navigate('CreateCharacterSpells')
+    }
+    const showPrevious = () => {
+        navigation.goBack()
+    }
+
+    const expandProficienciesItem = (index) => {
+        const updateProficiencies = [...proficienciesState]
+        updateProficiencies[index].expanded =
+            !updateProficiencies[index].expanded
+        setProficiencies(updateProficiencies)
+    }
+
+    const selectProficienciesItem = (index) => {
+        const updateProficiencies = [...proficienciesState]
+        const selProficiency = updateProficiencies[index]
+        const newValue = selProficiency.isFromClass || !selProficiency.selected
+        if (newValue !== selProficiency.selected) {
+            if (newValue && remainingSelect < 1) {
+                return
+            }
+            selProficiency.selected = newValue
+
+            let newRemainingSelect = remainingSelect
+            newRemainingSelect += newValue ? -1 : 1
+            setProficiencies(updateProficiencies)
+            setRemainingSelect(newRemainingSelect)
         }
     }
 
-    const expandRaceItem = (index) => {
-        const updateRace = [...racesState]
-        updateRace[index].expanded = !updateRace[index].expanded
-        setRace(updateRace)
-    }
-
-    const selectRaceItem = (index) => {
-        const updateRace = [...racesState]
-        const selectedRace = updateRace[index]
-        if (selectedRace.selected) {
-            selectedRace.selected = false
-        } else {
-            updateRace.forEach((raceItem) => (raceItem.selected = false))
-            selectedRace.selected = true
-        }
-        setRace(updateRace)
-    }
-
-    const renderRaceItem = (race, index) => {
+    const renderProficienciesItem = (proficiency, index) => {
         return (
             <>
                 <TouchableOpacity
-                    key={race.label + index}
+                    key={proficiency.label + index}
                     style={{
                         flex: 1,
                         borderWidth: 3,
-                        borderColor: race.selected
+                        borderColor: proficiency.selected
                             ? colors.red_1
                             : colors.red_2,
                         borderRadius: 10,
@@ -79,22 +105,26 @@ const CreateCharacterRace = ({ navigation }) => {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                     }}
-                    onPress={() => selectRaceItem(index)}
+                    onPress={() => selectProficienciesItem(index)}
                 >
                     <Text
                         style={[styles.itemTextColor, { color: colors.gold_1 }]}
                     >
-                        {race.label}
+                        {proficiency.label}
                     </Text>
                     <TouchableOpacity
-                        onPress={() => expandRaceItem(index)}
+                        onPress={() => expandProficienciesItem(index)}
                         hitSlop={{ left: 20, right: 20 }}
                     >
                         <Icon
                             size={30}
                             name="caret-down"
                             type="font-awesome"
-                            color={race.selected ? colors.red_1 : colors.red_2}
+                            color={
+                                proficiency.selected
+                                    ? colors.red_1
+                                    : colors.red_2
+                            }
                         />
                     </TouchableOpacity>
                 </TouchableOpacity>
@@ -102,15 +132,15 @@ const CreateCharacterRace = ({ navigation }) => {
         )
     }
 
-    const renderRaceItemExpanded = (race, index) => {
+    const renderProficienciesItemExpanded = (proficiency, index) => {
         return (
             <>
                 <TouchableOpacity
-                    key={race.label + index}
+                    key={proficiency.label + index}
                     style={{
                         flex: 1,
                         borderWidth: 3,
-                        borderColor: race.selected
+                        borderColor: proficiency.selected
                             ? colors.red_1
                             : colors.red_2,
                         borderRadius: 10,
@@ -123,22 +153,26 @@ const CreateCharacterRace = ({ navigation }) => {
                         flexDirection: 'row',
                         justifyContent: 'space-between',
                     }}
-                    onPress={() => selectRaceItem(index)}
+                    onPress={() => selectProficienciesItem(index)}
                 >
                     <Text
                         style={[styles.itemTextColor, { color: colors.gold_1 }]}
                     >
-                        {race.label}
+                        {proficiency.label}
                     </Text>
                     <TouchableOpacity
-                        onPress={() => expandRaceItem(index)}
+                        onPress={() => expandProficienciesItem(index)}
                         hitSlop={{ left: 20, right: 20 }}
                     >
                         <Icon
                             size={30}
                             name="caret-up"
                             type="font-awesome"
-                            color={race.selected ? colors.red_1 : colors.red_2}
+                            color={
+                                proficiency.selected
+                                    ? colors.red_1
+                                    : colors.red_2
+                            }
                         />
                     </TouchableOpacity>
                 </TouchableOpacity>
@@ -152,44 +186,22 @@ const CreateCharacterRace = ({ navigation }) => {
                         padding: '2%',
                     }}
                 >
-                    {renderAtributos(race)}
+                    {renderProficiencyBody(proficiency)}
                 </View>
             </>
         )
     }
 
-    const renderAtributos = (race, index) => {
-        const attributes = race?.data?.atributos
-        const chooseAttributes = race?.data?.atributos_escolher
-
-        if (attributes) {
-            return (
-                <View>
-                    <Text style={{ color: colors.white_1 }}>Atributos:</Text>
-                    <View style={{ width: '100%', paddingHorizontal: '5%' }}>
-                        {attributes.map((att) => {
-                            const label = translateKey(att.key)
-                            return (
-                                <View>
-                                    <Text
-                                        style={{ color: colors.white_1 }}
-                                    >{`${label}: ${att.value}`}</Text>
-                                </View>
-                            )
-                        })}
-                    </View>
-                </View>
-            )
-        }
-        if (chooseAttributes) {
-            return (
-                <View>
+    const renderProficiencyBody = (proficiency) => {
+        return (
+            <View>
+                <View style={{ width: '100%', paddingHorizontal: '5%' }}>
                     <Text style={{ color: colors.white_1 }}>
-                        {`Escolha ${chooseAttributes.escolhas} atributos, ganhando ${chooseAttributes.pontos} pontos em cada.`}
+                        {proficiency.description}
                     </Text>
                 </View>
-            )
-        }
+            </View>
+        )
     }
 
     return (
@@ -204,7 +216,7 @@ const CreateCharacterRace = ({ navigation }) => {
                 }}
             >
                 <Text style={{ color: colors.white_1, fontSize: 20 }}>
-                    Escolha uma raça
+                    Escolha as perícias
                 </Text>
             </View>
             <View
@@ -214,18 +226,35 @@ const CreateCharacterRace = ({ navigation }) => {
                     height: '70%',
                 }}
             >
+                <View
+                    style={{
+                        padding: '5%',
+                        width: '100%',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Text
+                        style={{
+                            color: colors.white_1,
+                            fontSize: 17,
+                        }}
+                    >{`Perícias restantes: ${remainingSelect}`}</Text>
+                </View>
                 <ScrollView
                     contentContainerStyle={{
                         alignItems: 'center',
                         width: '100%',
-                        paddingTop: '5%',
+                        // paddingTop: '5%',
                         paddingHorizontal: '5%',
                     }}
                 >
-                    {racesState.map((race, index) =>
-                        race.expanded
-                            ? renderRaceItemExpanded(race, index)
-                            : renderRaceItem(race, index)
+                    {proficienciesState.map((proficiency, index) =>
+                        proficiency.expanded
+                            ? renderProficienciesItemExpanded(
+                                  proficiency,
+                                  index
+                              )
+                            : renderProficienciesItem(proficiency, index)
                     )}
                 </ScrollView>
             </View>
@@ -239,7 +268,13 @@ const CreateCharacterRace = ({ navigation }) => {
                 }}
             >
                 <TouchableOpacity
-                    onPress={goToNextPage}
+                    onPress={showPrevious}
+                    style={[styles.button, styles.buttonSelected]}
+                >
+                    <Text style={styles.buttonText}>Anterior</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={showNext}
                     style={[styles.button, canProceed && styles.buttonSelected]}
                 >
                     <Text style={styles.buttonText}>Próximo</Text>
@@ -269,7 +304,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     button: {
-        width: '80%',
+        width: '35%',
         height: '50%',
         ...commonStyle.foreground,
         backgroundColor: colors.black_3,
@@ -294,8 +329,8 @@ const styles = StyleSheet.create({
         ...commonStyle.foreground,
         padding: '3%',
     },
-    raceItem: {},
-    raceItemShort: {
+    proficiencyItem: {},
+    proficiencyItemShort: {
         flex: 1,
         borderWidth: 3,
         borderColor: colors.red_2,
@@ -306,7 +341,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.black_3,
         width: '100%',
     },
-    raceItemExpandedContent: {
+    proficiencyItemExpandedContent: {
         flex: 1,
         ...commonStyle.showStuff,
         width: '95%',
@@ -316,4 +351,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default CreateCharacterRace
+export default CreateCharacterProficiencies

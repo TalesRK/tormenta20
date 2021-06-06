@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     SafeAreaView,
     ScrollView,
@@ -7,17 +7,17 @@ import {
     View,
     TouchableOpacity,
 } from 'react-native'
-import { Tooltip } from 'react-native-elements'
 
 import colors from '../styles/colors'
 import commonStyle from '../styles/common.style'
-import { translateKey } from '../resources/constants'
 import { characterClass } from '../resources/classes'
 import { Icon } from 'react-native-elements'
+import { useStateValue } from '../context/ContextProvider'
 
 const CreateCharacterClass = ({ navigation }) => {
     const [characterClassState, setCharacterClass] = useState(characterClass)
     const [canProceed, setCanProceed] = useState(false)
+    const [{ characterCreation }, dispatch] = useStateValue()
 
     useEffect(() => {
         setCanProceed(
@@ -225,13 +225,23 @@ const CreateCharacterClass = ({ navigation }) => {
         }
     }
 
-    const showNext = () => {
+    const goToNextPage = () => {
         if (canProceed) {
+            const selectedClass = characterClassState.find(
+                (characterClassFiltered) => characterClassFiltered.selected
+            )
+            const newCharacterCreation = Object.assign({}, characterCreation)
+            newCharacterCreation.classe = selectedClass.key
+
+            dispatch({
+                type: 'updateCharacterCreation',
+                value: newCharacterCreation,
+            })
             navigation.navigate('CreateCharacterPoints')
-        } else {
         }
     }
-    const showPrevious = () => {
+
+    const goToPreviousPage = () => {
         navigation.goBack()
     }
 
@@ -285,13 +295,13 @@ const CreateCharacterClass = ({ navigation }) => {
                 }}
             >
                 <TouchableOpacity
-                    onPress={showPrevious}
+                    onPress={goToPreviousPage}
                     style={[styles.button, styles.buttonSelected]}
                 >
                     <Text style={styles.buttonText}>Anterior</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={showNext}
+                    onPress={goToNextPage}
                     style={[styles.button, canProceed && styles.buttonSelected]}
                 >
                     <Text style={styles.buttonText}>Próximo</Text>

@@ -1,3 +1,7 @@
+export const getClassByKey = (key) => {
+    return characterClass.find((item) => item.key === key)
+}
+
 export const characterClass = [
     {
         key: 'ARCANISTA',
@@ -173,6 +177,14 @@ export const characterClass = [
                 'INICIATIVA',
                 'OFICIO',
             ],
+            magia: {
+                tipo: 'escolha_escolas',
+                escolas_escolher: 3,
+                quantidade_inicial: 2,
+                quantidade_por_progresso: 1,
+                tipo_progresso: 'nivel_par',
+                atributo_chave: 'SAB',
+            },
         },
     },
     {

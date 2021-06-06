@@ -1,3 +1,7 @@
+export const getRaceByKey = (key) => {
+    return racas.find((item) => item.key === key)
+}
+
 export const racas = [
     {
         label: 'Humano',

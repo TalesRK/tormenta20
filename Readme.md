@@ -6,12 +6,15 @@ Funcionalidades já desenvolvidas:
 -Controle de estado da aplicação [3h] -> [done in 4h]
 -Atualização dinâmica da tela de ficha [1h] -> [done in 22m]
 -Tela de geração de pontos de atributo [4h] -> [done in 7h]
-
-Funcionalidades pendentes:
 -Tela de seleção de proficiências [3h]
 -Tela de seleção de magias [4h]
+
+Funcionalidades pendentes:
+-Tela de conclusão de personagem (salvar nome e imagem)[2h]
+Permitir alterar a vida do personagem
+Exibir vida e mana atual e máxima
+
 -Tela de seleção de equipamentos [4h]
--Salvar nome do personagem na seleção de raça [2h]
 -Aba de Combate [5h]
 -Aba de Proficiência [2h]
 -Aba de Magias [2h]
@@ -27,9 +30,7 @@ Funcionalidades pendentes:
 Criar aba de Features
 Na edição de personagem, salvar XP
 Na edição do personagem, permitir subir de nível
-Permitir alterar a vida do personagem
-Receber uma imagem do personagem
 Logo do App
-Exibir vida e mana atual e máxima
+Adicionar descrição nas telas
 
 Total: 53 horas, 14 dias

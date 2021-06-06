@@ -48,6 +48,13 @@ const reducer = (state, action) => {
                 ...state,
                 character: action.value,
             }
+        case 'updateCharacterCreation':
+            storeData('characterCreation', action.value)
+            return {
+                ...state,
+                characterCreation: action.value,
+            }
+
         default:
             return state
     }

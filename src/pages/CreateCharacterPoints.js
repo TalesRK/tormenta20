@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
     TextInput,
 } from 'react-native'
+import { Icon } from 'react-native-elements'
 
 import colors from '../styles/colors'
 import commonStyle from '../styles/common.style'
@@ -17,18 +18,20 @@ import {
     rollAttributes,
     fillAttributes,
 } from '../resources/constants'
-import { Icon } from 'react-native-elements'
+// Otimizar imports usando import * as Formulas from '../resources/formulas', uso: Formulas.calcCostByAttribute()
 import {
     calcCostByAttribute,
     calcModifierByAttribute,
     rollDice,
 } from '../resources/formulas'
+import { useStateValue } from '../context/ContextProvider'
 
 const CreateCharacterPoints = ({ navigation }) => {
     const [attMapTypeState, setAttMapType] = useState(attributeMapType)
     const [pointBuy, setPointBuy] = useState(buyAttributes)
     const [rollPoints, setRollPoints] = useState(rollAttributes)
     const [fillPoints, setFillPoints] = useState(fillAttributes)
+    const [{ characterCreation }, dispatch] = useStateValue()
 
     const selectAttMapType = (index) => {
         const newAttMapType = [...attMapTypeState]
@@ -116,7 +119,7 @@ const CreateCharacterPoints = ({ navigation }) => {
     }
 
     const renderAttData = (attMapType) => {
-        if (attMapType.key === 'compra') return renderBuyPoints()
+        if (attMapType.key === 'comprar') return renderBuyPoints()
         if (attMapType.key === 'rolar') return renderRollPoints()
         if (attMapType.key === 'preencher') return renderFillPoints()
     }
@@ -136,6 +139,11 @@ const CreateCharacterPoints = ({ navigation }) => {
                                     paddingHorizontal: 10,
                                     justifyContent: 'space-between',
                                     alignItems: 'center',
+                                    paddingVertical: 5,
+                                    borderRadius: 10,
+                                    borderWidth: 2,
+                                    borderColor: colors.black_2,
+                                    marginBottom: 5,
                                 }}
                             >
                                 <View
@@ -158,21 +166,20 @@ const CreateCharacterPoints = ({ navigation }) => {
                                 >
                                     <View
                                         style={{
-                                            borderBottomColor: opt.hasFilled
-                                                ? colors.red_1
-                                                : colors.red_2,
+                                            borderBottomColor: colors.red_1,
                                             borderBottomWidth: 1.3,
                                         }}
                                     >
                                         <TextInput
                                             placeholder="Atributo"
                                             onChangeText={(value) =>
+                                                /*TODO quando digita e apaga o cursor vai pra direita, deve ficar no centro*/
                                                 handleAttributeChange(
                                                     value,
                                                     idx
                                                 )
                                             }
-                                            value={opt.currentAttribute}
+                                            value={'' + opt.currentAttribute}
                                             autoCompleteType={'off'}
                                             autoCorrect={false}
                                             keyboardType={'numeric'}
@@ -223,7 +230,6 @@ const CreateCharacterPoints = ({ navigation }) => {
         }
         const newFillPoints = Object.assign({}, fillPoints)
         newFillPoints.attributes[idx].currentAttribute = value
-        newFillPoints.attributes[idx].hasFilled = true
         setFillPoints(newFillPoints)
     }
 
@@ -243,7 +249,12 @@ const CreateCharacterPoints = ({ navigation }) => {
                         return (
                             <View
                                 key={opt.label + 'rollPoints'}
-                                style={[{ alignItems: 'center', width: '15%' }]}
+                                style={[
+                                    {
+                                        alignItems: 'center',
+                                        width: '15%',
+                                    },
+                                ]}
                             >
                                 <Text style={[{ color: colors.white_1 }]}>
                                     {opt.label}
@@ -383,7 +394,7 @@ const CreateCharacterPoints = ({ navigation }) => {
         let toIndex
         if (actualIndex === 0 && isLeft) {
             toIndex = 5
-        } else if (actualIndex === 5 && isRight) {
+        } else if (actualIndex === 5 && !isLeft) {
             toIndex = 0
         } else {
             toIndex = isLeft ? actualIndex - 1 : actualIndex + 1
@@ -524,14 +535,46 @@ const CreateCharacterPoints = ({ navigation }) => {
         setPointBuy(newPoints)
     }
 
-    const showNext = () => {}
-    const showPrevious = () => {
+    const goToNextPage = () => {
+        if (canProceed()) {
+            const newCharacterCreation = Object.assign({}, characterCreation)
+
+            const selectedType = attMapTypeState.find(
+                (item) => item.selected
+            ).key
+
+            if (selectedType === 'comprar') {
+                pointBuy.attributes.forEach((att) => {
+                    newCharacterCreation.atributos[att.key] =
+                        att.currentAttribute
+                })
+            } else if (selectedType === 'rolar') {
+                rollPoints.attributes.forEach((att) => {
+                    newCharacterCreation.atributos[att.key] =
+                        att.currentAttribute
+                })
+            } else {
+                fillPoints.attributes.forEach((att) => {
+                    newCharacterCreation.atributos[att.key] =
+                        att.currentAttribute
+                })
+            }
+
+            dispatch({
+                type: 'updateCharacterCreation',
+                value: newCharacterCreation,
+            })
+            navigation.navigate('CreateCharacterProficiencies')
+        }
+    }
+
+    const goToPreviousPage = () => {
         navigation.goBack()
     }
 
     const canProceed = () => {
         const isPointBuy = attMapTypeState.some(
-            (item) => item.selected && item.key === 'compra'
+            (item) => item.selected && item.key === 'comprar'
         )
         const hasNoPointsLeft = pointBuy.pointsLeft === 0
 
@@ -543,13 +586,8 @@ const CreateCharacterPoints = ({ navigation }) => {
         const isFill = attMapTypeState.some(
             (item) => item.selected && item.key === 'preencher'
         )
-        const hasFilledAll = fillPoints.attributes.every(
-            (item) => item.hasFilled
-        )
         return (
-            (isPointBuy && hasNoPointsLeft) ||
-            (isRoll && hasRolled) ||
-            (isFill && hasFilledAll)
+            (isPointBuy && hasNoPointsLeft) || (isRoll && hasRolled) || isFill
         )
     }
 
@@ -600,13 +638,13 @@ const CreateCharacterPoints = ({ navigation }) => {
                 }}
             >
                 <TouchableOpacity
-                    onPress={showPrevious}
+                    onPress={goToPreviousPage}
                     style={[styles.button, styles.buttonSelected]}
                 >
                     <Text style={styles.buttonText}>Anterior</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={showNext}
+                    onPress={goToNextPage}
                     style={[
                         styles.button,
                         canProceed() && styles.buttonSelected,
