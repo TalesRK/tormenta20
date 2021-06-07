@@ -4,6 +4,7 @@ import App from './App'
 
 export default function Index() {
     const initialState = {
+        characters: [],
         character: {
             vida: 0,
             mana: 0,

@@ -32,7 +32,7 @@ const CreateCharacterProficiencies = ({ navigation }) => {
     }, [remainingSelect])
 
     const mapInitialProficiencyData = () => {
-        const classe = getClassByKey(characterCreation.classe)
+        const classe = getClassByKey(characterCreation.classe.key)
         const newProficienciesState = [...proficienciesState]
 
         newProficienciesState.forEach((prof) => {

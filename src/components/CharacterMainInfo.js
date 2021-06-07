@@ -109,7 +109,7 @@ const CharactersMainInfo = (props) => {
                     >
                         <Text style={styles.textColor}>{character.raca}</Text>
                         <Text style={styles.textColor}>
-                            {`${character.classe.nome} nível ${character.classe.nivel}`}
+                            {`${character.classe.nome}, nível ${character.classe.nivel}`}
                         </Text>
                     </TouchableOpacity>
                 </View>

@@ -7,6 +7,7 @@ import {
     View,
     TouchableOpacity,
 } from 'react-native'
+import { Icon } from 'react-native-elements'
 
 import colors from '../styles/colors'
 import commonStyle from '../styles/common.style'
@@ -19,22 +20,23 @@ const CreateCharacterDetails = ({ navigation }) => {
 
     const goToNextPage = () => {
         if (canProceed()) {
-            // const selectedRace = racesState.find(
-            //     (raceFiltered) => raceFiltered.selected
-            // )
-            // const newCharacterCreation = Object.assign({}, characterCreation)
-            // newCharacterCreation.raca = selectedRace.key
-            // dispatch({
-            //     type: 'updateCharacterCreation',
-            //     value: newCharacterCreation,
-            // })
-            // navigation.navigate('CreateCharacterClass')
+            const newCharacterCreation = Object.assign({}, characterCreation)
+            newCharacterCreation.nome = charName
+            newCharacterCreation.imagem = charImg
+            dispatch({
+                type: 'createNewCharacter',
+                value: newCharacterCreation,
+            })
+            navigation.navigate('CharacterList')
         }
     }
 
     const canProceed = () => {
-        return charImg && charName && charName.length > 0
+        console.log({ characterCreation })
+        return charName && charName.length > 0
     }
+
+    const selectImage = () => {}
 
     return (
         <SafeAreaView style={styles.container}>
@@ -94,7 +96,40 @@ const CreateCharacterDetails = ({ navigation }) => {
                         />
                     </View>
                     <View style={{ marginTop: '12%' }}>
-                        <Text>{charName}</Text>
+                        <View style={{ alignItems: 'center', width: '100%' }}>
+                            <TouchableOpacity
+                                style={[
+                                    commonStyle.foreground,
+                                    {
+                                        height: 50,
+                                        marginTop: 10,
+                                        justifyContent: 'center',
+                                        alignItems: 'center',
+                                        backgroundColor: colors.black_3,
+                                        borderWidth: 3,
+                                        borderColor: colors.red_1,
+                                        flexDirection: 'row',
+                                        width: '50%',
+                                    },
+                                ]}
+                                onPress={selectImage}
+                            >
+                                <Text
+                                    style={[
+                                        commonStyle.text,
+                                        { marginRight: 15 },
+                                    ]}
+                                >
+                                    Escolher imagem
+                                </Text>
+                                <Icon
+                                    size={30}
+                                    name="camera"
+                                    type="font-awesome-5"
+                                    color={colors.red_1}
+                                />
+                            </TouchableOpacity>
+                        </View>
                     </View>
                 </View>
             </View>

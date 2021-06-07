@@ -18,6 +18,7 @@ import CreateCharacterSpells from './pages/CreateCharacterSpells'
 import colors from './styles/colors'
 import { useStateValue, getData } from './context/ContextProvider'
 import CreateCharacterDetails from './pages/CreateCharacterDetails'
+import CharacterList from './pages/CharacterList'
 
 function HomeScreen({ navigation }) {
     return (
@@ -45,10 +46,10 @@ function NotificationsScreen({ navigation }) {
 function CharacterCreate() {
     return (
         <Stack.Navigator screenOptions={screenOptionsHeaderDisable}>
-            <Stack.Screen
+            {/* <Stack.Screen
                 name="CreateCharacterDetails1"
                 component={CreateCharacterDetails}
-            />
+            /> */}
             <Stack.Screen
                 name="CreateCharacterRace"
                 component={CreateCharacterRace}
@@ -73,6 +74,7 @@ function CharacterCreate() {
                 name="CreateCharacterDetails"
                 component={CreateCharacterDetails}
             />
+            <Stack.Screen name="CharacterList" component={CharacterList} />
         </Stack.Navigator>
     )
 }
@@ -158,6 +160,10 @@ export default function App() {
                         name="Notifications"
                         options={{ title: 'My home' }}
                         component={NotificationsScreen}
+                    />
+                    <Drawer.Screen
+                        name="Lista de personagens"
+                        component={CharacterList}
                     />
                 </Drawer.Navigator>
             </NavigationContainer>

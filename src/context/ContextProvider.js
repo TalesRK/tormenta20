@@ -4,6 +4,33 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 //Application prefix for storage keys
 const appKey = 'EwhVT@T20'
 
+const initialCharacterCreation = {
+    atributos: {
+        forca: 0,
+        destreza: 0,
+        constituicao: 0,
+        inteligencia: 0,
+        carisma: 0,
+        sabedoria: 0,
+    },
+    nome: '',
+    nivel: 0,
+    classe: {
+        nome: '',
+        nivel: 0,
+    },
+    raca: '',
+    proficiencias: [],
+    magias: [],
+    magia: {
+        magias: [],
+        quantidade_por_progresso: 1,
+        tipo_progresso: 'nivel_par',
+        atributo_chave: 'SAB',
+    },
+    itens: [],
+}
+
 //Saves data in AsyncStorage
 export const storeData = async (key, value) => {
     try {
@@ -54,7 +81,22 @@ const reducer = (state, action) => {
                 ...state,
                 characterCreation: action.value,
             }
+        case 'createNewCharacter':
+            const createdCharacter = Object.assign({}, action.value)
+            const characters = [] //getData('characters')
+            characters.push(createdCharacter)
 
+            storeData('characters', characters)
+            storeData(
+                'characterCreation',
+                Object.assign({}, initialCharacterCreation)
+            )
+            storeData('character', createdCharacter)
+            return {
+                ...state,
+                characterCreation: initialCharacterCreation,
+                characters,
+            }
         default:
             return state
     }

@@ -11,8 +11,16 @@ Funcionalidades já desenvolvidas:
 
 Funcionalidades pendentes:
 -Tela de conclusão de personagem (salvar nome e imagem)[2h]
-Permitir alterar a vida do personagem
-Exibir vida e mana atual e máxima
+
+    Permitir alterar a vida do personagem
+    Implementar notas
+    Criar Aba poderes (modo editável)
+        -inserir habilidades de raça e poderes de classe
+        -imagem não é fundamental
+    Criar seleção de Origens
+    Itens será só pra escrever
+
+    Exibir vida e mana atual e máxima
 
 -Tela de seleção de equipamentos [4h]
 -Aba de Combate [5h]

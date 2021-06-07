@@ -42,7 +42,7 @@ const CreateCharacterSpells = ({ navigation }) => {
     }
 
     const mapInitialSelectionData = () => {
-        const classe = getClassByKey(characterCreation.classe)
+        const classe = getClassByKey(characterCreation.classe.key)
         const magiaData = classe?.data?.magia
         if (magiaData) {
             const newRemainingSelect = Object.assign({}, remainingSelect)
@@ -116,7 +116,7 @@ const CreateCharacterSpells = ({ navigation }) => {
                     .filter((item) => item.selected)
                     .map((item) => item.key)
             )
-            const classe = getClassByKey(characterCreation.classe)
+            const classe = getClassByKey(characterCreation.classe.key)
             const magiaData = classe?.data?.magia
             newRemainingSelect.spells = magiaData.quantidade_inicial
         }
