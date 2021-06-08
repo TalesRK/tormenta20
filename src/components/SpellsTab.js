@@ -6,12 +6,15 @@ import {
     FlatList,
     TouchableOpacity,
 } from 'react-native'
-import colors from '../styles/colors'
 
+import { useStateValue } from '../context/ContextProvider'
+import colors from '../styles/colors'
 import common from '../styles/common.style'
 import { spells } from '../resources/constants'
 
-const SpellsTab = (props) => {
+const SpellsTab = () => {
+    const [{ character }, dispatch] = useStateValue()
+
     return (
         <View>
             <View style={styles.spellListHeaderContainer}>

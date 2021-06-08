@@ -231,10 +231,8 @@ const CreateCharacterClass = ({ navigation }) => {
                 (characterClassFiltered) => characterClassFiltered.selected
             )
             const newCharacterCreation = Object.assign({}, characterCreation)
-            newCharacterCreation.classe.nome = selectedClass.label
             newCharacterCreation.classe.key = selectedClass.key
             newCharacterCreation.classe.nivel = 1
-            console.log({ newCharacterCreation })
 
             dispatch({
                 type: 'updateCharacterCreation',

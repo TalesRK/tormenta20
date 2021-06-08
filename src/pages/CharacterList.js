@@ -17,8 +17,8 @@ import { useStateValue } from '../context/ContextProvider'
 const CharacterList = ({ navigation }) => {
     const [{ characters }, dispatch] = useStateValue()
 
-    const goToNextPage = (index) => {
-        navigation.navigate('CreateCharacterRace')
+    const goToNextPage = () => {
+        navigation.navigate('Character')
     }
 
     const renderCharItem = (char, index) => {

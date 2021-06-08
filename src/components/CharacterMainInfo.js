@@ -1,9 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 
 import colors from '../styles/colors'
 import common from '../styles/common.style'
 import { useStateValue } from '../context/ContextProvider'
+import { getRaceByKey } from '../resources/racas'
+import { getClassByKey } from '../resources/classes'
 
 const CharactersMainInfo = (props) => {
     const [{ character }, dispatch] = useStateValue()
@@ -79,6 +81,26 @@ const CharactersMainInfo = (props) => {
         )
     }
 
+    const renderCharacterText = () => {
+        const race = getRaceByKey(character.raca)
+        const clazz = getClassByKey(character.classe.key)
+        return (
+            <View style={styles.characterTextData}>
+                <View>
+                    <View style={styles.characterFullnameText}>
+                        <Text style={styles.textColor}>{character.nome}</Text>
+                    </View>
+                    <View style={styles.characterRaceAndClassText}>
+                        <Text style={styles.textColor}>{race.label}</Text>
+                        <Text style={styles.textColor}>
+                            {`${clazz.label}, nível ${character.classe.nivel}`}
+                        </Text>
+                    </View>
+                </View>
+            </View>
+        )
+    }
+
     return (
         <View style={props.style}>
             <View style={styles.mainCharacterInfo}>
@@ -95,25 +117,7 @@ const CharactersMainInfo = (props) => {
                 </View>
                 {renderAttributeColumn('mana')}
             </View>
-            <View style={styles.characterTextData}>
-                <View>
-                    <TouchableOpacity
-                        onPress={adicionarVida}
-                        style={styles.characterFullnameText}
-                    >
-                        <Text style={styles.textColor}>{character.nome}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        onPress={subtrairVida}
-                        style={styles.characterRaceAndClassText}
-                    >
-                        <Text style={styles.textColor}>{character.raca}</Text>
-                        <Text style={styles.textColor}>
-                            {`${character.classe.nome}, nível ${character.classe.nivel}`}
-                        </Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
+            {renderCharacterText()}
         </View>
     )
 }

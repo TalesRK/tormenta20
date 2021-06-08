@@ -54,9 +54,11 @@ const CreateCharacterSpells = ({ navigation }) => {
         }
     }
 
-    const showNext = () => {
+    const goToNextPage = () => {
         if (canProceed) {
-            const selectedSpells = spellsState.filter((item) => item.selected)
+            const selectedSpells = spellsState
+                .filter((item) => item.selected)
+                .map((item) => item.key)
 
             const newCharacterCreation = Object.assign({}, characterCreation)
             newCharacterCreation.magia.magias = selectedSpells
@@ -483,7 +485,7 @@ const CreateCharacterSpells = ({ navigation }) => {
                     <Text style={styles.buttonText}>Anterior</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={showNext}
+                    onPress={goToNextPage}
                     style={[
                         styles.button,
                         canProceed() && styles.buttonSelected,

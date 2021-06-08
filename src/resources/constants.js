@@ -3,8 +3,9 @@ import colors from '../styles/colors'
 import { Icon } from 'react-native-elements'
 
 export const characterTabs = [
+    { title: 'Geral', key: 'GENERAL' },
     { title: 'Combate', key: 'COMBAT' },
-    { title: 'Proficiência', key: 'PROFICIENCY' },
+    { title: 'Perícias', key: 'SKILLS' },
     { title: 'Magias', key: 'SPELLS' },
     { title: 'Itens', key: 'ITEMS' },
     { title: 'Notas', key: 'NOTES' },

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {
     SafeAreaView,
     TextInput,
@@ -12,27 +12,36 @@ import { Icon } from 'react-native-elements'
 import colors from '../styles/colors'
 import commonStyle from '../styles/common.style'
 import { useStateValue } from '../context/ContextProvider'
+import { CommonActions } from '@react-navigation/native'
 
 const CreateCharacterDetails = ({ navigation }) => {
     const [charName, setCharName] = useState()
     const [charImg, setCharImg] = useState()
-    const [{ characterCreation }, dispatch] = useStateValue()
+    const [{ characterCreation, characters }, dispatch] = useStateValue()
 
     const goToNextPage = () => {
         if (canProceed()) {
             const newCharacterCreation = Object.assign({}, characterCreation)
             newCharacterCreation.nome = charName
             newCharacterCreation.imagem = charImg
+
+            const newCharacters = [...characters]
             dispatch({
                 type: 'createNewCharacter',
                 value: newCharacterCreation,
+                characters: newCharacters,
             })
-            navigation.navigate('CharacterList')
+
+            navigation.dispatch(
+                CommonActions.reset({
+                    index: 1,
+                    routes: [{ name: 'CharacterView' }],
+                })
+            )
         }
     }
 
     const canProceed = () => {
-        console.log({ characterCreation })
         return charName && charName.length > 0
     }
 

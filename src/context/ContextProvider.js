@@ -83,7 +83,7 @@ const reducer = (state, action) => {
             }
         case 'createNewCharacter':
             const createdCharacter = Object.assign({}, action.value)
-            const characters = [] //getData('characters')
+            const characters = [...action.characters]
             characters.push(createdCharacter)
 
             storeData('characters', characters)
@@ -96,6 +96,7 @@ const reducer = (state, action) => {
                 ...state,
                 characterCreation: initialCharacterCreation,
                 characters,
+                character: createdCharacter,
             }
         default:
             return state

@@ -20,36 +20,12 @@ import { useStateValue, getData } from './context/ContextProvider'
 import CreateCharacterDetails from './pages/CreateCharacterDetails'
 import CharacterList from './pages/CharacterList'
 
-function HomeScreen({ navigation }) {
-    return (
-        <View
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-        >
-            <Button
-                onPress={() => navigation.navigate('Notifications')}
-                title="Go to notifications"
-            />
-        </View>
-    )
-}
-
-function NotificationsScreen({ navigation }) {
-    return (
-        <View
-            style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
-        >
-            <Button onPress={() => navigation.goBack()} title="Go back" />
-        </View>
-    )
-}
-
 function CharacterCreate() {
     return (
-        <Stack.Navigator screenOptions={screenOptionsHeaderDisable}>
-            {/* <Stack.Screen
-                name="CreateCharacterDetails1"
-                component={CreateCharacterDetails}
-            /> */}
+        <Stack.Navigator
+            screenOptions={screenOptionsHeaderDisable}
+            initialRouteName="CreateCharacterRace"
+        >
             <Stack.Screen
                 name="CreateCharacterRace"
                 component={CreateCharacterRace}
@@ -74,7 +50,18 @@ function CharacterCreate() {
                 name="CreateCharacterDetails"
                 component={CreateCharacterDetails}
             />
+        </Stack.Navigator>
+    )
+}
+
+function CharacterView() {
+    return (
+        <Stack.Navigator
+            screenOptions={screenOptionsHeaderDisable}
+            initialRouteName="CharacterList"
+        >
             <Stack.Screen name="CharacterList" component={CharacterList} />
+            <Stack.Screen name="Character" component={Character} />
         </Stack.Navigator>
     )
 }
@@ -95,13 +82,6 @@ const Drawer = createDrawerNavigator()
 const Stack = createStackNavigator()
 
 export default function App() {
-    const initialState = {
-        character: {
-            vida: 0,
-            mana: 0,
-        },
-    }
-
     const [, dispatch] = useStateValue()
 
     useEffect(() => {
@@ -146,24 +126,14 @@ export default function App() {
                     screenOptions={screenOptionsHeaderStyle}
                 >
                     <Drawer.Screen
-                        name="Personagens"
-                        component={Character}
-                        options={screenOptionsHeaderStyle}
+                        name="CharacterView"
+                        component={CharacterView}
+                        options={{ title: 'Lista de Personagens' }}
                     />
                     <Drawer.Screen
                         name="CharacterCreate"
                         component={CharacterCreate}
                         options={{ title: 'Criar personagem' }}
-                    />
-                    <Drawer.Screen name="Home" component={HomeScreen} />
-                    <Drawer.Screen
-                        name="Notifications"
-                        options={{ title: 'My home' }}
-                        component={NotificationsScreen}
-                    />
-                    <Drawer.Screen
-                        name="Lista de personagens"
-                        component={CharacterList}
                     />
                 </Drawer.Navigator>
             </NavigationContainer>

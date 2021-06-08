@@ -52,10 +52,25 @@ const CreateCharacterProficiencies = ({ navigation }) => {
         setRemainingSelect(inteligenceBonus)
     }
 
-    const showNext = () => {
-        if (canProceed) navigation.navigate('CreateCharacterSpells')
+    const goToNextPage = () => {
+        if (canProceed) {
+            const selectedProficiencies = proficienciesState
+                .filter((item) => item.selected)
+                .map((item) => item.key)
+
+            const newCharacterCreation = Object.assign({}, characterCreation)
+            newCharacterCreation.proficiencias = selectedProficiencies
+
+            dispatch({
+                type: 'updateCharacterCreation',
+                value: newCharacterCreation,
+            })
+
+            navigation.navigate('CreateCharacterSpells')
+        }
     }
-    const showPrevious = () => {
+
+    const goToPreviousPage = () => {
         navigation.goBack()
     }
 
@@ -268,13 +283,13 @@ const CreateCharacterProficiencies = ({ navigation }) => {
                 }}
             >
                 <TouchableOpacity
-                    onPress={showPrevious}
+                    onPress={goToPreviousPage}
                     style={[styles.button, styles.buttonSelected]}
                 >
                     <Text style={styles.buttonText}>Anterior</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={showNext}
+                    onPress={goToNextPage}
                     style={[styles.button, canProceed && styles.buttonSelected]}
                 >
                     <Text style={styles.buttonText}>Próximo</Text>
