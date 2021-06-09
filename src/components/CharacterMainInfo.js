@@ -110,7 +110,7 @@ const CharactersMainInfo = (props) => {
                         <Image
                             style={styles.characterImage}
                             source={{
-                                uri: 'https://uploads.spiritfanfiction.com/fanfics/capitulos/201908/uma-vida-no-rpg-17303169-200820192004.jpg',
+                                uri: character.imagem,
                             }}
                         />
                     </View>

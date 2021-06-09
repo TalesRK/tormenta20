@@ -81,7 +81,7 @@ const reducer = (state, action) => {
                 ...state,
                 characterCreation: action.value,
             }
-        case 'createNewCharacter':
+        case 'createNewCharacter': {
             const createdCharacter = Object.assign({}, action.value)
             const characters = [...action.characters]
             characters.push(createdCharacter)
@@ -98,6 +98,22 @@ const reducer = (state, action) => {
                 characters,
                 character: createdCharacter,
             }
+        }
+        case 'setInitialState': {
+            const { character, characters } = action.value
+            const validData = {}
+
+            if (character) {
+                validData.character = character
+            }
+            if (characters) {
+                validData.characters = characters
+            }
+            return {
+                ...state,
+                ...validData,
+            }
+        }
         default:
             return state
     }

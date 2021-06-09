@@ -28,7 +28,7 @@ const CreateCharacterProficiencies = ({ navigation }) => {
     }, [])
 
     useEffect(() => {
-        setCanProceed(remainingSelect === 0)
+        setCanProceed(remainingSelect < 1)
     }, [remainingSelect])
 
     const mapInitialProficiencyData = () => {

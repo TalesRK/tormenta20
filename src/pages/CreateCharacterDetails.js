@@ -6,8 +6,10 @@ import {
     StyleSheet,
     View,
     TouchableOpacity,
+    Image,
 } from 'react-native'
 import { Icon } from 'react-native-elements'
+import { launchImageLibrary } from 'react-native-image-picker'
 
 import colors from '../styles/colors'
 import commonStyle from '../styles/common.style'
@@ -45,67 +47,103 @@ const CreateCharacterDetails = ({ navigation }) => {
         return charName && charName.length > 0
     }
 
-    const selectImage = () => {}
+    const selectImage = () => {
+        const options = {
+            mediaType: 'photo',
+            quality: 0.4,
+            maxHeight: 800,
+            maxWidth: 600,
+            includeBase64: true,
+        }
+
+        launchImageLibrary(
+            options,
+            ({ didCancel, errorCode, errorMessage, assets }) => {
+                if (
+                    !didCancel &&
+                    !errorCode &&
+                    !errorMessage &&
+                    assets &&
+                    assets.length > 0
+                ) {
+                    const image = assets[0].uri
+                    setCharImg(image)
+                }
+            }
+        )
+    }
 
     return (
         <SafeAreaView style={styles.container}>
-            <View
-                style={{
-                    height: '15%',
-                    width: '100%',
-                    justifyContent: 'center',
-                    alignItems: 'flex-start',
-                    paddingHorizontal: '8%',
-                }}
-            >
-                <Text style={{ color: colors.white_1, fontSize: 20 }}>
-                    Preencha o nome e escolha uma imagem
-                </Text>
-            </View>
-            <View
-                style={{
-                    backgroundColor: colors.black_2,
-                    width: '100%',
-                    height: '70%',
-                }}
-            >
+            <View style={{ width: '100%', height: '100%' }}>
                 <View
                     style={{
-                        // alignItems: 'center',
+                        height: '15%',
                         width: '100%',
-                        paddingTop: '5%',
-                        paddingHorizontal: '5%',
+                        justifyContent: 'center',
+                        alignItems: 'flex-start',
+                        paddingHorizontal: '8%',
+                    }}
+                >
+                    <Text style={{ color: colors.white_1, fontSize: 20 }}>
+                        Preencha o nome e escolha uma imagem
+                    </Text>
+                </View>
+                <View
+                    style={{
+                        backgroundColor: colors.black_2,
+                        width: '100%',
+                        height: '70%',
                     }}
                 >
                     <View
                         style={{
-                            borderBottomColor: colors.red_1,
-                            borderBottomWidth: 1.3,
+                            justifyContent: 'space-evenly',
+                            height: '100%',
+                            width: '100%',
+                            paddingHorizontal: '5%',
                         }}
                     >
-                        <Text
+                        <View style={{ height: '15%' }}>
+                            <View
+                                style={[
+                                    {
+                                        borderBottomColor: colors.red_1,
+                                        borderBottomWidth: 1.3,
+                                        height: 65,
+                                    },
+                                ]}
+                            >
+                                <Text
+                                    style={{
+                                        color: colors.white_1,
+                                        fontSize: 18,
+                                        marginBottom: '2%',
+                                    }}
+                                >
+                                    Nome do personagem:
+                                </Text>
+                                <TextInput
+                                    placeholder="Nome"
+                                    onChangeText={setCharName}
+                                    value={charName}
+                                    style={{
+                                        color: colors.white_1,
+                                        fontSize: 18,
+                                        padding: 0,
+                                    }}
+                                    placeholderTextColor={colors.black_4}
+                                />
+                            </View>
+                        </View>
+                        <View
                             style={{
-                                color: colors.white_1,
-                                fontSize: 18,
-                                marginBottom: '2%',
+                                alignItems: 'center',
+                                width: '100%',
+                                height: '20%',
+                                justifyContent: 'center',
                             }}
                         >
-                            Nome do personagem:
-                        </Text>
-                        <TextInput
-                            placeholder="Nome"
-                            onChangeText={setCharName}
-                            value={charName}
-                            style={{
-                                color: colors.white_1,
-                                fontSize: 18,
-                                padding: 0,
-                            }}
-                            placeholderTextColor={colors.black_4}
-                        />
-                    </View>
-                    <View style={{ marginTop: '12%' }}>
-                        <View style={{ alignItems: 'center', width: '100%' }}>
                             <TouchableOpacity
                                 style={[
                                     commonStyle.foreground,
@@ -139,27 +177,46 @@ const CreateCharacterDetails = ({ navigation }) => {
                                 />
                             </TouchableOpacity>
                         </View>
+                        {charImg && (
+                            <View
+                                style={{
+                                    height: '55%',
+                                }}
+                            >
+                                <Image
+                                    style={{
+                                        flex: 1,
+                                        borderRadius: 10,
+                                        overflow: 'hidden',
+                                    }}
+                                    source={{
+                                        uri: charImg,
+                                    }}
+                                    resizeMode="center"
+                                />
+                            </View>
+                        )}
                     </View>
                 </View>
-            </View>
-            <View
-                style={{
-                    height: '15%',
-                    width: '100%',
-                    flexDirection: 'row',
-                    justifyContent: 'space-evenly',
-                    alignItems: 'center',
-                }}
-            >
-                <TouchableOpacity
-                    onPress={goToNextPage}
-                    style={[
-                        styles.button,
-                        canProceed() && styles.buttonSelected,
-                    ]}
+                <View
+                    style={{
+                        height: '15%',
+                        width: '100%',
+                        flexDirection: 'row',
+                        justifyContent: 'space-evenly',
+                        alignItems: 'center',
+                    }}
                 >
-                    <Text style={styles.buttonText}>Próximo</Text>
-                </TouchableOpacity>
+                    <TouchableOpacity
+                        onPress={goToNextPage}
+                        style={[
+                            styles.button,
+                            canProceed() && styles.buttonSelected,
+                        ]}
+                    >
+                        <Text style={styles.buttonText}>Próximo</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
         </SafeAreaView>
     )

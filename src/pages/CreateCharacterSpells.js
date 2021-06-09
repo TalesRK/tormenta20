@@ -38,7 +38,7 @@ const CreateCharacterSpells = ({ navigation }) => {
     }, [])
 
     const canProceed = () => {
-        return remainingSelect.schools === 0 && remainingSelect.spells === 0
+        return remainingSelect.schools < 1 && remainingSelect.spells < 1
     }
 
     const mapInitialSelectionData = () => {

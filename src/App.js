@@ -86,14 +86,13 @@ export default function App() {
 
     useEffect(() => {
         const loadInitialData = async () => {
-            const storedCharacter = await getData('character')
+            const character = await getData('character')
+            const characters = await getData('characters')
 
-            if (storedCharacter) {
-                dispatch({
-                    type: 'updateCharacter',
-                    value: storedCharacter,
-                })
-            }
+            dispatch({
+                type: 'setInitialState',
+                value: { character, characters },
+            })
         }
 
         loadInitialData()

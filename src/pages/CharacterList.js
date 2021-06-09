@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import {
     SafeAreaView,
     ScrollView,
@@ -10,14 +10,19 @@ import {
 
 import colors from '../styles/colors'
 import commonStyle from '../styles/common.style'
-import { races, translateKey } from '../resources/constants'
 import { Icon } from 'react-native-elements'
 import { useStateValue } from '../context/ContextProvider'
 
 const CharacterList = ({ navigation }) => {
     const [{ characters }, dispatch] = useStateValue()
 
-    const goToNextPage = () => {
+    const goToNextPage = (index) => {
+        const selectedChar = Object.assign({}, characters[index])
+
+        dispatch({
+            type: 'updateCharacter',
+            value: selectedChar,
+        })
         navigation.navigate('Character')
     }
 
