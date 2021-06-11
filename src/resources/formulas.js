@@ -1,3 +1,5 @@
+import { getClassByKey, classesThatHaveMagic } from './classes'
+
 export const calcModifierByAttribute = (value) => {
     return Math.floor((value - 10) / 2)
 }
@@ -39,4 +41,48 @@ export const rollDice = (value) => {
         result += 1 + Math.floor(Math.random() * dice)
 
     return result
+}
+
+export const calcMaxLife = (character) => {
+    const selectedClass = getClassByKey(character.classe.key)
+    const lifeModifier = calcModifierByAttribute(
+        character.atributos.constituicao
+    )
+    const lifeByLevel =
+        selectedClass.data.pontos_vida.por_nivel * (character.nivel - 1)
+
+    return selectedClass.data.pontos_vida.inicial + lifeModifier + lifeByLevel
+}
+
+export const calcMaxMana = (character) => {
+    const selectedClass = getClassByKey(character.classe.key)
+    if (!classesThatHaveMagic.some((item) => item === selectedClass.key)) {
+        return 0
+    }
+    const spellAttribute = getAttributeByAttKey(
+        character.atributos,
+        character.magia.atributo_chave
+    )
+    const attributeModifier = calcModifierByAttribute(spellAttribute)
+    const manaByLevel =
+        selectedClass.data.pontos_mana.por_nivel * character.nivel
+
+    return attributeModifier + manaByLevel
+}
+
+const getAttributeByAttKey = (attributes, attributeKey) => {
+    switch (attributeKey) {
+        case 'FOR':
+            return attributes.forca
+        case 'DES':
+            return attributes.destreza
+        case 'CON':
+            return attributes.constituicao
+        case 'INT':
+            return attributes.inteligencia
+        case 'CAR':
+            return attributes.carisma
+        case 'SAB':
+            return attributes.sabedoria
+    }
 }

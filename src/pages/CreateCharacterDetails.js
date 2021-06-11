@@ -43,6 +43,10 @@ const CreateCharacterDetails = ({ navigation }) => {
         }
     }
 
+    const goToPreviousPage = () => {
+        navigation.goBack()
+    }
+
     const canProceed = () => {
         return charName && charName.length > 0
     }
@@ -208,6 +212,12 @@ const CreateCharacterDetails = ({ navigation }) => {
                     }}
                 >
                     <TouchableOpacity
+                        onPress={goToPreviousPage}
+                        style={[styles.button, styles.buttonSelected]}
+                    >
+                        <Text style={styles.buttonText}>Anterior</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
                         onPress={goToNextPage}
                         style={[
                             styles.button,
@@ -242,7 +252,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     button: {
-        width: '80%',
+        width: '35%',
         height: '50%',
         ...commonStyle.foreground,
         backgroundColor: colors.black_3,

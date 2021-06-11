@@ -6,8 +6,10 @@ export default function Index() {
     const initialState = {
         characters: [],
         character: {
-            vida: 0,
-            mana: 0,
+            vidaMax: 0,
+            vidaAtual: 0,
+            manaMax: 0,
+            manaAtual: 0,
             atributos: {
                 forca: 0,
                 destreza: 0,
@@ -19,7 +21,7 @@ export default function Index() {
             nome: '',
             nivel: 0,
             classe: {
-                nome: '',
+                key: '',
                 nivel: 0,
             },
             raca: '',

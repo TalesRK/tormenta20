@@ -2,6 +2,8 @@ export const getClassByKey = (key) => {
     return characterClass.find((item) => item.key === key)
 }
 
+export const classesThatHaveMagic = ['ARCANISTA', 'BARDO', 'CLERIGO', 'DRUIDA']
+
 export const characterClass = [
     {
         key: 'ARCANISTA',

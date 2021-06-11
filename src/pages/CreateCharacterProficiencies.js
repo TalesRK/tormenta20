@@ -13,7 +13,7 @@ import colors from '../styles/colors'
 import commonStyle from '../styles/common.style'
 import { proficiencies } from '../resources/proficiencies'
 import { useStateValue } from '../context/ContextProvider'
-import { getClassByKey } from '../resources/classes'
+import { classesThatHaveMagic, getClassByKey } from '../resources/classes'
 import { calcModifierByAttribute } from '../resources/formulas'
 
 const CreateCharacterProficiencies = ({ navigation }) => {
@@ -52,21 +52,33 @@ const CreateCharacterProficiencies = ({ navigation }) => {
         setRemainingSelect(inteligenceBonus)
     }
 
+    const mapUpdatedCharacter = () => {
+        const selectedProficiencies = proficienciesState
+            .filter((item) => item.selected)
+            .map((item) => item.key)
+
+        const newCharacterCreation = Object.assign({}, characterCreation)
+        newCharacterCreation.proficiencias = selectedProficiencies
+        return newCharacterCreation
+    }
+
     const goToNextPage = () => {
         if (canProceed) {
-            const selectedProficiencies = proficienciesState
-                .filter((item) => item.selected)
-                .map((item) => item.key)
-
-            const newCharacterCreation = Object.assign({}, characterCreation)
-            newCharacterCreation.proficiencias = selectedProficiencies
-
+            const updatedCharacter = mapUpdatedCharacter()
             dispatch({
                 type: 'updateCharacterCreation',
-                value: newCharacterCreation,
+                value: updatedCharacter,
             })
 
-            navigation.navigate('CreateCharacterSpells')
+            const charClassHaveMagic = classesThatHaveMagic.some(
+                (item) => item === updatedCharacter.classe.key
+            )
+
+            if (charClassHaveMagic) {
+                navigation.navigate('CreateCharacterSpells')
+            } else {
+                navigation.navigate('CreateCharacterDetails')
+            }
         }
     }
 

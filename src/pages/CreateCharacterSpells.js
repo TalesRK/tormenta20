@@ -55,7 +55,7 @@ const CreateCharacterSpells = ({ navigation }) => {
     }
 
     const goToNextPage = () => {
-        if (canProceed) {
+        if (canProceed()) {
             const selectedSpells = spellsState
                 .filter((item) => item.selected)
                 .map((item) => item.key)
@@ -70,7 +70,8 @@ const CreateCharacterSpells = ({ navigation }) => {
             navigation.navigate('CreateCharacterDetails')
         }
     }
-    const showPrevious = () => {
+
+    const goToPreviousPage = () => {
         navigation.goBack()
     }
 
@@ -479,7 +480,7 @@ const CreateCharacterSpells = ({ navigation }) => {
                 }}
             >
                 <TouchableOpacity
-                    onPress={showPrevious}
+                    onPress={goToPreviousPage}
                     style={[styles.button, styles.buttonSelected]}
                 >
                     <Text style={styles.buttonText}>Anterior</Text>

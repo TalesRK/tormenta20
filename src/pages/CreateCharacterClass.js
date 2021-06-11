@@ -225,18 +225,25 @@ const CreateCharacterClass = ({ navigation }) => {
         }
     }
 
+    const mapUpdatedCharacter = () => {
+        const selectedClass = characterClassState.find(
+            (characterClassFiltered) => characterClassFiltered.selected
+        )
+        const newCharacterCreation = Object.assign({}, characterCreation)
+        newCharacterCreation.classe.key = selectedClass.key
+        newCharacterCreation.classe.nivel = 1
+        newCharacterCreation.magia.atributo_chave = 'SAB'
+        newCharacterCreation.nivel = 1
+        return newCharacterCreation
+    }
+
     const goToNextPage = () => {
         if (canProceed) {
-            const selectedClass = characterClassState.find(
-                (characterClassFiltered) => characterClassFiltered.selected
-            )
-            const newCharacterCreation = Object.assign({}, characterCreation)
-            newCharacterCreation.classe.key = selectedClass.key
-            newCharacterCreation.classe.nivel = 1
+            const updatedCharacter = mapUpdatedCharacter()
 
             dispatch({
                 type: 'updateCharacterCreation',
-                value: newCharacterCreation,
+                value: updatedCharacter,
             })
             navigation.navigate('CreateCharacterPoints')
         }

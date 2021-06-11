@@ -6,35 +6,15 @@ import common from '../styles/common.style'
 import { useStateValue } from '../context/ContextProvider'
 import { getRaceByKey } from '../resources/racas'
 import { getClassByKey } from '../resources/classes'
+import { calcMaxLife, calcMaxMana } from '../resources/formulas'
 
 const CharactersMainInfo = (props) => {
     const [{ character }, dispatch] = useStateValue()
-
-    const adicionarVida = () => {
-        const updatedChar = Object.assign({}, character)
-        updatedChar.vida++
-
-        dispatch({
-            type: 'updateCharacter',
-            value: updatedChar,
-        })
-    }
-
-    const subtrairVida = () => {
-        const updatedChar = Object.assign({}, character)
-        updatedChar.vida--
-
-        dispatch({
-            type: 'updateCharacter',
-            value: updatedChar,
-        })
-    }
 
     const renderAttributeColumn = (attribute) => {
         const isLife = attribute === 'life'
         const mainAttColor = isLife ? colors.life : colors.mana
         const mainAttLabel = isLife ? 'Vida' : 'Mana'
-        const mainAttValue = isLife ? character.vida : character.mana
         const secAttLabels = isLife
             ? ['Força', 'Destreza', 'Constituicao']
             : ['Inteligência', 'Sabedoria', 'Carisma']
@@ -49,6 +29,11 @@ const CharactersMainInfo = (props) => {
                   character.atributos.sabedoria,
                   character.atributos.carisma,
               ]
+
+        const mainAttValue = isLife
+            ? calcMaxLife(character)
+            : calcMaxMana(character)
+
         return (
             <View style={styles.attributeColumn}>
                 <View style={styles.statsContainer}>
