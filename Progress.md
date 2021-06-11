@@ -9,17 +9,16 @@
 -   Tela de geração de pontos de atributo [4h] -> [done in 7h]
 -   Tela de seleção de proficiências [3h]
 -   Tela de seleção de magias [4h]
+-   Tela de conclusão de personagem (salvar nome e imagem)[2h]
+-   calcular vida e mana
+-   validar antes de prosseguir magias
 
 # Funcionalidades pendentes:
 
 ## Funcionalidade em desenvolvimento
 
--   Tela de conclusão de personagem (salvar nome e imagem)[2h]
-
 ## Prioridades
 
-    - calcular vida e mana
-    - validar antes de prosseguir magias
     - Permitir alterar a vida do personagem, exibir vida e mana atual e máxima
     - Criar seleção de Origens
     - Aba de Notas [3h]
@@ -59,5 +58,6 @@
 -   Converter fluxo de criação de ficha para TabNavigation, com notification batch em cada aba indicando quantidade de pendências
 -   Corrigir botão do drawer de ir para a lista de personagens
 -   Botão voltar na última tela de criação
+-   Implementar tela de ajuda (como mudar vida)
 
 > Total: 53 horas, 14 dias
