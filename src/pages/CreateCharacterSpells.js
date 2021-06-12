@@ -314,7 +314,7 @@ const CreateCharacterSpells = ({ navigation }) => {
                     <Text
                         style={[styles.itemTextColor, { color: colors.gold_1 }]}
                     >
-                        {spell.label}
+                        {`${spell.label} (${spell.schoolAbrev})`}
                     </Text>
                     <TouchableOpacity
                         onPress={() => expandSpellsItem(index)}

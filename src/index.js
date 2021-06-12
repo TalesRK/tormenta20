@@ -23,14 +23,15 @@ export default function Index() {
                 nivel: 0,
             },
             raca: '',
-            proficiencias: [],
+            pericias: [],
+            itens: [],
+            poderes: [],
             magia: {
                 magias: [],
                 quantidade_por_progresso: 0,
                 tipo_progresso: '',
                 atributo_chave: '',
             },
-            itens: [],
             notas: '',
         },
         characterCreation: {
@@ -49,8 +50,8 @@ export default function Index() {
                 nivel: 0,
             },
             raca: '',
-            proficiencias: [],
-            magias: [],
+            pericias: [],
+            poderes: [],
             magia: {
                 magias: [],
                 quantidade_por_progresso: 1,

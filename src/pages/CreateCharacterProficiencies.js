@@ -36,11 +36,11 @@ const CreateCharacterProficiencies = ({ navigation }) => {
         const newProficienciesState = [...proficienciesState]
 
         newProficienciesState.forEach((prof) => {
-            const hasInClass = classe.data.pericias.some(
-                (item) => item === prof.key
+            const hasInClass = characterCreation.pericias.some(
+                (item) => item.key === prof.key
             )
             prof.selected = hasInClass
-            prof.isFromClass = hasInClass
+            prof.cannotDesselect = hasInClass
         })
         setProficiencies(newProficienciesState)
     }
@@ -54,11 +54,21 @@ const CreateCharacterProficiencies = ({ navigation }) => {
 
     const mapUpdatedCharacter = () => {
         const selectedProficiencies = proficienciesState
-            .filter((item) => item.selected)
-            .map((item) => item.key)
+            .filter((item) => item.selected && !item.cannotDesselect)
+            .map((item) => {
+                return {
+                    key: item.key,
+                    source: 'INT_MODIFIER',
+                }
+            })
 
         const newCharacterCreation = Object.assign({}, characterCreation)
-        newCharacterCreation.proficiencias = selectedProficiencies
+        newCharacterCreation.pericias = newCharacterCreation.pericias.filter(
+            (item) => item.source !== 'INT_MODIFIER'
+        )
+        newCharacterCreation.pericias = newCharacterCreation.pericias.concat(
+            selectedProficiencies
+        )
         return newCharacterCreation
     }
 
@@ -96,7 +106,8 @@ const CreateCharacterProficiencies = ({ navigation }) => {
     const selectProficienciesItem = (index) => {
         const updateProficiencies = [...proficienciesState]
         const selProficiency = updateProficiencies[index]
-        const newValue = selProficiency.isFromClass || !selProficiency.selected
+        const newValue =
+            selProficiency.cannotDesselect || !selProficiency.selected
         if (newValue !== selProficiency.selected) {
             if (newValue && remainingSelect < 1) {
                 return

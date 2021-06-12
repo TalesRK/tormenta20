@@ -25,6 +25,7 @@ import {
     rollDice,
 } from '../resources/formulas'
 import { useStateValue } from '../context/ContextProvider'
+import { classesThatHaveMagic } from '../resources/classes'
 
 const CreateCharacterPoints = ({ navigation }) => {
     const [attMapTypeState, setAttMapType] = useState(attributeMapType)
@@ -564,7 +565,22 @@ const CreateCharacterPoints = ({ navigation }) => {
                 type: 'updateCharacterCreation',
                 value: newCharacterCreation,
             })
-            navigation.navigate('CreateCharacterProficiencies')
+
+            const intModifier = calcModifierByAttribute(
+                newCharacterCreation.atributos.inteligencia
+            )
+            if (intModifier > 0) {
+                navigation.navigate('CreateCharacterProficiencies')
+            } else {
+                const charClassHaveMagic = classesThatHaveMagic.some(
+                    (item) => item === newCharacterCreation.classe.key
+                )
+                if (charClassHaveMagic) {
+                    navigation.navigate('CreateCharacterSpells')
+                } else {
+                    navigation.navigate('CreateCharacterDetails')
+                }
+            }
         }
     }
 

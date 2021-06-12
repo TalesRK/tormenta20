@@ -22,8 +22,8 @@ const initialCharacterCreation = {
         nivel: 0,
     },
     raca: '',
-    proficiencias: [],
-    magias: [],
+    pericias: [],
+    poderes: [],
     magia: {
         magias: [],
         quantidade_por_progresso: 1,

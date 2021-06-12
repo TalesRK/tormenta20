@@ -234,6 +234,21 @@ const CreateCharacterClass = ({ navigation }) => {
         newCharacterCreation.classe.nivel = 1
         newCharacterCreation.magia.atributo_chave = 'SAB'
         newCharacterCreation.nivel = 1
+
+        newCharacterCreation.pericias = newCharacterCreation.pericias.filter(
+            (item) => item.source !== 'CLASSE'
+        )
+
+        const classSkills = selectedClass.data.pericias.map((item) => {
+            return {
+                key: item,
+                source: 'CLASSE',
+            }
+        })
+
+        newCharacterCreation.pericias =
+            newCharacterCreation.pericias.concat(classSkills)
+
         return newCharacterCreation
     }
 
@@ -245,7 +260,7 @@ const CreateCharacterClass = ({ navigation }) => {
                 type: 'updateCharacterCreation',
                 value: updatedCharacter,
             })
-            navigation.navigate('CreateCharacterPoints')
+            navigation.navigate('CreateCharacterOrigins')
         }
     }
 

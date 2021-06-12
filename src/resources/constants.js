@@ -184,7 +184,8 @@ export function translateKey(key) {
     const label = keyLabels[key]
     const attribute = keyLabels.atributos[key]
     const creatureHab = keyLabels.habilidades_criatura[key]
-    return label || attribute || creatureHab
+    const originOptionType = keyLabels.originOptionTypes[key]
+    return label || attribute || creatureHab || originOptionType
 }
 
 export const keyLabels = {
@@ -201,6 +202,11 @@ export const keyLabels = {
     habilidades_criatura: {
         VISAO_ESCURO: 'Visão no escuro',
         VISAO_PENUMBRA: 'Visão na penumbra',
+    },
+    originOptionTypes: {
+        ITEM: 'Item',
+        PERICIA: 'Perícia',
+        PODER: 'Poder',
     },
 }
 

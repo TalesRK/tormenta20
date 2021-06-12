@@ -19,4 +19,18 @@ export default StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    listItem: {
+        borderWidth: 2,
+        borderColor: colors.red_2,
+        borderRadius: 10,
+        marginBottom: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 15,
+        paddingVertical: 5,
+        backgroundColor: colors.black_3,
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
 })

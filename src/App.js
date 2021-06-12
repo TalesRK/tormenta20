@@ -16,6 +16,7 @@ import CreateCharacterPoints from './pages/CreateCharacterPoints'
 import CreateCharacterProficiencies from './pages/CreateCharacterProficiencies'
 import CreateCharacterSpells from './pages/CreateCharacterSpells'
 import CreateCharacterDetails from './pages/CreateCharacterDetails'
+import CreateCharacterOrigins from './pages/CreateCharacterOrigin'
 
 import colors from './styles/colors'
 import { useStateValue, getData } from './context/ContextProvider'
@@ -27,6 +28,10 @@ function CharacterCreate() {
             initialRouteName="CreateCharacterRace"
         >
             <Stack.Screen
+                name="CreateCharacterPoints"
+                component={CreateCharacterPoints}
+            />
+            <Stack.Screen
                 name="CreateCharacterRace"
                 component={CreateCharacterRace}
             />
@@ -35,13 +40,21 @@ function CharacterCreate() {
                 component={CreateCharacterClass}
             />
             <Stack.Screen
-                name="CreateCharacterPoints"
-                component={CreateCharacterPoints}
+                name="CreateCharacterOrigins"
+                component={CreateCharacterOrigins}
             />
+            {/* TODO <Stack.Screen
+                name="CreateCharacterGods"
+                component={CreateCharacterGods}
+            /> */}
             <Stack.Screen
                 name="CreateCharacterProficiencies"
                 component={CreateCharacterProficiencies}
             />
+            {/* TODO <Stack.Screen
+                name="CreateCharacterEquipments"
+                component={CreateCharacterEquipments}
+            /> */}
             <Stack.Screen
                 name="CreateCharacterSpells"
                 component={CreateCharacterSpells}
@@ -133,6 +146,11 @@ export default function App() {
                         name="CharacterCreate"
                         component={CharacterCreate}
                         options={{ title: 'Criar personagem' }}
+                    />
+                    <Drawer.Screen
+                        name="CreateCharacterOrigin"
+                        component={CreateCharacterOrigins}
+                        options={{ title: 'CreateCharacterOrigin' }}
                     />
                 </Drawer.Navigator>
             </NavigationContainer>
