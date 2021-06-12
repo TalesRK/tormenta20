@@ -13,16 +13,16 @@
 -   Calculo de vida e mana
 -   Tela de seleção de personagem [3h]
 -   Permitir alterar a vida do personagem, exibir vida e mana atual e máxima
+-   Tela de seleção de Origens
 
 # Funcionalidades pendentes:
 
 ## Funcionalidade em desenvolvimento
 
--   Criar seleção de Origens
+-   Aba de Notas [3h]
 
 ## Prioridades
 
--   Aba de Notas [3h]
 -   Criar Aba poderes (modo editável)
     -   inserir habilidades de raça e poderes de classe
 -   Itens será só pra escrever
@@ -44,9 +44,9 @@
 -   Na edição de personagem, salvar XP
 -   Na edição do personagem, permitir subir de nível
 -   Logo do App
--   Componentizar listas
+-   [DONE] Componentizar lista
 -   Adicionar condições de classe e raça
--   Adicionar informação de origem da tabela (selecionar perícias por causa da classe/selecionar perícias por causa da origem)
+-   Adicionar informação de origem na tabela (tipo orcpub) (selecionar perícias por causa da classe/selecionar perícias por causa da origem)
 -   Resolver telas persistindo estado após goBack()
 -   Melhorar descrição de raça
 -   Melhorar descrição de classe
@@ -54,5 +54,6 @@
 -   Converter fluxo de criação de ficha para TabNavigation, com notification batch em cada aba indicando quantidade de pendências
 -   Corrigir botão do drawer de ir para a lista de personagens
 -   Implementar tela de ajuda (como mudar vida)
+-   Remover margem das listas antes do container
 
 > Total: 53 horas, 14 dias
