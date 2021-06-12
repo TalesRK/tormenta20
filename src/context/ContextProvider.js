@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useReducer } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import uuid from 'react-native-uuid'
+import { calcMaxLife, calcMaxMana } from '../resources/formulas'
 
 //Application prefix for storage keys
 const appKey = 'EwhVT@T20'
@@ -70,10 +72,22 @@ export const useStateValue = () => useContext(StateContext)
 const reducer = (state, action) => {
     switch (action.type) {
         case 'updateCharacter':
-            storeData('character', action.value)
+            const updatedCharacter = action.value
+            const characters = state.characters
+
+            const selectedCharIndex = characters.findIndex(
+                (item) => item.id === updatedCharacter.id
+            )
+
+            characters[selectedCharIndex] = updatedCharacter
+
+            storeData('characters', characters)
+            storeData('character', updatedCharacter)
+
             return {
                 ...state,
-                character: action.value,
+                character: updatedCharacter,
+                characters,
             }
         case 'updateCharacterCreation':
             storeData('characterCreation', action.value)
@@ -82,15 +96,17 @@ const reducer = (state, action) => {
                 characterCreation: action.value,
             }
         case 'createNewCharacter': {
+            const characters = state.characters
+
             const createdCharacter = Object.assign({}, action.value)
-            const characters = [...action.characters]
+            createdCharacter.id = uuid.v4()
+            createdCharacter.vidaAtual = calcMaxLife(createdCharacter)
+            createdCharacter.manaAtual = calcMaxMana(createdCharacter)
+
             characters.push(createdCharacter)
 
             storeData('characters', characters)
-            storeData(
-                'characterCreation',
-                Object.assign({}, initialCharacterCreation)
-            )
+            storeData('characterCreation', initialCharacterCreation)
             storeData('character', createdCharacter)
             return {
                 ...state,

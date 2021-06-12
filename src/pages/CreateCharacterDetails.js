@@ -19,7 +19,7 @@ import { CommonActions } from '@react-navigation/native'
 const CreateCharacterDetails = ({ navigation }) => {
     const [charName, setCharName] = useState()
     const [charImg, setCharImg] = useState()
-    const [{ characterCreation, characters }, dispatch] = useStateValue()
+    const [{ characterCreation }, dispatch] = useStateValue()
 
     const goToNextPage = () => {
         if (canProceed()) {
@@ -27,11 +27,9 @@ const CreateCharacterDetails = ({ navigation }) => {
             newCharacterCreation.nome = charName
             newCharacterCreation.imagem = charImg
 
-            const newCharacters = [...characters]
             dispatch({
                 type: 'createNewCharacter',
                 value: newCharacterCreation,
-                characters: newCharacters,
             })
 
             navigation.dispatch(

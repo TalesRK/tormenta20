@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Button, View, StatusBar } from 'react-native'
+import { StatusBar } from 'react-native'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import {
     CardStyleInterpolators,
@@ -9,16 +9,16 @@ import { NavigationContainer } from '@react-navigation/native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
 import Character from './pages/Character'
+import CharacterList from './pages/CharacterList'
 import CreateCharacterRace from './pages/CreateCharacterRace'
 import CreateCharacterClass from './pages/CreateCharacterClass'
 import CreateCharacterPoints from './pages/CreateCharacterPoints'
 import CreateCharacterProficiencies from './pages/CreateCharacterProficiencies'
 import CreateCharacterSpells from './pages/CreateCharacterSpells'
+import CreateCharacterDetails from './pages/CreateCharacterDetails'
 
 import colors from './styles/colors'
 import { useStateValue, getData } from './context/ContextProvider'
-import CreateCharacterDetails from './pages/CreateCharacterDetails'
-import CharacterList from './pages/CharacterList'
 
 function CharacterCreate() {
     return (

@@ -1,9 +1,8 @@
 import React from 'react'
 import { View, StyleSheet } from 'react-native'
+
 import CharactersMainInfo from '../components/CharacterMainInfo'
-
 import CharacterTabs from '../components/CharacterTabs'
-
 import colors from '../styles/colors'
 
 const Character = () => {

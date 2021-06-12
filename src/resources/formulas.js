@@ -86,3 +86,13 @@ const getAttributeByAttKey = (attributes, attributeKey) => {
             return attributes.sabedoria
     }
 }
+
+export const getLifeOrManaValues = (maxValue) => {
+    const initialValue = -maxValue
+    const finalValue = maxValue * 3 + 1
+    const result = []
+    for (let i = initialValue; i < finalValue; i++) {
+        result.push('' + i)
+    }
+    return result
+}

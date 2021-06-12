@@ -1,15 +1,136 @@
 import React, { useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import ModalOverride from '../components/ModalOverride'
 
 import colors from '../styles/colors'
 import common from '../styles/common.style'
 import { useStateValue } from '../context/ContextProvider'
 import { getRaceByKey } from '../resources/racas'
 import { getClassByKey } from '../resources/classes'
-import { calcMaxLife, calcMaxMana } from '../resources/formulas'
+import {
+    calcMaxLife,
+    calcMaxMana,
+    getLifeOrManaValues,
+} from '../resources/formulas'
+import WheelPicker from './WheelPicker'
+import commonStyle from '../styles/common.style'
 
 const CharactersMainInfo = (props) => {
     const [{ character }, dispatch] = useStateValue()
+    const [modalVisible, setModalVisible] = useState(false)
+    const [modalTempValue, setModalTempValue] = useState(0)
+
+    const updateCharacter = (updatedCharacter) => {
+        dispatch({
+            type: 'updateCharacter',
+            value: updatedCharacter,
+        })
+    }
+
+    const onPickerConfirm = (type) => {
+        const newCharacter = Object.assign({}, character)
+
+        if (type === 'vida') {
+            const charMaxLife = calcMaxLife(character)
+            const lifeOptions = getLifeOrManaValues(charMaxLife)
+            const actualLifeSelected = parseInt(lifeOptions[modalTempValue])
+
+            newCharacter.vidaAtual = actualLifeSelected
+        } else {
+            const charMaxMana = calcMaxMana(character)
+            const manaOptions = getLifeOrManaValues(charMaxMana)
+            const actualManaSelected = parseInt(manaOptions[modalTempValue])
+
+            newCharacter.manaAtual = actualManaSelected
+        }
+        setModalVisible(false)
+        setModalTempValue(0)
+        updateCharacter(newCharacter)
+    }
+
+    const renderManaModalContent = () => {
+        const charMaxMana = calcMaxMana(character)
+        const manaOptions = getLifeOrManaValues(charMaxMana)
+
+        const initialValue = manaOptions.findIndex(
+            (item) => item === '' + (character.manaAtual || charMaxMana)
+        )
+
+        return (
+            <View style={{ alignItems: 'center' }}>
+                <View style={{ marginBottom: 10 }}>
+                    <Text style={{ color: colors.white_1 }}>Mana atual</Text>
+                </View>
+                <WheelPicker
+                    selectedItem={initialValue}
+                    itemList={manaOptions}
+                    onChange={setModalTempValue}
+                />
+
+                <TouchableOpacity
+                    style={[
+                        commonStyle.foreground,
+                        {
+                            marginTop: 10,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: colors.black_3,
+                            borderWidth: 1.8,
+                            borderColor: colors.red_1,
+                            flexDirection: 'row',
+                            paddingHorizontal: 20,
+                            paddingVertical: 10,
+                        },
+                    ]}
+                    onPress={() => onPickerConfirm('mana')}
+                >
+                    <Text style={commonStyle.text}>Confirmar</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
+    const renderLifeModalContent = () => {
+        const charMaxLife = calcMaxLife(character)
+        const lifeOptions = getLifeOrManaValues(charMaxLife)
+
+        const initialValue = lifeOptions.findIndex(
+            (item) => item === '' + (character.vidaAtual || charMaxLife)
+        )
+
+        return (
+            <View style={{ alignItems: 'center' }}>
+                <View style={{ marginBottom: 10 }}>
+                    <Text style={{ color: colors.white_1 }}>Vida atual</Text>
+                </View>
+                <WheelPicker
+                    selectedItem={initialValue}
+                    itemList={lifeOptions}
+                    onChange={setModalTempValue}
+                />
+
+                <TouchableOpacity
+                    style={[
+                        commonStyle.foreground,
+                        {
+                            marginTop: 10,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: colors.black_3,
+                            borderWidth: 1.8,
+                            borderColor: colors.red_1,
+                            flexDirection: 'row',
+                            paddingHorizontal: 20,
+                            paddingVertical: 10,
+                        },
+                    ]}
+                    onPress={() => onPickerConfirm('vida')}
+                >
+                    <Text style={commonStyle.text}>Confirmar</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
 
     const renderAttributeColumn = (attribute) => {
         const isLife = attribute === 'life'
@@ -30,24 +151,52 @@ const CharactersMainInfo = (props) => {
                   character.atributos.carisma,
               ]
 
-        const mainAttValue = isLife
+        const mainAttActualValue = isLife
+            ? character.vidaAtual
+            : character.manaAtual
+
+        const mainAttMaxValue = isLife
             ? calcMaxLife(character)
             : calcMaxMana(character)
 
         return (
             <View style={styles.attributeColumn}>
                 <View style={styles.statsContainer}>
-                    <View style={styles.statsBox}>
-                        <Text style={styles.textColor}>{mainAttLabel}</Text>
+                    <TouchableOpacity
+                        style={styles.statsBox}
+                        onPress={() =>
+                            setModalVisible(isLife ? 'vida' : 'mana')
+                        }
+                    >
+                        <Text style={[styles.textColor, { fontSize: 12 }]}>
+                            {mainAttLabel}
+                        </Text>
                         <Text
                             style={{
                                 color: mainAttColor,
-                                fontSize: 30,
+                                fontSize: 25,
                             }}
                         >
-                            {mainAttValue}
+                            {mainAttActualValue || mainAttMaxValue}
                         </Text>
-                    </View>
+                        <View
+                            style={{
+                                borderTopColor: colors.black_1,
+                                borderTopWidth: 1.8,
+                                width: '50%',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <Text
+                                style={{
+                                    color: mainAttColor,
+                                    fontSize: 15,
+                                }}
+                            >
+                                {mainAttMaxValue}
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
                 <View style={styles.attributeBox}>
                     {secAttLabels.map((secAttLabel, index) => (
@@ -88,6 +237,14 @@ const CharactersMainInfo = (props) => {
 
     return (
         <View style={props.style}>
+            <ModalOverride
+                modalVisible={!!modalVisible}
+                onClose={() => setModalVisible(false)}
+            >
+                {modalVisible === 'vida'
+                    ? renderLifeModalContent()
+                    : renderManaModalContent()}
+            </ModalOverride>
             <View style={styles.mainCharacterInfo}>
                 {renderAttributeColumn('life')}
                 <View style={styles.characterImageColumn}>
