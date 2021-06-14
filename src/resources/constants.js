@@ -185,7 +185,8 @@ export function translateKey(key) {
     const attribute = keyLabels.atributos[key]
     const creatureHab = keyLabels.habilidades_criatura[key]
     const originOptionType = keyLabels.originOptionTypes[key]
-    return label || attribute || creatureHab || originOptionType
+    const skillSource = keyLabels.skillSource[key]
+    return label || attribute || creatureHab || originOptionType || skillSource
 }
 
 export const keyLabels = {
@@ -207,6 +208,11 @@ export const keyLabels = {
         ITEM: 'Item',
         PERICIA: 'Perícia',
         PODER: 'Poder',
+    },
+    skillSource: {
+        CLASSE: 'Classe',
+        INT_MODIFIER: 'Modif. Int',
+        ORIGEM: 'Origem',
     },
 }
 

@@ -26,6 +26,10 @@ Todas as raças são listadas para a criação de uma nova ficha, assim como sua
 
 Todas as classes são listadas, apresentando o que você ganha com cada uma delas.
 
+### **Seleção de Origem**
+
+Todas as origens do jogo são exibidas e tratadas, suas perícias, itens e poderes serão atualizado automaticamente.
+
 ### **Geração de atributos**
 
 3 formas de geração de atributos são disponibilizadas:

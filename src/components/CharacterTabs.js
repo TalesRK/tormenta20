@@ -9,10 +9,10 @@ import {
 import colors from '../styles/colors'
 
 import common from '../styles/common.style'
-import { characterTabs, spells } from '../resources/constants'
-import SpellsTab from './SpellsTab'
+import { characterTabs } from '../resources/constants'
+import SpellsTab from '../tabs/SpellsTab'
+import SkillsTab from '../tabs/SkillsTab'
 import NotesTab from '../tabs/NotesTab'
-import commonStyle from '../styles/common.style'
 
 const CharacterTabs = (props) => {
     const [selectedTab, setSelectedTab] = useState('SPELLS')
@@ -20,32 +20,19 @@ const CharacterTabs = (props) => {
     const renderTab = () => {
         switch (selectedTab) {
             case 'COMBAT':
-                return renderCombat()
-            case 'PROFICIENCY':
-                return renderProficiency()
+                return <Text>{selectedTab}</Text>
+            case 'SKILLS':
+                return <SkillsTab />
             case 'SPELLS':
                 return <SpellsTab />
             case 'ITEMS':
-                return renderItems()
+                return <Text>{selectedTab}</Text>
             case 'NOTES':
                 return <NotesTab />
             default:
-                return renderCombat()
+                return <Text>{selectedTab}</Text>
         }
     }
-
-    const renderCombat = () => {
-        return <Text>{selectedTab}</Text>
-    }
-
-    const renderProficiency = () => {
-        return <Text>{selectedTab}</Text>
-    }
-
-    const renderItems = () => {
-        return <Text>{selectedTab}</Text>
-    }
-
     const renderTabOptions = (item) => {
         const isSelectedTab = selectedTab === item.key
 

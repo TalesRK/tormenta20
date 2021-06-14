@@ -10,29 +10,37 @@
 -   Tela de seleção de proficiências [3h]
 -   Tela de seleção de magias [4h]
 -   Tela de conclusão de personagem (salvar nome e imagem)[2h]
--   Calculo de vida e mana
+-   Cálculo de vida e mana
 -   Tela de seleção de personagem [3h]
 -   Permitir alterar a vida do personagem, exibir vida e mana atual e máxima
 -   Tela de seleção de Origens
 -   Aba de Notas [3h]
+-   Aba de Perícias [2h]
 
 # Funcionalidades pendentes:
 
--   Aba de Perícias [2h]
+-   Criar Aba poderes (modo editável)
+    -   inserir habilidades de raça e poderes de classe
 
 ## Funcionalidade em desenvolvimento
 
 ## Prioridades
 
--   Criar Aba poderes (modo editável)
-
-    -   inserir habilidades de raça e poderes de classe
-
 -   Itens será só pra escrever
--   Tela de seleção de equipamentos [4h]
--   Aba de Combate [5h]
--   Aba de Magias [2h]
--   Aba de Itens [4h]
+-   Tela de seleção de equipamentos
+-   Aba de Combate
+-   Aba de Magias
+-   Aba de Itens
+-   Logo do App
+
+## Outras tarefas:
+
+-   [DONE] Componentizar lista
+-   Adicionar condições de classe e raça (humano + atributo)
+-   Remover estado das telas após goBack()
+-   Corrigir botão do drawer de ir para a lista de personagens
+-   Implementar tela de ajuda (como mudar vida)
+-   Remover margem das listas antes do container
 
 ## Implementar após haver api:
 
@@ -41,21 +49,12 @@
 -   Tela de recuperação de senha [4h]
 -   Botão de logout [1h]
 
-## Outras tarefas:
+## V2
 
--   Na edição de personagem, salvar XP
--   Na edição do personagem, permitir subir de nível
--   Logo do App
--   [DONE] Componentizar lista
--   Adicionar condições de classe e raça
--   Adicionar informação de origem na tabela (tipo orcpub) (selecionar perícias por causa da classe/selecionar perícias por causa da origem)
--   Resolver telas persistindo estado após goBack()
+-   Converter fluxo de criação de ficha para TabNavigation, com notification batch em cada aba indicando quantidade de pendências
 -   Melhorar descrição de raça
 -   Melhorar descrição de classe
 -   Melhorar descrição de magias
--   Converter fluxo de criação de ficha para TabNavigation, com notification batch em cada aba indicando quantidade de pendências
--   Corrigir botão do drawer de ir para a lista de personagens
--   Implementar tela de ajuda (como mudar vida)
--   Remover margem das listas antes do container
-
-> Total: 53 horas, 14 dias
+-   Adicionar informação de origem na tabela (tipo orcpub) (selecionar perícias por causa da classe/selecionar perícias por causa da origem)
+-   Na edição de personagem, salvar XP
+-   Na edição do personagem, permitir subir de nível

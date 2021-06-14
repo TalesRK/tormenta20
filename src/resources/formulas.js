@@ -1,4 +1,5 @@
 import { getClassByKey, classesThatHaveMagic } from './classes'
+import { proficiencies } from './proficiencies'
 
 export const calcModifierByAttribute = (value) => {
     return Math.floor((value - 10) / 2)
@@ -95,4 +96,27 @@ export const getLifeOrManaValues = (maxValue) => {
         result.push('' + i)
     }
     return result
+}
+
+export const calcSkillModifier = (character, skillKey) => {
+    const skillData = proficiencies.find((item) => item.key === skillKey)
+    const charSkillData = character.pericias.find(
+        (item) => item.key === skillKey
+    )
+    const skillAttribute = getAttributeByAttKey(
+        character.atributos,
+        skillData.attribute
+    )
+
+    const levelModifier = Math.floor(character.nivel / 2)
+    const attributeModifier = calcModifierByAttribute(skillAttribute)
+
+    let trainedSkillBonus = 0
+    if (charSkillData) {
+        trainedSkillBonus = 2
+        if (character.nivel >= 7) trainedSkillBonus = 4
+        if (character.nivel >= 15) trainedSkillBonus = 6
+    }
+
+    return levelModifier + attributeModifier + trainedSkillBonus
 }
