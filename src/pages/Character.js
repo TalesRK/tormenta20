@@ -7,9 +7,9 @@ import colors from '../styles/colors'
 
 const Character = () => {
     return (
-        <View style={styles.container}>
+        <View style={{ backgroundColor: colors.black_1 }}>
             <CharactersMainInfo style={styles.mainCharacterInfo} />
-            <CharacterTabs />
+            <CharacterTabs style={styles.characterTabsStyle} />
         </View>
     )
 }
@@ -17,11 +17,14 @@ const Character = () => {
 const styles = StyleSheet.create({
     container: {
         alignItems: 'flex-start',
-        backgroundColor: colors.black_1,
+        backgroundColor: colors.black_3,
         flex: 1,
     },
     mainCharacterInfo: {
         height: '45%',
+    },
+    characterTabsStyle: {
+        height: '55%',
     },
 })
 

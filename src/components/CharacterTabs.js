@@ -11,6 +11,8 @@ import colors from '../styles/colors'
 import common from '../styles/common.style'
 import { characterTabs, spells } from '../resources/constants'
 import SpellsTab from './SpellsTab'
+import NotesTab from '../tabs/NotesTab'
+import commonStyle from '../styles/common.style'
 
 const CharacterTabs = (props) => {
     const [selectedTab, setSelectedTab] = useState('SPELLS')
@@ -26,7 +28,7 @@ const CharacterTabs = (props) => {
             case 'ITEMS':
                 return renderItems()
             case 'NOTES':
-                return renderNotes()
+                return <NotesTab />
             default:
                 return renderCombat()
         }
@@ -41,10 +43,6 @@ const CharacterTabs = (props) => {
     }
 
     const renderItems = () => {
-        return <Text>{selectedTab}</Text>
-    }
-
-    const renderNotes = () => {
         return <Text>{selectedTab}</Text>
     }
 
@@ -81,30 +79,27 @@ const CharacterTabs = (props) => {
     }
 
     return (
-        <View style={[styles.container, props.style]}>
-            <ScrollView
-                style={styles.characterPages}
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-            >
-                {characterTabs.map((item) => renderTabOptions(item))}
-            </ScrollView>
+        <View style={props.style}>
+            <View style={{ height: '15%' }}>
+                <ScrollView
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    {characterTabs.map((item) => renderTabOptions(item))}
+                </ScrollView>
+            </View>
             <View style={styles.tabContainer}>{renderTab()}</View>
         </View>
     )
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        width: '100%',
-    },
     textColor: {
         ...common.text,
     },
     characterPages: {
-        minHeight: 55,
-        maxHeight: 55,
+        height: '15%',
     },
     //todo substituir tamanhos fixos por percentual
     tabHeader: {
@@ -125,11 +120,9 @@ const styles = StyleSheet.create({
     },
     tabContainer: {
         backgroundColor: colors.black_3,
-        paddingRight: 10,
-        paddingLeft: 10,
-        flex: 1,
         width: '100%',
-        height: '100%',
+        height: '85%',
+        paddingHorizontal: 5,
     },
 })
 

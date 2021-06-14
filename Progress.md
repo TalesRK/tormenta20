@@ -14,21 +14,23 @@
 -   Tela de seleção de personagem [3h]
 -   Permitir alterar a vida do personagem, exibir vida e mana atual e máxima
 -   Tela de seleção de Origens
+-   Aba de Notas [3h]
 
 # Funcionalidades pendentes:
 
-## Funcionalidade em desenvolvimento
+-   Aba de Perícias [2h]
 
--   Aba de Notas [3h]
+## Funcionalidade em desenvolvimento
 
 ## Prioridades
 
 -   Criar Aba poderes (modo editável)
+
     -   inserir habilidades de raça e poderes de classe
+
 -   Itens será só pra escrever
 -   Tela de seleção de equipamentos [4h]
 -   Aba de Combate [5h]
--   Aba de Perícias [2h]
 -   Aba de Magias [2h]
 -   Aba de Itens [4h]
 
