@@ -26,6 +26,7 @@ export default function Index() {
             pericias: [],
             itens: [],
             poderes: [],
+            powersText: '',
             magia: {
                 magias: [],
                 quantidade_por_progresso: 0,

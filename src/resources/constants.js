@@ -4,7 +4,7 @@ import { Icon } from 'react-native-elements'
 
 export const characterTabs = [
     { title: 'Geral', key: 'GENERAL' },
-    { title: 'Combate', key: 'COMBAT' },
+    { title: 'Poderes', key: 'POWERS' },
     { title: 'Perícias', key: 'SKILLS' },
     { title: 'Magias', key: 'SPELLS' },
     { title: 'Itens', key: 'ITEMS' },

@@ -17,7 +17,7 @@ export const racas = [
     },
     {
         label: 'Anão',
-        key: 'ANÃO',
+        key: 'ANAO',
         atributos: [
             { Constituição: '+4' },
             { Sabedoria: '+2' },
@@ -337,7 +337,7 @@ export const racas = [
     },
     {
         label: 'Sereia/Tritão',
-        key: 'SEREIA/TRITÃO',
+        key: 'TRITAO',
         atributos_opcoes: ['+2 em Três Atributos Diferentes'],
         poderes_raca: [
             {
@@ -359,7 +359,7 @@ export const racas = [
     },
     {
         label: 'Sílfide',
-        key: 'SÍLFIDE',
+        key: 'SILFIDE',
         atributos: [{ Carisma: '+4' }, { Destreza: '+2' }, { Força: '–4' }],
         poderes_raca: [
             {

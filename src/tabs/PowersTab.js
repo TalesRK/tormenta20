@@ -5,19 +5,19 @@ import { useStateValue } from '../context/ContextProvider'
 import colors from '../styles/colors'
 
 //TODO Corrigir comportamento estranho do teclado
-const NotesTab = () => {
+const PowersTab = () => {
     const [{ character }, dispatch] = useStateValue()
     const [lastTimeout, setLastTimeout] = useState()
-    const [localNotes, setLocalNotes] = useState()
+    const [localPowersText, setLocalPowersText] = useState()
     const [mustSetSelectionToFirstChar, setSelectionToFirstChar] =
         useState(true)
 
     useEffect(() => {
-        setLocalNotes(character.notas)
+        setLocalPowersText(character.powersText)
     }, [])
 
-    const handleNotesChange = (value) => {
-        setLocalNotes(value)
+    const handleTextChange = (value) => {
+        setLocalPowersText(value)
 
         if (lastTimeout) clearTimeout(lastTimeout)
         setLastTimeout(
@@ -29,7 +29,7 @@ const NotesTab = () => {
 
     const updateStoredValue = (value) => {
         const newChar = Object.assign({}, character)
-        newChar.notas = value
+        newChar.powersText = value
 
         dispatch({
             type: 'updateCharacter',
@@ -44,8 +44,8 @@ const NotesTab = () => {
     return (
         <View>
             <TextInput
-                value={localNotes}
-                onChangeText={handleNotesChange}
+                value={localPowersText}
+                onChangeText={handleTextChange}
                 multiline
                 placeholder={'Digite aqui...'}
                 placeholderTextColor={colors.black_4}
@@ -61,38 +61,4 @@ const NotesTab = () => {
     )
 }
 
-export default NotesTab
-
-/**
- *  <Input
-                value={localNotes}
-                onChangeText={handleNotesChange}
-                multiline
-                scrollEnabled={false}
-                placeholder={'Digite aqui...'}
-                placeholderTextColor={colors.black_4}
-                style={{
-                    color: colors.white_1,
-                    fontSize: 15,
-                    borderWidth: 1,
-                    borderColor: 'yellow',
-                    maxHeight: '100%',
-                }}
-                autoCorrect={false}
-                textAlignVertical={'top'}
-                numberOfLines={15}
-                // disabledInputStyle
-                inputContainerStyle={[
-                    // commonStyle.showStuff,
-                    {
-                        // flex: 1,
-                        maxHeight: '100%',
-                        borderWidth: 5,
-                        borderColor: 'green',
-                        borderTopWidth: 0,
-                        // borderBottomWidth: 0,
-                    },
-                ]}
-                autoFocus={true}
-            />
- */
+export default PowersTab

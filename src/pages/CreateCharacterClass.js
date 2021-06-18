@@ -234,6 +234,7 @@ const CreateCharacterClass = ({ navigation }) => {
         newCharacterCreation.classe.nivel = 1
         newCharacterCreation.magia.atributo_chave = 'SAB'
         newCharacterCreation.nivel = 1
+        newCharacterCreation.powersText = selectedClass.data.powersText
 
         newCharacterCreation.pericias = newCharacterCreation.pericias.filter(
             (item) => item.source !== 'CLASSE'

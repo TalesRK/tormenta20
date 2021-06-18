@@ -49,8 +49,12 @@ export const calcMaxLife = (character) => {
     const lifeModifier = calcModifierByAttribute(
         character.atributos.constituicao
     )
-    const lifeByLevel =
-        selectedClass.data.pontos_vida.por_nivel * (character.nivel - 1)
+    const baseClassLifeByLevel =
+        selectedClass.data.pontos_vida.por_nivel < 1
+            ? 1
+            : selectedClass.data.pontos_vida.por_nivel
+
+    const lifeByLevel = baseClassLifeByLevel * (character.nivel - 1)
 
     return selectedClass.data.pontos_vida.inicial + lifeModifier + lifeByLevel
 }
