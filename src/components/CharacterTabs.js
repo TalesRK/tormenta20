@@ -14,6 +14,7 @@ import SpellsTab from '../tabs/SpellsTab'
 import SkillsTab from '../tabs/SkillsTab'
 import NotesTab from '../tabs/NotesTab'
 import PowersTab from '../tabs/PowersTab'
+import ItemsTab from '../tabs/ItemsTab'
 
 const CharacterTabs = (props) => {
     const [selectedTab, setSelectedTab] = useState('SPELLS')
@@ -27,7 +28,7 @@ const CharacterTabs = (props) => {
             case 'SPELLS':
                 return <SpellsTab />
             case 'ITEMS':
-                return <Text>{selectedTab}</Text>
+                return <ItemsTab />
             case 'NOTES':
                 return <NotesTab />
             default:

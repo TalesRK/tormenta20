@@ -38,19 +38,23 @@ const CreateCharacterOrigins = ({ navigation }) => {
             )
 
             selectedOptions.forEach((item) => {
-                let itemArray
                 if (item.type === 'ITEM') {
-                    itemArray = newCharacterCreation.itens
+                    newCharacterCreation.itens.push({
+                        key: item.key,
+                        label: item.label,
+                        source: 'ORIGEM',
+                    })
                 } else if (item.type === 'PODER') {
-                    itemArray = newCharacterCreation.poderes
+                    newCharacterCreation.poderes.push({
+                        key: item.key,
+                        source: 'ORIGEM',
+                    })
                 } else {
-                    itemArray = newCharacterCreation.pericias
+                    newCharacterCreation.pericias.push({
+                        key: item.key,
+                        source: 'ORIGEM',
+                    })
                 }
-
-                itemArray.push({
-                    key: item.key,
-                    source: 'ORIGEM',
-                })
             })
 
             dispatch({
@@ -79,6 +83,20 @@ const CreateCharacterOrigins = ({ navigation }) => {
         return false
     }
 
+    const onSelectOrigin = (item, index) => {
+        const newData = [...origins]
+
+        const selectionValue = !newData[index].selected
+        newData.map((item) => {
+            item.selected = false
+            item.options.forEach((item) => (item.selected = false))
+            return item
+        })
+        newData[index].selected = selectionValue
+        newData[index].expanded = true
+        setOrigins(newData)
+    }
+
     const onSelectOptions = (originIndex, optionIndex) => {
         const newOrigins = [...origins]
         const selectedOrigin = newOrigins[originIndex]
@@ -86,7 +104,7 @@ const CreateCharacterOrigins = ({ navigation }) => {
         const mustSelect = mapOptionSelectionsNeeded(selectedOrigin.options)
         const newValue = !selectedOption.selected
 
-        if (newValue && mustSelect < 1) {
+        if (!selectedOrigin.selected || (newValue && mustSelect < 1)) {
             return
         }
 
@@ -153,20 +171,6 @@ const CreateCharacterOrigins = ({ navigation }) => {
                 </View>
             </View>
         )
-    }
-
-    const onSelectOrigin = (item, index) => {
-        const newData = [...origins]
-
-        const selectionValue = !newData[index].selected
-        newData.map((item) => {
-            item.selected = false
-            item.options.forEach((item) => (item.selected = false))
-            return item
-        })
-        newData[index].selected = selectionValue
-        newData[index].expanded = true
-        setOrigins(newData)
     }
 
     return (

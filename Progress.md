@@ -17,16 +17,16 @@
 -   Aba de Notas
 -   Aba de Perícias
 -   Aba poderes (modo editável)
+-   Aba de Itens (modo editável)
 
 # Funcionalidades pendentes:
 
--   Aba de Itens (modo editável)
+-   Aba de Habilidades raciais
 
 ## Funcionalidade em desenvolvimento
 
 ## Pendências para protótipo
 
--   Aba de Habilidades raciais
 -   Aba de Combate (defesa, iniciativa, percepção, etc)
 -   Aba de Magias
 -   Logo do App
@@ -39,6 +39,7 @@
 -   Remover raças e classes não suportadas (ou avisar q é protótipo e as demais não tão completas)
 -   Corrigir armazenamento da imagem
 -   Unificar raça com demais textos da ficha
+-   Remover Aba geral
 
 ## Implementar após haver api:
 

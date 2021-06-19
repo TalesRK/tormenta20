@@ -27,6 +27,14 @@ const CreateCharacterDetails = ({ navigation }) => {
             newCharacterCreation.nome = charName
             newCharacterCreation.imagem = charImg
 
+            if (newCharacterCreation.itens) {
+                newCharacterCreation.itemsText = 'Itens selecionados:\n'
+                newCharacterCreation.itemsText +=
+                    newCharacterCreation?.itens
+                        .map((item) => item.label)
+                        .join('\n') ?? ''
+            }
+
             dispatch({
                 type: 'createNewCharacter',
                 value: newCharacterCreation,

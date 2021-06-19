@@ -25,6 +25,7 @@ export default function Index() {
             raca: '',
             pericias: [],
             itens: [],
+            itemsText: '',
             poderes: [],
             powersText: '',
             magia: {
