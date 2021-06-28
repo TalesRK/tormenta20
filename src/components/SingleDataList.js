@@ -17,22 +17,38 @@ Expected structure:
 */
 
 const SingleDataList = ({
-    data: propsData,
+    data,
     renderItemBody: propsRenderItem,
     onSelect,
     style: propsStyle,
+    expandOnSelect,
 }) => {
-    const [data, setData] = useState(propsData)
+    const [expandedItems, setExpandedItems] = useState([])
 
     const updateItem = (index, action) => {
         const updatedData = [...data]
         const itemSelected = updatedData[index]
 
         if (action === 'select') {
+            if (expandOnSelect) {
+                const isExpanded = expandedItems.includes(itemSelected.key)
+                if (!isExpanded) {
+                    const newExpandList = [...expandedItems]
+                    newExpandList.push(itemSelected.key)
+                    setExpandedItems(newExpandList)
+                }
+            }
             onSelect(itemSelected, index)
         } else if (action === 'expand') {
-            itemSelected.expanded = !itemSelected.expanded
-            setData(updatedData)
+            const shouldRetract = expandedItems.includes(itemSelected.key)
+            const newExpandList = [...expandedItems]
+
+            if (shouldRetract) {
+                newExpandList.pop(itemSelected.key)
+            } else {
+                newExpandList.push(itemSelected.key)
+            }
+            setExpandedItems(newExpandList)
         }
     }
 
@@ -40,51 +56,54 @@ const SingleDataList = ({
         const itemColor = item.selected ? colors.red_1 : colors.red_2
 
         return (
-            <>
-                <TouchableOpacity
-                    key={`I${index}L${item.label}SHORT`}
-                    style={{
-                        flex: 1,
-                        borderWidth: 3,
-                        borderColor: itemColor,
-                        borderRadius: 10,
-                        marginBottom: 10,
-                        height: 40,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        paddingHorizontal: 15,
-                        backgroundColor: colors.black_3,
-                        width: '100%',
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                    }}
-                    onPress={() => updateItem(index, 'select')}
-                >
-                    <Text style={{ color: colors.gold_1 }}>{item.label}</Text>
-                    {propsRenderItem && (
-                        <TouchableOpacity
-                            onPress={() => updateItem(index, 'expand')}
-                            hitSlop={{ left: 20, right: 20 }}
-                        >
-                            <Icon
-                                size={30}
-                                name="caret-down"
-                                type="font-awesome"
-                                color={itemColor}
-                            />
-                        </TouchableOpacity>
-                    )}
-                </TouchableOpacity>
-            </>
+            <TouchableOpacity
+                key={`I${index}L${item.label}SHORT${item.key}`}
+                style={{
+                    flex: 1,
+                    borderWidth: 3,
+                    borderColor: itemColor,
+                    borderRadius: 10,
+                    marginBottom: 10,
+                    height: 40,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    paddingHorizontal: 15,
+                    backgroundColor: colors.black_3,
+                    width: '100%',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                }}
+                onPress={() => updateItem(index, 'select')}
+            >
+                <Text style={{ color: colors.gold_1 }}>{item.label}</Text>
+                {propsRenderItem && (
+                    <TouchableOpacity
+                        onPress={() => updateItem(index, 'expand')}
+                        hitSlop={{ left: 20, right: 20 }}
+                    >
+                        <Icon
+                            size={30}
+                            name="caret-down"
+                            type="font-awesome"
+                            color={itemColor}
+                        />
+                    </TouchableOpacity>
+                )}
+            </TouchableOpacity>
         )
     }
 
     const renderItemExpanded = (item, index) => {
         const itemColor = item.selected ? colors.red_1 : colors.red_2
         return (
-            <>
+            <View
+                key={`I${index}L${item.label}EXPAND`}
+                style={{
+                    alignItems: 'center',
+                    width: '100%',
+                }}
+            >
                 <TouchableOpacity
-                    key={`I${index}L${item.label}EXPAND`}
                     style={{
                         flex: 1,
                         borderWidth: 3,
@@ -124,33 +143,20 @@ const SingleDataList = ({
                         padding: '2%',
                     }}
                 >
-                    {renderItemBody(item, index)}
-                </View>
-            </>
-        )
-    }
-
-    const renderItemBody = (item, index) => {
-        return (
-            <View>
-                <View style={{ width: '100%', paddingHorizontal: '5%' }}>
-                    {propsRenderItem(item, index)}
+                    <View>
+                        <View
+                            style={{ width: '100%', paddingHorizontal: '5%' }}
+                        >
+                            {propsRenderItem(item, index)}
+                        </View>
+                    </View>
                 </View>
             </View>
         )
     }
 
     return (
-        <View
-            style={[
-                {
-                    width: '100%',
-                    height: '100%',
-                    paddingTop: '3%',
-                },
-                propsStyle,
-            ]}
-        >
+        <View style={[{ width: '100%' }, propsStyle]}>
             <ScrollView
                 nestedScrollEnabled={true}
                 contentContainerStyle={{
@@ -159,7 +165,7 @@ const SingleDataList = ({
                 }}
             >
                 {data.map((item, index) =>
-                    item.expanded
+                    expandedItems.includes(item.key)
                         ? renderItemExpanded(item, index)
                         : renderItem(item, index)
                 )}

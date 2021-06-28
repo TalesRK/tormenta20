@@ -225,43 +225,17 @@ const CreateCharacterClass = ({ navigation }) => {
         }
     }
 
-    const mapUpdatedCharacter = () => {
-        const selectedClass = characterClassState.find(
-            (characterClassFiltered) => characterClassFiltered.selected
-        )
-        const newCharacterCreation = Object.assign({}, characterCreation)
-        newCharacterCreation.classe.key = selectedClass.key
-        newCharacterCreation.classe.nivel = 1
-        newCharacterCreation.magia.atributo_chave = 'SAB'
-        newCharacterCreation.nivel = 1
-        newCharacterCreation.powersText = selectedClass.data.powersText
-
-        newCharacterCreation.pericias = newCharacterCreation.pericias.filter(
-            (item) => item.source !== 'CLASSE'
-        )
-
-        const classSkills = selectedClass.data.pericias.map((item) => {
-            return {
-                key: item,
-                source: 'CLASSE',
-            }
-        })
-
-        newCharacterCreation.pericias =
-            newCharacterCreation.pericias.concat(classSkills)
-
-        return newCharacterCreation
-    }
-
     const goToNextPage = () => {
         if (canProceed) {
-            const updatedCharacter = mapUpdatedCharacter()
+            const selectedClass = characterClassState.find(
+                (characterClassFiltered) => characterClassFiltered.selected
+            )
 
             dispatch({
-                type: 'updateCharacterCreation',
-                value: updatedCharacter,
+                type: 'selectCharacterClass',
+                value: selectedClass,
+                navigation,
             })
-            navigation.navigate('CreateCharacterOrigins')
         }
     }
 

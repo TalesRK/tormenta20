@@ -14,38 +14,21 @@ import { launchImageLibrary } from 'react-native-image-picker'
 import colors from '../styles/colors'
 import commonStyle from '../styles/common.style'
 import { useStateValue } from '../context/ContextProvider'
-import { CommonActions } from '@react-navigation/native'
 
 const CreateCharacterDetails = ({ navigation }) => {
     const [charName, setCharName] = useState()
     const [charImg, setCharImg] = useState()
-    const [{ characterCreation }, dispatch] = useStateValue()
+    const [, dispatch] = useStateValue()
 
     const goToNextPage = () => {
         if (canProceed()) {
-            const newCharacterCreation = Object.assign({}, characterCreation)
-            newCharacterCreation.nome = charName
-            newCharacterCreation.imagem = charImg
-
-            if (newCharacterCreation.itens) {
-                newCharacterCreation.itemsText = 'Itens selecionados:\n'
-                newCharacterCreation.itemsText +=
-                    newCharacterCreation?.itens
-                        .map((item) => item.label)
-                        .join('\n') ?? ''
-            }
+            const value = { charName, charImg }
 
             dispatch({
-                type: 'createNewCharacter',
-                value: newCharacterCreation,
+                type: 'selectCharacterDetails',
+                value: value,
+                navigation,
             })
-
-            navigation.dispatch(
-                CommonActions.reset({
-                    index: 1,
-                    routes: [{ name: 'CharacterView' }],
-                })
-            )
         }
     }
 

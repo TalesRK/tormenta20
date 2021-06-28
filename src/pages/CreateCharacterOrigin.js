@@ -14,55 +14,22 @@ import { useStateValue } from '../context/ContextProvider'
 import SingleDataList from '../components/SingleDataList'
 import { translateKey } from '../resources/constants'
 
-const CreateCharacterOrigins = ({ navigation }) => {
+const CreateCharacterOrigin = ({ navigation }) => {
     const [origins, setOrigins] = useState(initialOrigins)
-    const [{ characterCreation }, dispatch] = useStateValue()
+    const [, dispatch] = useStateValue()
 
     const goToNextPage = () => {
         if (canProceed()) {
-            const newCharacterCreation = Object.assign({}, characterCreation)
             const selectedOrigin = origins.find((item) => item.selected)
             const selectedOptions = selectedOrigin.options.filter(
                 (item) => item.selected
             )
 
-            newCharacterCreation.pericias =
-                newCharacterCreation.pericias.filter(
-                    (item) => item.source !== 'ORIGEM'
-                )
-            newCharacterCreation.poderes = newCharacterCreation.poderes.filter(
-                (item) => item.source !== 'ORIGEM'
-            )
-            newCharacterCreation.itens = newCharacterCreation.itens.filter(
-                (item) => item.source !== 'ORIGEM'
-            )
-
-            selectedOptions.forEach((item) => {
-                if (item.type === 'ITEM') {
-                    newCharacterCreation.itens.push({
-                        key: item.key,
-                        label: item.label,
-                        source: 'ORIGEM',
-                    })
-                } else if (item.type === 'PODER') {
-                    newCharacterCreation.poderes.push({
-                        key: item.key,
-                        source: 'ORIGEM',
-                    })
-                } else {
-                    newCharacterCreation.pericias.push({
-                        key: item.key,
-                        source: 'ORIGEM',
-                    })
-                }
-            })
-
             dispatch({
-                type: 'updateCharacterCreation',
-                value: newCharacterCreation,
+                type: 'selectCharacterOrigin',
+                value: { selectedOrigin, selectedOptions },
+                navigation,
             })
-
-            navigation.navigate('CreateCharacterPoints')
         }
     }
 
@@ -194,12 +161,14 @@ const CreateCharacterOrigins = ({ navigation }) => {
                     width: '100%',
                     height: '70%',
                     paddingHorizontal: '5%',
+                    paddingTop: 20,
                 }}
             >
                 <SingleDataList
                     data={origins}
                     renderItemBody={renderItem}
                     onSelect={onSelectOrigin}
+                    expandOnSelect={true}
                 />
             </View>
             <View
@@ -266,4 +235,4 @@ const styles = StyleSheet.create({
     },
 })
 
-export default CreateCharacterOrigins
+export default CreateCharacterOrigin

@@ -13,8 +13,8 @@ import colors from '../styles/colors'
 import commonStyle from '../styles/common.style'
 import { proficiencies } from '../resources/proficiencies'
 import { useStateValue } from '../context/ContextProvider'
-import { classesThatHaveMagic, getClassByKey } from '../resources/classes'
-import { calcModifierByAttribute } from '../resources/formulas'
+import { getClassByKey } from '../resources/classes'
+import { calcModifierByKey } from '../resources/formulas'
 
 const CreateCharacterProficiencies = ({ navigation }) => {
     const [proficienciesState, setProficiencies] = useState(proficiencies)
@@ -46,49 +46,23 @@ const CreateCharacterProficiencies = ({ navigation }) => {
     }
 
     const mapInitialProficiencyPoints = () => {
-        const inteligenceBonus = calcModifierByAttribute(
-            characterCreation.atributos.inteligencia
-        )
+        const inteligenceBonus = calcModifierByKey(characterCreation, 'INT')
         setRemainingSelect(inteligenceBonus)
     }
 
-    const mapUpdatedCharacter = () => {
-        const selectedProficiencies = proficienciesState
-            .filter((item) => item.selected && !item.cannotDesselect)
-            .map((item) => {
-                return {
-                    key: item.key,
-                    source: 'INT_MODIFIER',
-                }
-            })
-
-        const newCharacterCreation = Object.assign({}, characterCreation)
-        newCharacterCreation.pericias = newCharacterCreation.pericias.filter(
-            (item) => item.source !== 'INT_MODIFIER'
-        )
-        newCharacterCreation.pericias = newCharacterCreation.pericias.concat(
-            selectedProficiencies
-        )
-        return newCharacterCreation
-    }
+    const mapUpdatedCharacter = () => {}
 
     const goToNextPage = () => {
         if (canProceed) {
-            const updatedCharacter = mapUpdatedCharacter()
-            dispatch({
-                type: 'updateCharacterCreation',
-                value: updatedCharacter,
-            })
-
-            const charClassHaveMagic = classesThatHaveMagic.some(
-                (item) => item === updatedCharacter.classe.key
+            const selectedProficiencies = proficienciesState.filter(
+                (item) => item.selected && !item.cannotDesselect
             )
 
-            if (charClassHaveMagic) {
-                navigation.navigate('CreateCharacterSpells')
-            } else {
-                navigation.navigate('CreateCharacterDetails')
-            }
+            dispatch({
+                type: 'selectCharacterSkills',
+                value: selectedProficiencies,
+                navigation,
+            })
         }
     }
 

@@ -1,5 +1,24 @@
 import { getClassByKey, classesThatHaveMagic } from './classes'
 import { proficiencies } from './proficiencies'
+import { getRaceByKey } from './racas'
+
+export const calcAttributeByKey = (character, attributeKey) => {
+    const race = getRaceByKey(character.raca)
+
+    const attributesArray = character.atributos.concat(race.attributes || [])
+
+    const value = attributesArray
+        .filter((att) => att.key === attributeKey)
+        .map((att) => att.points)
+        .reduce((a, b) => a + b, 0)
+
+    return value
+}
+
+export const calcModifierByKey = (character, attributeKey) => {
+    const attribute = calcAttributeByKey(character, attributeKey)
+    return calcModifierByAttribute(attribute)
+}
 
 export const calcModifierByAttribute = (value) => {
     return Math.floor((value - 10) / 2)
@@ -45,10 +64,9 @@ export const rollDice = (value) => {
 }
 
 export const calcMaxLife = (character) => {
+    //todo read from race
     const selectedClass = getClassByKey(character.classe.key)
-    const lifeModifier = calcModifierByAttribute(
-        character.atributos.constituicao
-    )
+    const lifeModifier = calcModifierByKey(character, 'CON')
     const baseClassLifeByLevel =
         selectedClass.data.pontos_vida.por_nivel < 1
             ? 1
@@ -76,20 +94,10 @@ export const calcMaxMana = (character) => {
 }
 
 const getAttributeByAttKey = (attributes, attributeKey) => {
-    switch (attributeKey) {
-        case 'FOR':
-            return attributes.forca
-        case 'DES':
-            return attributes.destreza
-        case 'CON':
-            return attributes.constituicao
-        case 'INT':
-            return attributes.inteligencia
-        case 'CAR':
-            return attributes.carisma
-        case 'SAB':
-            return attributes.sabedoria
-    }
+    return attributes
+        .filter((att) => att.key === attributeKey)
+        .map((att) => att.points)
+        .reduce((a, b) => a + b, 0)
 }
 
 export const getLifeOrManaValues = (maxValue) => {

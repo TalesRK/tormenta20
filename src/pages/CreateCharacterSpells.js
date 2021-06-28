@@ -60,14 +60,11 @@ const CreateCharacterSpells = ({ navigation }) => {
                 .filter((item) => item.selected)
                 .map((item) => item.key)
 
-            const newCharacterCreation = Object.assign({}, characterCreation)
-            newCharacterCreation.magia.magias = selectedSpells
-
             dispatch({
-                type: 'updateCharacterCreation',
-                value: newCharacterCreation,
+                type: 'selectCharacterSpells',
+                value: selectedSpells,
+                navigation,
             })
-            navigation.navigate('CreateCharacterDetails')
         }
     }
 

@@ -25,14 +25,13 @@ import {
     rollDice,
 } from '../resources/formulas'
 import { useStateValue } from '../context/ContextProvider'
-import { classesThatHaveMagic } from '../resources/classes'
 
 const CreateCharacterPoints = ({ navigation }) => {
     const [attMapTypeState, setAttMapType] = useState(attributeMapType)
     const [pointBuy, setPointBuy] = useState(buyAttributes)
     const [rollPoints, setRollPoints] = useState(rollAttributes)
     const [fillPoints, setFillPoints] = useState(fillAttributes)
-    const [{ characterCreation }, dispatch] = useStateValue()
+    const [, dispatch] = useStateValue()
 
     const selectAttMapType = (index) => {
         const newAttMapType = [...attMapTypeState]
@@ -538,54 +537,25 @@ const CreateCharacterPoints = ({ navigation }) => {
 
     const goToNextPage = () => {
         if (canProceed()) {
-            const newCharacterCreation = Object.assign({}, characterCreation)
-
             const selectedType = attMapTypeState.find(
                 (item) => item.selected
             ).key
 
+            let attributeArray = []
             if (selectedType === 'comprar') {
-                pointBuy.attributes.forEach((att) => {
-                    newCharacterCreation.atributos[att.key] =
-                        att.currentAttribute
-                })
+                attributeArray = pointBuy.attributes
             } else if (selectedType === 'rolar') {
-                rollPoints.attributes.forEach((att) => {
-                    newCharacterCreation.atributos[att.key] =
-                        att.currentAttribute
-                })
+                attributeArray = rollPoints.attributes
             } else {
-                fillPoints.attributes.forEach((att) => {
-                    newCharacterCreation.atributos[att.key] =
-                        att.currentAttribute
-                })
+                attributeArray = fillPoints.attributes
             }
 
             dispatch({
-                type: 'updateCharacterCreation',
-                value: newCharacterCreation,
+                type: 'selectCharacterPoints',
+                value: attributeArray,
+                navigation,
             })
-
-            const intModifier = calcModifierByAttribute(
-                newCharacterCreation.atributos.inteligencia
-            )
-            if (intModifier > 0) {
-                navigation.navigate('CreateCharacterProficiencies')
-            } else {
-                const charClassHaveMagic = classesThatHaveMagic.some(
-                    (item) => item === newCharacterCreation.classe.key
-                )
-                if (charClassHaveMagic) {
-                    navigation.navigate('CreateCharacterSpells')
-                } else {
-                    navigation.navigate('CreateCharacterDetails')
-                }
-            }
         }
-    }
-
-    const goToPreviousPage = () => {
-        navigation.goBack()
     }
 
     const canProceed = () => {
@@ -654,12 +624,6 @@ const CreateCharacterPoints = ({ navigation }) => {
                 }}
             >
                 <TouchableOpacity
-                    onPress={goToPreviousPage}
-                    style={[styles.button, styles.buttonSelected]}
-                >
-                    <Text style={styles.buttonText}>Anterior</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
                     onPress={goToNextPage}
                     style={[
                         styles.button,
@@ -687,7 +651,7 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     button: {
-        width: '35%',
+        width: '80%',
         height: '50%',
         ...commonStyle.foreground,
         backgroundColor: colors.black_3,

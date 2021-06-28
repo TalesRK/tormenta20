@@ -16,7 +16,7 @@ import CreateCharacterPoints from './pages/CreateCharacterPoints'
 import CreateCharacterProficiencies from './pages/CreateCharacterProficiencies'
 import CreateCharacterSpells from './pages/CreateCharacterSpells'
 import CreateCharacterDetails from './pages/CreateCharacterDetails'
-import CreateCharacterOrigins from './pages/CreateCharacterOrigin'
+import CreateCharacterOrigin from './pages/CreateCharacterOrigin'
 
 import colors from './styles/colors'
 import { useStateValue, getData } from './context/ContextProvider'
@@ -25,7 +25,7 @@ function CharacterCreate() {
     return (
         <Stack.Navigator
             screenOptions={screenOptionsHeaderDisable}
-            initialRouteName="CreateCharacterRace"
+            initialRouteName="CreateCharacterPoints"
         >
             <Stack.Screen
                 name="CreateCharacterPoints"
@@ -40,8 +40,8 @@ function CharacterCreate() {
                 component={CreateCharacterClass}
             />
             <Stack.Screen
-                name="CreateCharacterOrigins"
-                component={CreateCharacterOrigins}
+                name="CreateCharacterOrigin"
+                component={CreateCharacterOrigin}
             />
             {/* TODO <Stack.Screen
                 name="CreateCharacterGods"
@@ -146,11 +146,6 @@ export default function App() {
                         name="CharacterCreate"
                         component={CharacterCreate}
                         options={{ title: 'Criar personagem' }}
-                    />
-                    <Drawer.Screen
-                        name="CreateCharacterOrigin"
-                        component={CreateCharacterOrigins}
-                        options={{ title: 'CreateCharacterOrigin' }}
                     />
                 </Drawer.Navigator>
             </NavigationContainer>

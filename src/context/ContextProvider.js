@@ -1,37 +1,18 @@
 import React, { createContext, useContext, useReducer } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import uuid from 'react-native-uuid'
-import { calcMaxLife, calcMaxMana } from '../resources/formulas'
+import { CommonActions } from '@react-navigation/native'
+
+import {
+    calcMaxLife,
+    calcMaxMana,
+    calcModifierByKey,
+} from '../resources/formulas'
+import { initialValues } from '../resources/constants'
+import { classesThatHaveMagic } from '../resources/classes'
 
 //Application prefix for storage keys
 const appKey = 'EwhVT@T20'
-
-const initialCharacterCreation = {
-    atributos: {
-        forca: 0,
-        destreza: 0,
-        constituicao: 0,
-        inteligencia: 0,
-        carisma: 0,
-        sabedoria: 0,
-    },
-    nome: '',
-    nivel: 0,
-    classe: {
-        nome: '',
-        nivel: 0,
-    },
-    raca: '',
-    pericias: [],
-    poderes: [],
-    magia: {
-        magias: [],
-        quantidade_por_progresso: 1,
-        tipo_progresso: 'nivel_par',
-        atributo_chave: 'SAB',
-    },
-    itens: [],
-}
 
 //Saves data in AsyncStorage
 export const storeData = async (key, value) => {
@@ -89,32 +70,6 @@ const reducer = (state, action) => {
                 character: updatedCharacter,
                 characters,
             }
-        case 'updateCharacterCreation':
-            storeData('characterCreation', action.value)
-            return {
-                ...state,
-                characterCreation: action.value,
-            }
-        case 'createNewCharacter': {
-            const characters = state.characters
-
-            const createdCharacter = Object.assign({}, action.value)
-            createdCharacter.id = uuid.v4()
-            createdCharacter.vidaAtual = calcMaxLife(createdCharacter)
-            createdCharacter.manaAtual = calcMaxMana(createdCharacter)
-
-            characters.push(createdCharacter)
-
-            storeData('characters', characters)
-            storeData('characterCreation', initialCharacterCreation)
-            storeData('character', createdCharacter)
-            return {
-                ...state,
-                characterCreation: initialCharacterCreation,
-                characters,
-                character: createdCharacter,
-            }
-        }
         case 'setInitialState': {
             const { character, characters } = action.value
             const validData = {}
@@ -130,7 +85,266 @@ const reducer = (state, action) => {
                 ...validData,
             }
         }
+        case 'selectCharacterPoints': {
+            const source = 'PONTOS_INICIAIS'
+            const attributesMapped = action.value
+            const character = initialValues.character
+
+            character.atributos = [
+                ...character.atributos.filter((item) => item.source !== source),
+                ...attributesMapped.map((att) => ({
+                    key: att.key,
+                    source,
+                    points: att.currentAttribute,
+                })),
+            ]
+
+            handleNavigation(action.navigation, source, character)
+            return {
+                ...state,
+                characterCreation: character,
+            }
+        }
+        case 'selectCharacterRace': {
+            const blocks = action.value
+            const character = state.characterCreation
+            const source = 'RACA'
+
+            blocks.forEach((block) =>
+                setCharacterValuesByDynamicSelection(block, character, source)
+            )
+            handleNavigation(action.navigation, source, character)
+            return {
+                ...state,
+                characterCreation: character,
+            }
+        }
+        case 'selectCharacterClass': {
+            const selectedClass = action.value
+            const character = state.characterCreation
+            const source = 'CLASSE'
+
+            character.classe.key = selectedClass.key
+            character.classe.nivel = 1
+            character.magia.atributo_chave =
+                selectedClass?.magia?.atributo_chave
+            character.nivel = 1
+            character.powersText = selectedClass.data.powersText
+
+            character.pericias = [
+                ...character.pericias.filter((item) => item.source !== source),
+                ...selectedClass.data.pericias.map((item) => ({
+                    key: item,
+                    source,
+                })),
+            ]
+
+            handleNavigation(action.navigation, source, character)
+            return {
+                ...state,
+                characterCreation: character,
+            }
+        }
+        case 'selectCharacterOrigin': {
+            const { selectedOrigin, selectedOptions } = action.value
+            const character = state.characterCreation
+            const source = 'ORIGEM'
+
+            character.origem = selectedOrigin.key
+            character.pericias = character.pericias.filter(
+                (item) => item.source !== source
+            )
+            character.poderes = character.poderes.filter(
+                (item) => item.source !== source
+            )
+            character.itens = character.itens.filter(
+                (item) => item.source !== source
+            )
+
+            selectedOptions.forEach((item) => {
+                if (item.type === 'ITEM') {
+                    character.itens.push({
+                        key: item.key,
+                        label: item.label,
+                        source,
+                    })
+                } else if (item.type === 'PODER') {
+                    character.poderes.push({
+                        key: item.key,
+                        source,
+                    })
+                } else {
+                    character.pericias.push({
+                        key: item.key,
+                        source,
+                    })
+                }
+            })
+
+            handleNavigation(action.navigation, source, character)
+            return {
+                ...state,
+                characterCreation: character,
+            }
+        }
+        case 'selectCharacterSkills': {
+            const selectedProficiencies = action.value
+            const character = state.characterCreation
+            const source = 'PERICIAS'
+
+            character.pericias = [
+                ...character.pericias.filter((item) => item.source !== source),
+                ...selectedProficiencies.map((item) => ({
+                    key: item.key,
+                    source,
+                })),
+            ]
+
+            handleNavigation(action.navigation, source, character)
+            return {
+                ...state,
+                characterCreation: character,
+            }
+        }
+        case 'selectCharacterSpells': {
+            const selectedSpells = action.value
+            const character = state.characterCreation
+            const source = 'MAGIAS'
+
+            character.magia.magias = selectedSpells
+
+            handleNavigation(action.navigation, source, character)
+            return {
+                ...state,
+                characterCreation: character,
+            }
+        }
+        case 'selectCharacterDetails': {
+            const { charName, charImg } = action.value
+            const character = state.characterCreation
+            const characters = state.characters
+            const source = 'DETALHES'
+
+            character.nome = charName
+            character.imagem = charImg
+            character.id = uuid.v4()
+            character.vidaAtual = calcMaxLife(character)
+            character.manaAtual = calcMaxMana(character)
+
+            if (character.itens) {
+                character.itemsText = character.itemsText =
+                    'Itens selecionados:\n' +
+                    character.itens.map((item) => item.label).join('\n')
+            }
+
+            characters.push(character)
+
+            storeData('characters', characters)
+            storeData('characterCreation', initialValues.character)
+            storeData('character', character)
+
+            handleNavigation(action.navigation, source, character)
+            return {
+                ...state,
+                characterCreation: initialValues.character,
+                characters,
+                character,
+            }
+        }
         default:
             return state
+    }
+}
+
+const handleNavigation = (navigation, source, character) => {
+    switch (source) {
+        case 'PONTOS_INICIAIS':
+            navigation.navigate('CreateCharacterRace')
+            break
+        case 'RACA':
+            navigation.navigate('CreateCharacterClass')
+            break
+        case 'CLASSE':
+            navigation.navigate('CreateCharacterOrigin')
+            break
+        case 'ORIGEM':
+            const intModifier = calcModifierByKey(character, 'INT')
+            if (intModifier > 0) {
+                navigation.navigate('CreateCharacterProficiencies')
+                break
+            }
+        case 'PERICIAS':
+            const charClassHaveMagic = classesThatHaveMagic.some(
+                (item) => item === character.classe.key
+            )
+            if (charClassHaveMagic) {
+                navigation.navigate('CreateCharacterSpells')
+            } else {
+                navigation.navigate('CreateCharacterDetails')
+            }
+            break
+        case 'MAGIAS':
+            navigation.navigate('CreateCharacterDetails')
+            break
+        case 'DETALHES':
+            navigation.dispatch(
+                CommonActions.reset({
+                    index: 1,
+                    routes: [{ name: 'CharacterView' }],
+                })
+            )
+            break
+    }
+}
+
+const setCharacterValuesByDynamicSelection = (block, character, source) => {
+    const valueType = block.source.dataSource || block.source.dataType
+
+    switch (valueType) {
+        case 'races':
+            const race = block.data[0]
+            character.raca = race.key
+            break
+        case 'attributes':
+            character.atributos = [
+                ...character.atributos.filter((item) => item.source !== source),
+                ...block.data.map((item) => ({
+                    key: item.key,
+                    source,
+                    points: block.source.pointsEach || 1,
+                })),
+            ]
+            break
+        case 'skills':
+            character.pericias = [
+                ...character.pericias.filter((item) => item.source !== source),
+                ...block.data.map((item) => ({
+                    key: item.key,
+                    source,
+                    points: block.source.pointsEach || 1,
+                })),
+            ]
+            break
+        case 'general_powers_tormenta':
+        case 'general_powers':
+            character.poderes = [
+                ...character.poderes.filter((item) => item.source !== source),
+                ...block.data.map((item) => ({
+                    key: item.key,
+                    source,
+                })),
+            ]
+            break
+        case 'spells':
+            character.magia.magias = [
+                ...character.magia.magias.filter(
+                    (item) => item.source !== source
+                ),
+                ...block.data.map((item) => ({
+                    key: item.key,
+                    source,
+                })),
+            ]
+            break
     }
 }

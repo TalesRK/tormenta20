@@ -8,8 +8,10 @@ import { useStateValue } from '../context/ContextProvider'
 import { getRaceByKey } from '../resources/racas'
 import { getClassByKey } from '../resources/classes'
 import {
+    calcAttributeByKey,
     calcMaxLife,
     calcMaxMana,
+    calcModifierByKey,
     getLifeOrManaValues,
 } from '../resources/formulas'
 import WheelPicker from './WheelPicker'
@@ -137,19 +139,8 @@ const CharactersMainInfo = (props) => {
         const mainAttColor = isLife ? colors.life : colors.mana
         const mainAttLabel = isLife ? 'Vida' : 'Mana'
         const secAttLabels = isLife
-            ? ['Força', 'Destreza', 'Constituicao']
-            : ['Inteligência', 'Sabedoria', 'Carisma']
-        const secAttValues = isLife
-            ? [
-                  character.atributos.forca,
-                  character.atributos.destreza,
-                  character.atributos.constituicao,
-              ]
-            : [
-                  character.atributos.inteligencia,
-                  character.atributos.sabedoria,
-                  character.atributos.carisma,
-              ]
+            ? ['FOR', 'DES', 'CON']
+            : ['INT', 'SAB', 'CAR']
 
         const mainAttActualValue = isLife
             ? character.vidaAtual
@@ -199,17 +190,23 @@ const CharactersMainInfo = (props) => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.attributeBox}>
-                    {secAttLabels.map((secAttLabel, index) => (
-                        <View
-                            key={secAttLabel + index}
-                            style={styles.attributeGroup}
-                        >
-                            <Text style={styles.textColor}>{secAttLabel}</Text>
-                            <Text style={styles.textColor}>
-                                {secAttValues[index]}
-                            </Text>
-                        </View>
-                    ))}
+                    {secAttLabels.map((secAttLabel, index) => {
+                        const mod = calcModifierByKey(character, secAttLabel)
+                        const att = calcAttributeByKey(character, secAttLabel)
+                        return (
+                            <View
+                                key={secAttLabel + index}
+                                style={styles.attributeGroup}
+                            >
+                                <Text style={styles.textColor}>
+                                    {secAttLabel}
+                                </Text>
+                                <Text style={styles.textColor}>
+                                    {`${mod > 0 ? '+' : ''}${mod} (${att})`}
+                                </Text>
+                            </View>
+                        )
+                    })}
                 </View>
             </View>
         )
@@ -225,9 +222,8 @@ const CharactersMainInfo = (props) => {
                         <Text style={styles.textColor}>{character.nome}</Text>
                     </View>
                     <View style={styles.characterRaceAndClassText}>
-                        <Text style={styles.textColor}>{race.label}</Text>
                         <Text style={styles.textColor}>
-                            {`${clazz.label}, nível ${character.classe.nivel}`}
+                            {`${race.label} ${clazz.label}, nível ${character.classe.nivel}`}
                         </Text>
                     </View>
                 </View>

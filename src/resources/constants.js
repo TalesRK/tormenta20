@@ -1,6 +1,38 @@
 import React from 'react'
 import colors from '../styles/colors'
 import { Icon } from 'react-native-elements'
+import { racas } from '../resources/racas'
+import { generalPowers, tormenta } from '../resources/generalPowers'
+import { proficiencies } from './proficiencies'
+
+export const initialValues = {
+    characters: [],
+    character: {
+        vidaAtual: 0,
+        manaAtual: 0,
+        atributos: [],
+        nome: '',
+        nivel: 0,
+        classe: {
+            key: '',
+            nivel: 0,
+        },
+        raca: '',
+        origem: '',
+        pericias: [],
+        itens: [],
+        itemsText: '',
+        poderes: [],
+        powersText: '',
+        magia: {
+            magias: [],
+            quantidade_por_progresso: 0,
+            tipo_progresso: '',
+            atributo_chave: '',
+        },
+        notas: '',
+    },
+}
 
 export const characterTabs = [
     { title: 'Geral', key: 'GENERAL' },
@@ -11,182 +43,21 @@ export const characterTabs = [
     { title: 'Notas', key: 'NOTES' },
 ]
 
-export const spells = [
-    {
-        title: 'Aliado Animal',
-        spellCost: 15,
-        spellDice: '1d8',
-        school: 'Conv',
-    },
-    {
-        title: 'Enxame de Pestes',
-        spellCost: 20,
-        spellDice: '1d20',
-        school: 'Ilusão',
-    },
-    {
-        title: 'Controlar Fogo',
-        spellCost: 10,
-        spellDice: '1d6',
-        school: 'Adiv',
-    },
-    {
-        title: 'Raio Solar',
-        spellCost: 0,
-        spellDice: '3d4',
-        school: 'Evoc',
-    },
-    {
-        title: 'Conjurar Mortos-Vivos',
-        spellCost: 30,
-        spellDice: '2d12',
-        school: 'Necro',
-    },
-    {
-        title: 'Aliado Animal',
-        spellCost: 15,
-        spellDice: '1d8',
-        school: 'Conv',
-    },
-    {
-        title: 'Enxame de Pestes',
-        spellCost: 20,
-        spellDice: '1d20',
-        school: 'Ilusão',
-    },
-    {
-        title: 'Controlar Fogo',
-        spellCost: 10,
-        spellDice: '1d6',
-        school: 'Adiv',
-    },
-    {
-        title: 'Raio Solar',
-        spellCost: 0,
-        spellDice: '3d4',
-        school: 'Evoc',
-    },
-    {
-        title: 'Conjurar Mortos-Vivos',
-        spellCost: 30,
-        spellDice: '2d12',
-        school: 'Necro',
-    },
-    {
-        title: 'Aliado Animal',
-        spellCost: 15,
-        spellDice: '1d8',
-        school: 'Conv',
-    },
-    {
-        title: 'Enxame de Pestes',
-        spellCost: 20,
-        spellDice: '1d20',
-        school: 'Ilusão',
-    },
-    {
-        title: 'Controlar Fogo',
-        spellCost: 10,
-        spellDice: '1d6',
-        school: 'Adiv',
-    },
-    {
-        title: 'Raio Solar',
-        spellCost: 0,
-        spellDice: '3d4',
-        school: 'Evoc',
-    },
-    {
-        title: 'Conjurar Mortos-Vivos',
-        spellCost: 30,
-        spellDice: '2d12',
-        school: 'Necro',
-    },
-]
-
-export const attributes = {
-    life: {
-        mainStat: {
-            label: 'Vida',
-            value: 18,
-            textColor: colors.life,
-        },
-        attributes: [
-            {
-                label: 'Força',
-                value: 18,
-            },
-            {
-                label: 'Destreza',
-                value: 18,
-            },
-            {
-                label: 'Constituição',
-                value: 18,
-            },
-        ],
-    },
-    mana: {
-        mainStat: {
-            label: 'Mana',
-            value: 18,
-            textColor: colors.mana,
-        },
-        attributes: [
-            {
-                label: 'Inteligência',
-                value: 18,
-            },
-            {
-                label: 'Sabedoria',
-                value: 18,
-            },
-            {
-                label: 'Carisma',
-                value: 18,
-            },
-        ],
-    },
-}
-
-export const creationCharacterPages = [
-    {
-        key: 'RACE',
-        label: 'Raça',
-    },
-    {
-        key: 'CLASS',
-        label: 'Classe',
-    },
-    {
-        key: 'HABILITIES',
-        label: 'Pontos de Habilidade',
-    },
-    {
-        key: 'BACKGROUND',
-        label: 'Antepassado',
-    },
-    {
-        key: 'PROFICIENCIES',
-        label: 'ProficiênciasS',
-    },
-    {
-        key: 'SPELLS',
-        label: 'Magias',
-    },
-    {
-        key: 'EQUIPMENTS',
-        label: 'Equipamentos',
-    },
-]
-
 export function translateKey(key) {
     const label = keyLabels[key]
     const attribute = keyLabels.atributos[key]
     const creatureHab = keyLabels.habilidades_criatura[key]
     const originOptionType = keyLabels.originOptionTypes[key]
     const skillSource = keyLabels.skillSource[key]
-    return label || attribute || creatureHab || originOptionType || skillSource
+    const keyLabel = keyLabelsList.find((item) => item.key === key)
+    return (
+        label ||
+        attribute ||
+        creatureHab ||
+        originOptionType ||
+        skillSource ||
+        (keyLabel?.label ?? '')
+    )
 }
 
 export const keyLabels = {
@@ -216,6 +87,15 @@ export const keyLabels = {
     },
 }
 
+const keyLabelsList = [
+    { key: 'CON', label: 'Constituição' },
+    { key: 'SAB', label: 'Sabedoria' },
+    { key: 'DES', label: 'Destreza' },
+    { key: 'INT', label: 'Inteligência' },
+    { key: 'CAR', label: 'Carisma' },
+    { key: 'FOR', label: 'Força' },
+]
+
 export const origens = {
     atributos: [
         { key: 'constituicao' },
@@ -226,198 +106,6 @@ export const origens = {
         { key: 'carisma' },
     ],
 }
-
-export const races = [
-    {
-        key: 'HUMANO',
-        label: 'Humano',
-        data: {
-            atributos_escolher: {
-                origem: 'atributos',
-                escolhas: 3,
-                pontos: 2,
-            },
-            opcoes: [
-                {
-                    escolher: {
-                        origem: 'pericias',
-                        escolhas: 2,
-                        pontos: 1,
-                    },
-                },
-                {
-                    escolher: {
-                        origem: 'pericias',
-                        escolhas: 1,
-                        pontos: 1,
-                    },
-                    escolher: {
-                        origem: 'poderes_gerais',
-                        escolhas: 1,
-                        pontos: 1,
-                    },
-                },
-            ],
-        },
-    },
-    {
-        key: 'ANAO',
-        label: 'Anão',
-        data: {
-            vida: {
-                bonus_inicial: 3,
-                bonus_por_nivel: 1,
-            },
-            deslocamento: {
-                pontos: 9,
-            },
-            atributos: [
-                { key: 'constituicao', value: 4 },
-                { key: 'sabedoria', value: 2 },
-                { key: 'destreza', value: -2 },
-            ],
-            habilidades_criatura: ['VISAO_ESCURO'],
-            armas: {
-                bonus_ataque: {
-                    pontos: 2,
-                    tipos_armas: ['MACHADO', 'MARTELO', 'MARRETA', 'PICARETA'],
-                },
-            },
-            tracos: {
-                traco: {
-                    titulo: 'Devagar e Sempre',
-                    descricao:
-                        'Seu deslocamento não é reduzido por uso de armadura ou excesso de carga.',
-                },
-                traco: {
-                    titulo: 'Conhecimento das Rochas',
-                    descricao:
-                        'Você recebe visão no escuro e +2 em testes de Percepção e Sobrevivência realizados no subterrâneo.',
-                },
-                traco: {
-                    titulo: 'Tradição de Heredrimm',
-                    descricao:
-                        'Você é perito nas armas tradicionais anãs, seja por ter treinado com elas, seja por usá-las como ferramentas de ofício. Para você, todos os machados, martelos, marretas e picaretas são armas simples. Você recebe +2 em ataques com essas armas.',
-                },
-            },
-        },
-    },
-    {
-        key: 'DAHLLAN',
-        label: 'Dahllan',
-        data: {
-            atributos: [
-                { key: 'sabedoria', value: 4 },
-                { key: 'destreza', value: 2 },
-                { key: 'inteligencia', value: -2 },
-            ],
-            magias: [
-                {
-                    magia: 'CONTROLAR_PLANTAS',
-                    nivel: '1',
-                },
-            ],
-            habilidades_raca: ['ARMADURA_ALLIHANNA', 'EMPATIA_SELVAGEM'],
-            condicoes: {
-                condicao: {
-                    se: {
-                        origem: 'habilidades_raca',
-                        item: 'EMPATIA_SELVAGEM',
-                        campo: 'quantidade',
-                        valor: '>1',
-                    },
-                    entao: {
-                        origem: 'pericias',
-                        item: 'ADESTRAMENTO',
-                        campo: 'pontos',
-                        valor: '+2',
-                    },
-                },
-            },
-        },
-    },
-    {
-        key: 'ELFO',
-        label: 'Elfo',
-        data: {
-            atributos: [
-                { key: 'inteligencia', value: 4 },
-                { key: 'destreza', value: 2 },
-                { key: 'constituicao', value: -2 },
-            ],
-            deslocamento: {
-                pontos: 12,
-            },
-            mana: {
-                bonus_inicial: 1,
-                bonus_por_nivel: 1,
-            },
-            habilidades_criatura: ['VISAO_PENUMBRA'],
-            pericias: [
-                {
-                    pericia: 'MISTICISMO',
-                    pontos: 2,
-                },
-                {
-                    pericia: 'PERCEPCAO',
-                    pontos: 2,
-                },
-            ],
-        },
-    },
-    {
-        key: 'GOBLIN',
-        label: 'Goblin',
-    },
-    {
-        key: 'LEFOU',
-        label: 'Lefou',
-    },
-    {
-        key: 'MINOTAURO',
-        label: 'Minotauro',
-    },
-    {
-        key: 'QAREEN',
-        label: 'Qareen',
-    },
-    {
-        key: 'GOLEM',
-        label: 'Golem',
-    },
-    {
-        key: 'HYNNE',
-        label: 'Hynne',
-    },
-    {
-        key: 'KLIREN',
-        label: 'Kliren',
-    },
-    {
-        key: 'MEDUSA',
-        label: 'Medusa',
-    },
-    {
-        key: 'OSTEON',
-        label: 'Osteon',
-    },
-    {
-        key: 'TRITAO',
-        label: 'Sereia/Tritão',
-    },
-    {
-        key: 'SILFIDE',
-        label: 'Sílfide',
-    },
-    {
-        key: 'SURAGGEL',
-        label: 'Suraggel',
-    },
-    {
-        key: 'TROG',
-        label: 'Trog',
-    },
-]
 
 export const attributeMapType = [
     {
@@ -440,7 +128,7 @@ export const buyAttributes = {
     attributes: [
         {
             label: 'FOR',
-            key: 'forca',
+            key: 'FOR',
             currentAttribute: 10,
             pointsBought: 0,
             icon: (
@@ -454,7 +142,7 @@ export const buyAttributes = {
         },
         {
             label: 'DES',
-            key: 'destreza',
+            key: 'DES',
             currentAttribute: 10,
             pointsBought: 0,
             icon: (
@@ -468,7 +156,7 @@ export const buyAttributes = {
         },
         {
             label: 'CON',
-            key: 'constituicao',
+            key: 'CON',
             currentAttribute: 10,
             pointsBought: 0,
             icon: (
@@ -482,7 +170,7 @@ export const buyAttributes = {
         },
         {
             label: 'INT',
-            key: 'inteligencia',
+            key: 'INT',
             currentAttribute: 10,
             pointsBought: 0,
             icon: (
@@ -496,7 +184,7 @@ export const buyAttributes = {
         },
         {
             label: 'SAB',
-            key: 'sabedoria',
+            key: 'SAB',
             currentAttribute: 10,
             pointsBought: 0,
             icon: (
@@ -510,7 +198,7 @@ export const buyAttributes = {
         },
         {
             label: 'CAR',
-            key: 'carisma',
+            key: 'CAR',
             currentAttribute: 10,
             pointsBought: 0,
             icon: (
@@ -530,7 +218,7 @@ export const rollAttributes = {
     attributes: [
         {
             label: 'FOR',
-            key: 'forca',
+            key: 'FOR',
             currentAttribute: 10,
             hasFilled: false,
             icon: (
@@ -544,7 +232,7 @@ export const rollAttributes = {
         },
         {
             label: 'DES',
-            key: 'destreza',
+            key: 'DES',
             currentAttribute: 10,
             hasFilled: false,
             icon: (
@@ -558,7 +246,7 @@ export const rollAttributes = {
         },
         {
             label: 'CON',
-            key: 'constituicao',
+            key: 'CON',
             currentAttribute: 10,
             hasFilled: false,
             icon: (
@@ -572,7 +260,7 @@ export const rollAttributes = {
         },
         {
             label: 'INT',
-            key: 'inteligencia',
+            key: 'INT',
             currentAttribute: 10,
             hasFilled: false,
             icon: (
@@ -586,7 +274,7 @@ export const rollAttributes = {
         },
         {
             label: 'SAB',
-            key: 'sabedoria',
+            key: 'SAB',
             currentAttribute: 10,
             hasFilled: false,
             icon: (
@@ -600,7 +288,7 @@ export const rollAttributes = {
         },
         {
             label: 'CAR',
-            key: 'carisma',
+            key: 'CAR',
             currentAttribute: 10,
             hasFilled: false,
             icon: (
@@ -619,7 +307,7 @@ export const fillAttributes = {
     attributes: [
         {
             label: 'FOR',
-            key: 'forca',
+            key: 'FOR',
             currentAttribute: 10,
             icon: (
                 <Icon
@@ -632,7 +320,7 @@ export const fillAttributes = {
         },
         {
             label: 'DES',
-            key: 'destreza',
+            key: 'DES',
             currentAttribute: 10,
             icon: (
                 <Icon
@@ -645,7 +333,7 @@ export const fillAttributes = {
         },
         {
             label: 'CON',
-            key: 'constituicao',
+            key: 'CON',
             currentAttribute: 10,
             icon: (
                 <Icon
@@ -658,7 +346,7 @@ export const fillAttributes = {
         },
         {
             label: 'INT',
-            key: 'inteligencia',
+            key: 'INT',
             currentAttribute: 10,
             icon: (
                 <Icon
@@ -671,7 +359,7 @@ export const fillAttributes = {
         },
         {
             label: 'SAB',
-            key: 'sabedoria',
+            key: 'SAB',
             currentAttribute: 10,
             icon: (
                 <Icon
@@ -684,7 +372,7 @@ export const fillAttributes = {
         },
         {
             label: 'CAR',
-            key: 'carisma',
+            key: 'CAR',
             currentAttribute: 10,
             icon: (
                 <Icon
@@ -697,6 +385,33 @@ export const fillAttributes = {
         },
     ],
 }
+
+export const attributes = [
+    {
+        key: 'FOR',
+        label: 'Força',
+    },
+    {
+        key: 'DES',
+        label: 'Destreza',
+    },
+    {
+        key: 'CON',
+        label: 'Constituição',
+    },
+    {
+        key: 'INT',
+        label: 'Inteligência',
+    },
+    {
+        key: 'CAR',
+        label: 'Carisma',
+    },
+    {
+        key: 'SAB',
+        label: 'Sabedoria',
+    },
+]
 
 export const spellsSchools = [
     {
@@ -755,3 +470,70 @@ export const spellsSchools = [
             'Magias que alteram as propriedades físicas de uma criatura ou objeto.',
     },
 ]
+
+export const mapSourceTitle = (block) => {
+    let blockSource
+
+    if (block.valueSource) {
+        switch (block.valueSource.type) {
+            case 'RACE_SKILL':
+                const raceOfThisItem = racas.find((item) => {
+                    return item.raceSkills.some(
+                        (skill) => skill.key === block.valueSource.sourceValue
+                    )
+                })
+                const raceSkillOfThisItem = raceOfThisItem.raceSkills.find(
+                    (skill) => skill.key === block.valueSource.sourceValue
+                )
+                blockSource = raceSkillOfThisItem.label
+        }
+    }
+    if (block.source.select ?? false) {
+        const nameFormatted = mapSourceName(
+            block.source.dataSource,
+            block.source.select
+        )
+        const prefix = blockSource && blockSource + ': '
+        return `${prefix || ''}Selecione ${
+            block.source.select
+        } ${nameFormatted}`
+    } else {
+        console.error('nome não encontrado', { source })
+        return 'nome não encontrado'
+    }
+}
+
+export const mapDataSourceValues = (dataSource) => {
+    switch (dataSource) {
+        case 'attributes':
+            return attributes
+        case 'races':
+            return racas
+        case 'general_powers':
+            return generalPowers
+        case 'general_powers_tormenta':
+            return tormenta.data
+        case 'skills':
+            return proficiencies
+        default:
+            return []
+    }
+}
+
+const mapSourceName = (name, quantity) => {
+    const plural = quantity > 1
+    switch (name) {
+        case 'races':
+            return plural ? 'raças' : 'raça'
+        case 'attributes':
+            return plural ? 'atributos' : 'atributo'
+        case 'general_powers':
+            return plural ? 'poderes gerais' : 'poder geral'
+        case 'general_powers_tormenta':
+            return plural ? 'poderes da tormenta' : 'poder da tormenta'
+        case 'skills':
+            return plural ? 'perícias' : 'perícia'
+        default:
+            return plural ? 'opções' : 'opção'
+    }
+}
