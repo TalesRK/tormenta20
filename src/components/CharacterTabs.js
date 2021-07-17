@@ -15,12 +15,15 @@ import SkillsTab from '../tabs/SkillsTab'
 import NotesTab from '../tabs/NotesTab'
 import PowersTab from '../tabs/PowersTab'
 import ItemsTab from '../tabs/ItemsTab'
+import CombatTab from '../tabs/CombatTab'
 
 const CharacterTabs = (props) => {
     const [selectedTab, setSelectedTab] = useState('SPELLS')
 
     const renderTab = () => {
         switch (selectedTab) {
+            case 'COMBAT':
+                return <CombatTab />
             case 'POWERS':
                 return <PowersTab />
             case 'SKILLS':

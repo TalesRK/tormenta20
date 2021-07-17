@@ -168,7 +168,7 @@ const CharactersMainInfo = (props) => {
                                 fontSize: 25,
                             }}
                         >
-                            {mainAttActualValue || mainAttMaxValue}
+                            {mainAttActualValue}
                         </Text>
                         <View
                             style={{

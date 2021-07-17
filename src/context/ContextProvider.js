@@ -10,6 +10,7 @@ import {
 } from '../resources/formulas'
 import { initialValues } from '../resources/constants'
 import { classesThatHaveMagic } from '../resources/classes'
+import { findCreatureSkillByKey } from '../resources/creatureSkills'
 
 //Application prefix for storage keys
 const appKey = 'EwhVT@T20'
@@ -129,7 +130,11 @@ const reducer = (state, action) => {
             character.magia.atributo_chave =
                 selectedClass?.magia?.atributo_chave
             character.nivel = 1
-            character.powersText = selectedClass.data.powersText
+
+            if (selectedClass.data.powersText) {
+                character.powersText +=
+                    '\nPoderes de classe:\n' + selectedClass.data.powersText
+            }
 
             character.pericias = [
                 ...character.pericias.filter((item) => item.source !== source),
@@ -304,6 +309,18 @@ const setCharacterValuesByDynamicSelection = (block, character, source) => {
         case 'races':
             const race = block.data[0]
             character.raca = race.key
+            console.log('\n\n', race, race.key, race.creatureSkills)
+            if (race.creatureSkills) {
+                character.powersText = '\nPoderes de criatura:\n'
+                race.creatureSkills.forEach((cSkill) => {
+                    const creatureSkillData = findCreatureSkillByKey(cSkill)
+                    character.powersText +=
+                        creatureSkillData.label +
+                        '\n' +
+                        creatureSkillData.description +
+                        '\n'
+                })
+            }
             break
         case 'attributes':
             character.atributos = [

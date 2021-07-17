@@ -35,7 +35,7 @@ export const initialValues = {
 }
 
 export const characterTabs = [
-    { title: 'Geral', key: 'GENERAL' },
+    { title: 'Combate', key: 'COMBAT' },
     { title: 'Poderes', key: 'POWERS' },
     { title: 'Perícias', key: 'SKILLS' },
     { title: 'Magias', key: 'SPELLS' },
@@ -50,14 +50,20 @@ export function translateKey(key) {
     const originOptionType = keyLabels.originOptionTypes[key]
     const skillSource = keyLabels.skillSource[key]
     const keyLabel = keyLabelsList.find((item) => item.key === key)
-    return (
+
+    const data =
         label ||
         attribute ||
         creatureHab ||
         originOptionType ||
         skillSource ||
         (keyLabel?.label ?? '')
-    )
+
+    if (!data) {
+        console.error('Legenda não encontrada', key)
+    }
+
+    return data
 }
 
 export const keyLabels = {
@@ -82,8 +88,9 @@ export const keyLabels = {
     },
     skillSource: {
         CLASSE: 'Classe',
-        INT_MODIFIER: 'Modif. Int',
+        PERICIAS: 'Sel. perícia',
         ORIGEM: 'Origem',
+        RACA: 'Sel. raça',
     },
 }
 

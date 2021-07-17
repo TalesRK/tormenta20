@@ -18,28 +18,27 @@
 -   Aba de Perícias
 -   Aba poderes (modo editável)
 -   Aba de Itens (modo editável)
+-   Aba de Magias
+-   Aba de Habilidades raciais
+-   Aba de Combate (defesa, iniciativa, percepção, etc)
 
 # Funcionalidades pendentes:
-
--   Aba de Habilidades raciais
 
 ## Funcionalidade em desenvolvimento
 
 ## Pendências para protótipo
 
--   Aba de Combate (defesa, iniciativa, percepção, etc)
--   Aba de Magias
 -   Logo do App
 -   Remover estado das telas após goBack()
 -   Corrigir bug de teclado das Notas (quase lá)
--   Apresentar modificador na tela principal da ficha
--   Remover menus não usados
--   Melhorar aparência da seleção de personagens
 -   Criar menu de ajuda && Iniciar App com modal aberto. (como mudar vida)
 -   Remover raças e classes não suportadas (ou avisar q é protótipo e as demais não tão completas)
 -   Corrigir armazenamento da imagem
--   Unificar raça com demais textos da ficha
--   Remover Aba geral
+-   [done] Remover Aba geral
+-   [done] Unificar raça com demais textos da ficha
+-   [done] Apresentar modificador na tela principal da ficha
+-   [done] Remover menus não usados
+-   [done] Melhorar aparência da seleção de personagens
 
 ## Implementar após haver api:
 
@@ -69,3 +68,25 @@
 -   Melhorar descrição de classe
 -   Melhorar descrição de magias
 -   Na edição do personagem, permitir subir de nível
+
+```
+    Codigo para buildar: https://github.com/facebook/react-native/issues/26245#issuecomment-541490177
+    react.gradle
+
+            doLast {
+                def moveFunc = { resSuffix ->
+                    File originalDir = file("$buildDir/generated/res/react/release/${resSuffix}");
+                    if (originalDir.exists()) {
+                        File destDir = file("$buildDir/../src/main/res/${resSuffix}");
+                        ant.move(file: originalDir, tofile: destDir);
+                    }
+                }
+                moveFunc.curry("drawable-ldpi").call()
+                moveFunc.curry("drawable-mdpi").call()
+                moveFunc.curry("drawable-hdpi").call()
+                moveFunc.curry("drawable-xhdpi").call()
+                moveFunc.curry("drawable-xxhdpi").call()
+                moveFunc.curry("drawable-xxxhdpi").call()
+                moveFunc.curry("raw").call()
+            }
+```

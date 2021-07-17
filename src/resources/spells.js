@@ -1,3 +1,7 @@
+export const findSpellByKey = (spellKey) => {
+    return spellsFirstCircle.find((item) => item.key === spellKey)
+}
+
 export const spellsFirstCircle = [
     {
         key: 'ABENCOAR_ALIMENTOS',

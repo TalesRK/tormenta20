@@ -1,3 +1,7 @@
+export const findCreatureSkillByKey = (key) => {
+    return creatureSkills.find((item) => item.key === key)
+}
+
 export const creatureSkills = [
     {
         key: 'AGARRAR_APRIMORADO',

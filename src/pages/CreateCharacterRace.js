@@ -248,8 +248,8 @@ const CreateCharacterRace = ({ navigation }) => {
             <View>
                 {race.attributes.map((attribute, index) => {
                     const label = translateKey(attribute.key)
-                    const sign = attribute.value > 0 ? '+' : ''
-                    const value = `${sign}${attribute.value}`
+                    const sign = attribute.points > 0 ? '+' : ''
+                    const value = `${sign}${attribute.points}`
                     return (
                         <Text
                             key={race.key + attribute.key + index}

@@ -11,7 +11,6 @@ export const calcAttributeByKey = (character, attributeKey) => {
         .filter((att) => att.key === attributeKey)
         .map((att) => att.points)
         .reduce((a, b) => a + b, 0)
-
     return value
 }
 
@@ -84,12 +83,11 @@ export const calcMaxMana = (character) => {
     }
     const spellAttribute = getAttributeByAttKey(
         character.atributos,
-        character.magia.atributo_chave
+        character.magia.atributo_chave || 'INT'
     )
     const attributeModifier = calcModifierByAttribute(spellAttribute)
     const manaByLevel =
         selectedClass.data.pontos_mana.por_nivel * character.nivel
-
     return attributeModifier + manaByLevel
 }
 

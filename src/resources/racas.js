@@ -103,9 +103,9 @@ export const racas = [
         description:
             'Anões são o mais resiliente dos povos. Em suas cidadelas subterrâneas, trabalham duro escavando minas e forjando metal em belas armas, armaduras e joias. São honestos e determinados, honrando a família e a tradição. Apesar de sua profunda paixão por forja e cerveja, pouca coisa é mais preciosa para um anão que cultivar uma barba longa e orgulhosa.',
         attributes: [
-            { key: 'CON', value: 4 },
-            { key: 'SAB', value: 2 },
-            { key: 'DES', value: -2 },
+            { key: 'CON', points: 4 },
+            { key: 'SAB', points: 2 },
+            { key: 'DES', points: -2 },
         ],
         speed: 6,
         creatureSkills: ['VISAO_NO_ESCURO'],
@@ -146,9 +146,9 @@ export const racas = [
         description:
             'Parte humanas, parte fadas, as dahllan são uma raça de mulheres com a seiva de árvores correndo nas veias. Falam com os animais, controlam as plantas — mas também são ferozes em batalha, retorcendo madeira para formar armaduras.',
         attributes: [
-            { key: 'SAB', value: 4 },
-            { key: 'DES', value: 2 },
-            { key: 'INT', value: -2 },
+            { key: 'SAB', points: 4 },
+            { key: 'DES', points: 2 },
+            { key: 'INT', points: -2 },
         ],
         spells: ['CONTROLAR_PLANTAS'],
         speed: 9,
@@ -179,9 +179,9 @@ export const racas = [
         description:
             'Elfos são seres feitos para a beleza e para a guerra, tão habilidosos com magia quanto com espadas e arcos. Elegantes, astutos, de vidas quase eternas, parecem superiores aos humanos em tudo. Poderiam ter governado toda Arton, não fosse a arrogância herdada de sua deusa. Com a queda de Glórienn, os elfos se tornaram um povo sem uma deusa. Um povo independente. Enquanto alguns veem a falta de uma divindade como uma tragédia, outros acreditam que, pela primeira vez na história, são livres.',
         attributes: [
-            { key: 'INT', value: 4 },
-            { key: 'DES', value: 2 },
-            { key: 'CON', value: -2 },
+            { key: 'INT', points: 4 },
+            { key: 'DES', points: 2 },
+            { key: 'CON', points: -2 },
         ],
         speed: 12,
         pontosMana: {
@@ -223,9 +223,9 @@ export const racas = [
         description:
             'Estes pequenos seres feiosos conseguiram um lugar entre os povos do Reinado. Podem ser encontrados em todas as grandes cidades, muitos vivendo na imundície, outros prosperando em carreiras que quase ninguém tentaria: espiões, aeronautas, engenhoqueiros. Onde o anão teimoso e o elfo empolado falham, o goblin pode dar um jeito. Porque ele não tem vergonha. Nem orgulho. Nem bom senso.',
         attributes: [
-            { key: 'DES', value: 4 },
-            { key: 'INT', value: 2 },
-            { key: 'CAR', value: -2 },
+            { key: 'DES', points: 4 },
+            { key: 'INT', points: 2 },
+            { key: 'CAR', points: -2 },
         ],
         creatureSkills: ['VISAO_NO_ESCURO'],
         speed: 9,
@@ -352,9 +352,9 @@ export const racas = [
         description:
             'Povo guerreiro, orgulhoso e poderoso, criadores de uma civilização avançada, com a missão sagrada de proteger e governar os fracos — ou assim se enxergavam. Em seus tempos áureos, tomaram grande parte de Arton. Hoje, após a morte de sua divindade e a decadência de seu Império, os minotauros lutam para recuperar a glória perdida ou encontrar um novo papel no mundo.',
         attributes: [
-            { key: 'FOR', value: 4 },
-            { key: 'CON', value: 2 },
-            { key: 'SAB', value: -2 },
+            { key: 'FOR', points: 4 },
+            { key: 'CON', points: 2 },
+            { key: 'SAB', points: -2 },
         ],
         defenceBonus: 1,
         bonusAttack: ['CHIFRES'],
@@ -392,9 +392,9 @@ export const racas = [
         description:
             'Descendentes de poderosos gênios, os qareen são otimistas, generosos e prestativos, sempre ansiosos por ajudar. Consideram-se abençoados pela Deusa da Magia, exibindo como evidência a marca de Wynna em seus corpos. Sua magia é mais poderosa quando usada para realizar desejos de outros.',
         attributes: [
-            { key: 'CAR', value: 4 },
-            { key: 'INT', value: 2 },
-            { key: 'SAB', value: -2 },
+            { key: 'CAR', points: 4 },
+            { key: 'INT', points: 2 },
+            { key: 'SAB', points: -2 },
         ],
         bonusSpellQuantity: 1,
         speed: 9,
@@ -425,9 +425,9 @@ export const racas = [
         description:
             'Diz-se que estes seres são apenas construtos sem vida, criados não pelos deuses, mas por mortais. No entanto, são movidos por forças vivas — espíritos elementais selvagens, capturados e lacrados por meios mágicos em corpos de pedra e metal. Muitos conformam-se com seus papéis como trabalhadores e soldados, enquanto outros demonstram alta inteligência, personalidade e iniciativa. Podem fazer tudo que outras raças fazem, até mesmo conjurar magias arcanas ou divinas. Será que têm alma? Será que encontrarão os deuses quando chegar sua hora?',
         attributes: [
-            { key: 'FOR', value: 4 },
-            { key: 'CON', value: 2 },
-            { key: 'CAR', value: -2 },
+            { key: 'FOR', points: 4 },
+            { key: 'CON', points: 2 },
+            { key: 'CAR', points: -2 },
         ],
         speed: 6,
         defenceBonus: 2,
@@ -474,9 +474,9 @@ export const racas = [
         description:
             "Também conhecidos como halflings ou 'pequeninos', os hynne são apreciadores de boa comida e casas aconchegantes, raras vezes escolhendo sair pelo mundo em aventuras perigosas. Quando decidem fazê-lo, contudo, recorrem à agilidade e encanto naturais para ludibriar os inimigos — mais de um taverneiro ou miliciano deixou-se enganar por suas mãos ligeiras e sorrisos inocentes. Foram recentemente forçados a fugir de seu antigo reino natal, sendo então acolhidos pelas Repúblicas Livres de Sambúrdia, onde cultivam ervas e especiarias valiosas. Para espanto de todos, também se tornaram astutos mercadores, muitos ascendendo a príncipes mercantes.",
         attributes: [
-            { key: 'DES', value: 4 },
-            { key: 'CAR', value: 2 },
-            { key: 'FOR', value: -2 },
+            { key: 'DES', points: 4 },
+            { key: 'CAR', points: 2 },
+            { key: 'FOR', points: -2 },
         ],
         bonusSkills: [
             {
@@ -516,9 +516,9 @@ export const racas = [
         description:
             'Estes visitantes de outro mundo seriam uma combinação entre humanos e gnomos — mas, afinal, o que são gnomos? São uma raça que talvez existisse em Arton, não fosse o envolvimento criminoso de seu deus Tilliann na criação da própria Tormenta. Seja como for, os kliren somam a alta inteligência gnômica e a curiosidade humana, resultando em seres de extrema engenhosidade, criatividade e talento com aparatos mecânicos. Seriam capazes de grandes feitos, talvez até dominar Arton, não fossem a impulsividade e imprudência que por vezes abreviam suas vidas...',
         attributes: [
-            { key: 'INT', value: 4 },
-            { key: 'CAR', value: 2 },
-            { key: 'FOR', value: -2 },
+            { key: 'INT', points: 4 },
+            { key: 'CAR', points: 2 },
+            { key: 'FOR', points: -2 },
         ],
         bonusSkills: [
             {
@@ -576,8 +576,8 @@ export const racas = [
         description:
             'Ainda que estas criaturas reclusas sejam famosas por transformar suas vítimas em pedra com um simples olhar, apenas as mais antigas e poderosas o fazem. Jovens medusas por vezes rejeitam a solidão e crueldade racial, aventurando-se no Reinado, até mesmo fazendo amigos ou integrando equipes de heróis. Conseguem se fazer passar por mulheres humanas, quando escondem o cabelo feito de serpentes. O único povo que não teme medusas são os anões, que as consideram belas musas.',
         attributes: [
-            { key: 'DES', value: 4 },
-            { key: 'CAR', value: 2 },
+            { key: 'DES', points: 4 },
+            { key: 'CAR', points: 2 },
         ],
         creatureSkills: ['VISAO_NO_ESCURO'],
         speed: 9,
@@ -785,9 +785,9 @@ export const racas = [
         description:
             'Descendentes de extraplanares divinos, esta raça é formada por seres com traços angelicais ou demoníacos — ou ambos. Por serem ligados às forças opostas da luz e trevas, suraggel têm traços diferentes quando orientados para seu lado celestial, sendo então conhecidos como aggelus; ou para o lado abissal, assim sendo chamados sulfure. Sua natureza em geral combina com a ascendência, lembrando habitantes dos Mundos dos Deuses, mas eles também podem ser surpreendentes e contraditórios: não se espante muito ao conhecer um aggelus ladino ou um sulfure paladino.',
         attributes: [
-            { key: 'CAR', value: 4 },
-            { key: 'DES', value: 2 },
-            { key: 'FOR', value: -4 },
+            { key: 'CAR', points: 4 },
+            { key: 'DES', points: 2 },
+            { key: 'FOR', points: -4 },
         ],
         creatureSkills: ['VISAO_NA_PENUMBRA'],
         speed: 9,
@@ -839,9 +839,9 @@ export const racas = [
         description:
             'Descendentes de extraplanares divinos, esta raça é formada por seres com traços angelicais ou demoníacos — ou ambos. Por serem ligados às forças opostas da luz e trevas, suraggel têm traços diferentes quando orientados para seu lado celestial, sendo então conhecidos como aggelus; ou para o lado abissal, assim sendo chamados sulfure. Sua natureza em geral combina com a ascendência, lembrando habitantes dos Mundos dos Deuses, mas eles também podem ser surpreendentes e contraditórios: não se espante muito ao conhecer um aggelus ladino ou um sulfure paladino.',
         attributes: [
-            { key: 'SAB', value: 4 },
-            { key: 'CAR', value: 2 },
-            { key: 'DES', value: 4 },
+            { key: 'SAB', points: 4 },
+            { key: 'CAR', points: 2 },
+            { key: 'DES', points: 4 },
         ],
         creatureSkills: ['VISAO_NO_ESCURO'],
         speed: 9,
@@ -877,9 +877,9 @@ export const racas = [
         description:
             'Descendentes de extraplanares divinos, esta raça é formada por seres com traços angelicais ou demoníacos — ou ambos. Por serem ligados às forças opostas da luz e trevas, suraggel têm traços diferentes quando orientados para seu lado celestial, sendo então conhecidos como aggelus; ou para o lado abissal, assim sendo chamados sulfure. Sua natureza em geral combina com a ascendência, lembrando habitantes dos Mundos dos Deuses, mas eles também podem ser surpreendentes e contraditórios: não se espante muito ao conhecer um aggelus ladino ou um sulfure paladino.',
         attributes: [
-            { key: 'SAB', value: 4 },
-            { key: 'DES', value: 4 },
-            { key: 'INT', value: 2 },
+            { key: 'SAB', points: 4 },
+            { key: 'DES', points: 4 },
+            { key: 'INT', points: 2 },
         ],
         creatureSkills: ['VISAO_NO_ESCURO'],
         speed: 9,
@@ -915,9 +915,9 @@ export const racas = [
         description:
             "Trogloditas (ou 'trogs') são homens-lagarto primitivos e subterrâneos que odeiam todos os outros seres — especialmente os que sabem forjar aço, aquilo que mais cobiçam. Suas tribos tramam incursões contra povoados humanos, fazem emboscadas em estradas, atacam exploradores em masmorras. Uns poucos, no entanto, divergem da crueldade e selvageria inerentes à raça. Abandonam a tribo ou são expulsos. Escolhem caminhos surpreendentes, inesperados; tornam-se druidas, ou clérigos, ou bucaneiros, ou sabe-se lá o que mais. Enfim, acabam aceitos como colegas por aventureiros tão estranhos e deslocados quanto eles próprios.",
         attributes: [
-            { key: 'CON', value: 4 },
-            { key: 'FOR', value: 2 },
-            { key: 'INT', value: -2 },
+            { key: 'CON', points: 4 },
+            { key: 'FOR', points: 2 },
+            { key: 'INT', points: -2 },
         ],
         bonusAttack: ['MORDIDA'],
         creatureSkills: ['VISAO_NO_ESCURO'],
