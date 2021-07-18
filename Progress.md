@@ -28,17 +28,18 @@
 
 ## Pendências para protótipo
 
--   Logo do App
--   Remover estado das telas após goBack()
+-   [done] Logo do App
 -   Corrigir bug de teclado das Notas (quase lá)
 -   Criar menu de ajuda && Iniciar App com modal aberto. (como mudar vida)
--   Remover raças e classes não suportadas (ou avisar q é protótipo e as demais não tão completas)
--   Corrigir armazenamento da imagem
+    Opção 'Personagens' no drawer deve levar pra listagem de personagens
 -   [done] Remover Aba geral
 -   [done] Unificar raça com demais textos da ficha
 -   [done] Apresentar modificador na tela principal da ficha
 -   [done] Remover menus não usados
 -   [done] Melhorar aparência da seleção de personagens
+-   [done] Estado inicial da tela deve resetar
+-   [done] Corrigir armazenamento da imagem
+-   [done] Remover estado das telas após goBack()
 
 ## Implementar após haver api:
 
@@ -68,25 +69,3 @@
 -   Melhorar descrição de classe
 -   Melhorar descrição de magias
 -   Na edição do personagem, permitir subir de nível
-
-```
-    Codigo para buildar: https://github.com/facebook/react-native/issues/26245#issuecomment-541490177
-    react.gradle
-
-            doLast {
-                def moveFunc = { resSuffix ->
-                    File originalDir = file("$buildDir/generated/res/react/release/${resSuffix}");
-                    if (originalDir.exists()) {
-                        File destDir = file("$buildDir/../src/main/res/${resSuffix}");
-                        ant.move(file: originalDir, tofile: destDir);
-                    }
-                }
-                moveFunc.curry("drawable-ldpi").call()
-                moveFunc.curry("drawable-mdpi").call()
-                moveFunc.curry("drawable-hdpi").call()
-                moveFunc.curry("drawable-xhdpi").call()
-                moveFunc.curry("drawable-xxhdpi").call()
-                moveFunc.curry("drawable-xxxhdpi").call()
-                moveFunc.curry("raw").call()
-            }
-```

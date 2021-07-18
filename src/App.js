@@ -140,7 +140,7 @@ export default function App() {
                     <Drawer.Screen
                         name="CharacterView"
                         component={CharacterView}
-                        options={{ title: 'Lista de Personagens' }}
+                        options={{ title: 'Personagens' }}
                     />
                     <Drawer.Screen
                         name="CharacterCreate"

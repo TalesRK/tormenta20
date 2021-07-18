@@ -8,6 +8,7 @@ import {
     Dimensions,
     ScrollView,
 } from 'react-native'
+import { cloneDeep } from 'lodash'
 
 import colors from '../styles/colors'
 import commonStyle from '../styles/common.style'
@@ -42,7 +43,7 @@ const initialBlocks = [
 
 const CreateCharacterRace = ({ navigation }) => {
     const [canProceed, setCanProceed] = useState(false)
-    const [blocks, setBlocks] = useState([...initialBlocks])
+    const [blocks, setBlocks] = useState(cloneDeep(initialBlocks))
     const [, dispatch] = useStateValue()
 
     useEffect(() => {
@@ -60,7 +61,7 @@ const CreateCharacterRace = ({ navigation }) => {
 
     const goToNextPage = () => {
         if (canProceed) {
-            const value = blocks
+            const value = cloneDeep(blocks)
                 .filter((block) => block.render)
                 .map((block) => {
                     const dataOfThisBlock = mapBlockData(block)
@@ -126,12 +127,12 @@ const CreateCharacterRace = ({ navigation }) => {
             return block.source.dataValues
         }
         if (block.source.dataSource) {
-            return mapDataSourceValues(block.source.dataSource)
+            return cloneDeep(mapDataSourceValues(block.source.dataSource))
         }
         if (block.source.options) {
             return block.source.options
         }
-        console.error('faltou valor aqui', block)
+        console.error('Valor não encontrado', block)
     }
 
     const mapItemData = (block, itemKey) => {
@@ -140,7 +141,7 @@ const CreateCharacterRace = ({ navigation }) => {
     }
 
     const onSelectItem = (blockIndex, selectedItem) => {
-        let updatedBlocks = [...blocks]
+        let updatedBlocks = cloneDeep(blocks)
         const selectedBlock = updatedBlocks[blockIndex]
         const isInitialValue = selectedBlock.selectionRule === 'INITIAL'
 
@@ -178,14 +179,17 @@ const CreateCharacterRace = ({ navigation }) => {
                 const newBlocks = mapDefaultBlocks(selectedBlock, selectedItem)
                 selectedBlock.data.push(selectedItem)
 
-                setBlocks([...updatedBlocks, ...newBlocks])
+                setBlocks([
+                    ...cloneDeep(updatedBlocks),
+                    ...cloneDeep(newBlocks),
+                ])
             } else {
                 const updatedBlocksWithSelected = updateBlocksBySelection(
                     updatedBlocks,
                     selectedBlock,
                     selectedItem
                 )
-                setBlocks(updatedBlocksWithSelected)
+                setBlocks(cloneDeep(updatedBlocksWithSelected))
             }
         }
     }
@@ -197,7 +201,7 @@ const CreateCharacterRace = ({ navigation }) => {
         isInitialValue
     ) => {
         if (isInitialValue) {
-            const newValue = [...initialBlocks]
+            const newValue = cloneDeep(initialBlocks)
             newValue.forEach((item) => (item.data = []))
             setBlocks(newValue)
             return

@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { ScrollView, Text, View, TouchableOpacity } from 'react-native'
 import { Icon } from 'react-native-elements'
+import { cloneDeep } from 'lodash'
 
 import colors from '../styles/colors'
 
@@ -22,18 +23,19 @@ const SingleDataList = ({
     onSelect,
     style: propsStyle,
     expandOnSelect,
+    onDelete,
 }) => {
     const [expandedItems, setExpandedItems] = useState([])
 
     const updateItem = (index, action) => {
-        const updatedData = [...data]
+        const updatedData = cloneDeep(data)
         const itemSelected = updatedData[index]
 
         if (action === 'select') {
             if (expandOnSelect) {
                 const isExpanded = expandedItems.includes(itemSelected.key)
                 if (!isExpanded) {
-                    const newExpandList = [...expandedItems]
+                    const newExpandList = cloneDeep(expandedItems)
                     newExpandList.push(itemSelected.key)
                     setExpandedItems(newExpandList)
                 }
@@ -41,7 +43,7 @@ const SingleDataList = ({
             onSelect(itemSelected, index)
         } else if (action === 'expand') {
             const shouldRetract = expandedItems.includes(itemSelected.key)
-            const newExpandList = [...expandedItems]
+            const newExpandList = cloneDeep(expandedItems)
 
             if (shouldRetract) {
                 newExpandList.pop(itemSelected.key)
@@ -76,6 +78,19 @@ const SingleDataList = ({
                 onPress={() => updateItem(index, 'select')}
             >
                 <Text style={{ color: colors.gold_1 }}>{item.label}</Text>
+                {onDelete && (
+                    <TouchableOpacity
+                        onPress={() => onDelete(item, index)}
+                        hitSlop={{ left: 20, right: 20 }}
+                    >
+                        <Icon
+                            size={30}
+                            name="trash-o"
+                            type="font-awesome"
+                            color={itemColor}
+                        />
+                    </TouchableOpacity>
+                )}
                 {propsRenderItem && (
                     <TouchableOpacity
                         onPress={() => updateItem(index, 'expand')}

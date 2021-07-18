@@ -2,6 +2,7 @@ import React, { createContext, useContext, useReducer } from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import uuid from 'react-native-uuid'
 import { CommonActions } from '@react-navigation/native'
+import { cloneDeep } from 'lodash'
 
 import {
     calcMaxLife,
@@ -89,7 +90,7 @@ const reducer = (state, action) => {
         case 'selectCharacterPoints': {
             const source = 'PONTOS_INICIAIS'
             const attributesMapped = action.value
-            const character = initialValues.character
+            const character = cloneDeep(initialValues.character)
 
             character.atributos = [
                 ...character.atributos.filter((item) => item.source !== source),
@@ -244,16 +245,30 @@ const reducer = (state, action) => {
 
             characters.push(character)
 
+            const characterCreation = cloneDeep(initialValues.character)
+
             storeData('characters', characters)
-            storeData('characterCreation', initialValues.character)
+            storeData('characterCreation', characterCreation)
             storeData('character', character)
 
             handleNavigation(action.navigation, source, character)
             return {
                 ...state,
-                characterCreation: initialValues.character,
+                characterCreation,
                 characters,
                 character,
+            }
+        }
+        case 'deleteCharacter': {
+            const characters = state.characters
+            const charId = action.value
+
+            const newCharsList = characters.filter((i) => i.id !== charId)
+            storeData('characters', newCharsList)
+
+            return {
+                ...state,
+                characters: newCharsList,
             }
         }
         default:
@@ -309,7 +324,6 @@ const setCharacterValuesByDynamicSelection = (block, character, source) => {
         case 'races':
             const race = block.data[0]
             character.raca = race.key
-            console.log('\n\n', race, race.key, race.creatureSkills)
             if (race.creatureSkills) {
                 character.powersText = '\nPoderes de criatura:\n'
                 race.creatureSkills.forEach((cSkill) => {

@@ -1,17 +1,23 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { SafeAreaView, Text, View } from 'react-native'
+import { cloneDeep } from 'lodash'
+import { Icon } from 'react-native-elements'
 
 import colors from '../styles/colors'
 import { useStateValue } from '../context/ContextProvider'
 import SingleDataList from '../components/SingleDataList'
 import { getRaceByKey } from '../resources/racas'
 import { getClassByKey } from '../resources/classes'
+import ModalOverride from '../components/ModalOverride'
+import { TouchableOpacity } from 'react-native'
+import commonStyle from '../styles/common.style'
 
 const CharacterList = ({ navigation }) => {
     const [{ characters }, dispatch] = useStateValue()
+    const [modalVisible, setModalVisible] = useState(false)
 
     const goToNextPage = (index) => {
-        const selectedChar = Object.assign({}, characters[index])
+        const selectedChar = cloneDeep(characters[index])
 
         dispatch({
             type: 'updateCharacter',
@@ -30,6 +36,72 @@ const CharacterList = ({ navigation }) => {
         })
     }
 
+    const onDeleteCharacter = (selectedChar) => {
+        setModalVisible(selectedChar)
+    }
+
+    const confirmDeleteCharacter = () => {
+        const charId = modalVisible.id
+
+        dispatch({
+            type: 'deleteCharacter',
+            value: charId,
+        })
+        setModalVisible(false)
+    }
+
+    const renderModalContent = () => {
+        return (
+            <View
+                style={{
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                }}
+            >
+                <Text
+                    style={{
+                        color: colors.white_1,
+                        marginTop: 10,
+                        marginBottom: 20,
+                    }}
+                >
+                    Você está prestes a excluir o personagem:
+                </Text>
+                <Text style={{ color: colors.white_1, fontSize: 20 }}>
+                    {modalVisible.nome}
+                </Text>
+
+                <TouchableOpacity
+                    style={[
+                        commonStyle.foreground,
+                        {
+                            height: 50,
+                            marginTop: 10,
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            backgroundColor: colors.black_3,
+                            borderWidth: 3,
+                            borderColor: colors.red_1,
+                            flexDirection: 'row',
+                            paddingHorizontal: 20,
+                        },
+                    ]}
+                    onPress={confirmDeleteCharacter}
+                >
+                    <Text style={[commonStyle.text, { marginRight: 15 }]}>
+                        Confirmar deleção
+                    </Text>
+                    <Icon
+                        size={30}
+                        name="trash-o"
+                        type="font-awesome"
+                        color={colors.red_1}
+                    />
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
     return (
         <SafeAreaView
             style={{
@@ -39,6 +111,12 @@ const CharacterList = ({ navigation }) => {
                 backgroundColor: colors.black_1,
             }}
         >
+            <ModalOverride
+                modalVisible={!!modalVisible}
+                onClose={() => setModalVisible(false)}
+            >
+                {renderModalContent()}
+            </ModalOverride>
             <View
                 style={{
                     height: '20%',
@@ -80,6 +158,7 @@ const CharacterList = ({ navigation }) => {
                     </View>
                 ) : (
                     <SingleDataList
+                        onDelete={onDeleteCharacter}
                         data={formatCharLabel(characters)}
                         onSelect={(item, itemIndex) => goToNextPage(itemIndex)}
                     />

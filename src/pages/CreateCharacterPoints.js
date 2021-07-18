@@ -9,6 +9,7 @@ import {
     TextInput,
 } from 'react-native'
 import { Icon } from 'react-native-elements'
+import { cloneDeep } from 'lodash'
 
 import colors from '../styles/colors'
 import commonStyle from '../styles/common.style'
@@ -27,14 +28,16 @@ import {
 import { useStateValue } from '../context/ContextProvider'
 
 const CreateCharacterPoints = ({ navigation }) => {
-    const [attMapTypeState, setAttMapType] = useState(attributeMapType)
-    const [pointBuy, setPointBuy] = useState(buyAttributes)
-    const [rollPoints, setRollPoints] = useState(rollAttributes)
-    const [fillPoints, setFillPoints] = useState(fillAttributes)
+    const [attMapTypeState, setAttMapType] = useState(
+        cloneDeep(attributeMapType)
+    )
+    const [pointBuy, setPointBuy] = useState(cloneDeep(buyAttributes))
+    const [rollPoints, setRollPoints] = useState(cloneDeep(rollAttributes))
+    const [fillPoints, setFillPoints] = useState(cloneDeep(fillAttributes))
     const [, dispatch] = useStateValue()
 
     const selectAttMapType = (index) => {
-        const newAttMapType = [...attMapTypeState]
+        const newAttMapType = cloneDeep(attMapTypeState)
         newAttMapType.forEach((item) => (item.selected = false))
 
         const selectedAttMapType = newAttMapType[index]
@@ -155,7 +158,7 @@ const CreateCharacterPoints = ({ navigation }) => {
                                     <Text style={[{ color: colors.white_1 }]}>
                                         {opt.label}
                                     </Text>
-                                    {opt.icon}
+                                    {renderIcon(opt.icon)}
                                 </View>
 
                                 <View
@@ -228,7 +231,7 @@ const CreateCharacterPoints = ({ navigation }) => {
         if (value > 9999) {
             return
         }
-        const newFillPoints = Object.assign({}, fillPoints)
+        const newFillPoints = cloneDeep(fillPoints)
         newFillPoints.attributes[idx].currentAttribute = value
         setFillPoints(newFillPoints)
     }
@@ -259,11 +262,10 @@ const CreateCharacterPoints = ({ navigation }) => {
                                 <Text style={[{ color: colors.white_1 }]}>
                                     {opt.label}
                                 </Text>
-                                {opt.icon}
+                                {renderIcon(opt.icon)}
                                 <Text style={[{ color: colors.white_1 }]}>
                                     {opt.currentAttribute}
                                 </Text>
-
                                 <View
                                     style={{
                                         width: '100%',
@@ -290,7 +292,6 @@ const CreateCharacterPoints = ({ navigation }) => {
                                         }
                                     />
                                 </View>
-
                                 <Text style={{ color: colors.white_1 }}>=</Text>
                                 <Text style={{ color: colors.white_1 }}>
                                     {modifier > 0 ? `+${modifier}` : modifier}
@@ -380,7 +381,7 @@ const CreateCharacterPoints = ({ navigation }) => {
             return b - a
         })
 
-        const newRollPoints = Object.assign({}, rollPoints)
+        const newRollPoints = cloneDeep(rollPoints)
         newRollPoints.attributes.map((att, idx) => {
             att.currentAttribute = dicesRolledSum[idx]
         })
@@ -400,13 +401,24 @@ const CreateCharacterPoints = ({ navigation }) => {
             toIndex = isLeft ? actualIndex - 1 : actualIndex + 1
         }
 
-        const newRollPoints = Object.assign({}, rollPoints)
+        const newRollPoints = cloneDeep(rollPoints)
         const aux = newRollPoints.attributes[actualIndex].currentAttribute
         newRollPoints.attributes[actualIndex].currentAttribute =
             newRollPoints.attributes[toIndex].currentAttribute
         newRollPoints.attributes[toIndex].currentAttribute = aux
 
         setRollPoints(newRollPoints)
+    }
+
+    const renderIcon = (iconData) => {
+        return (
+            <Icon
+                size={iconData.size}
+                name={iconData.name}
+                type={iconData.type}
+                color={iconData.color}
+            />
+        )
     }
 
     const renderBuyPoints = () => {
@@ -447,7 +459,7 @@ const CreateCharacterPoints = ({ navigation }) => {
                                 <Text style={[{ color: colors.white_1 }]}>
                                     {opt.label}
                                 </Text>
-                                {opt.icon}
+                                {renderIcon(opt.icon)}
                                 <Text style={[{ color: colors.white_1 }]}>
                                     {opt.currentAttribute}
                                 </Text>
@@ -512,7 +524,7 @@ const CreateCharacterPoints = ({ navigation }) => {
     }
 
     const buyPoint = (action, idx) => {
-        const newPoints = Object.assign({}, pointBuy)
+        const newPoints = cloneDeep(pointBuy)
         const att = newPoints.attributes[idx]
         let desiredAttributeQuantity = att.currentAttribute
         const lastCost = calcCostByAttribute(att.currentAttribute)

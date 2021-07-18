@@ -9,6 +9,7 @@ import {
     Dimensions,
 } from 'react-native'
 import { Icon } from 'react-native-elements'
+import { cloneDeep } from 'lodash'
 
 import colors from '../styles/colors'
 import commonStyle from '../styles/common.style'
@@ -21,7 +22,7 @@ const windowHeight = Dimensions.get('window').height
 
 const CreateCharacterSpells = ({ navigation }) => {
     const [spellsState, setSpells] = useState([])
-    const [schoolState, setSchools] = useState([...spellsSchools])
+    const [schoolState, setSchools] = useState(cloneDeep(spellsSchools))
     const [remainingSelect, setRemainingSelect] = useState({
         schools: 0,
         spells: 0,
@@ -29,11 +30,6 @@ const CreateCharacterSpells = ({ navigation }) => {
     const [{ characterCreation }, dispatch] = useStateValue()
 
     useEffect(() => {
-        setSpells([])
-        const newSpellsSchools = [...spellsSchools]
-        newSpellsSchools.forEach((item) => (item.selected = false))
-        setSchools(newSpellsSchools)
-        setSpells([])
         mapInitialSelectionData()
     }, [])
 
@@ -45,7 +41,7 @@ const CreateCharacterSpells = ({ navigation }) => {
         const classe = getClassByKey(characterCreation.classe.key)
         const magiaData = classe?.data?.magia
         if (magiaData) {
-            const newRemainingSelect = Object.assign({}, remainingSelect)
+            const newRemainingSelect = cloneDeep(remainingSelect)
 
             newRemainingSelect.schools = magiaData.escolas_escolher
             newRemainingSelect.spells = magiaData.quantidade_inicial
@@ -73,13 +69,13 @@ const CreateCharacterSpells = ({ navigation }) => {
     }
 
     const expandSpellsItem = (index) => {
-        const updateSpells = [...spellsState]
+        const updateSpells = cloneDeep(spellsState)
         updateSpells[index].expanded = !updateSpells[index].expanded
         setSpells(updateSpells)
     }
 
     const selectSpellsItem = (index) => {
-        const updateSpells = [...spellsState]
+        const updateSpells = cloneDeep(spellsState)
         const selSpell = updateSpells[index]
         const newValue = selSpell.isFromClass || !selSpell.selected
         if (newValue !== selSpell.selected) {
@@ -96,13 +92,13 @@ const CreateCharacterSpells = ({ navigation }) => {
     }
 
     const expandSchoolItem = (index) => {
-        const updateSchools = [...schoolState]
+        const updateSchools = cloneDeep(schoolState)
         updateSchools[index].expanded = !updateSchools[index].expanded
         setSchools(updateSchools)
     }
 
     const selectSchoolItem = (index) => {
-        const updateSchools = [...schoolState]
+        const updateSchools = cloneDeep(schoolState)
         const selHouse = updateSchools[index]
         selHouse.selected = !selHouse.selected
         if (selHouse.selected && remainingSelect.schools < 1) {

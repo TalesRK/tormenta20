@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, Text } from 'react-native'
+import { cloneDeep } from 'lodash'
 
 import { useStateValue } from '../context/ContextProvider'
 import ResumedList from '../components/ResumedList'
@@ -11,12 +12,12 @@ import { translateKey } from '../resources/constants'
 import { calcSkillModifier } from '../resources/formulas'
 
 const SkillsTab = () => {
-    const [{ character }, dispatch] = useStateValue()
-    const [skills, setSkills] = useState(proficiencies)
+    const [{ character }] = useStateValue()
+    const [skills, setSkills] = useState(cloneDeep(proficiencies))
     const [modalContent, setModalContent] = useState()
 
     useEffect(() => {
-        const newSkills = [...proficiencies]
+        const newSkills = cloneDeep(skills)
 
         newSkills.forEach((skillItem) => {
             const charSkill = character.pericias.find(

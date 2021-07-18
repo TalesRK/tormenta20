@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
-import ModalOverride from '../components/ModalOverride'
+import { cloneDeep } from 'lodash'
 
+import ModalOverride from '../components/ModalOverride'
 import colors from '../styles/colors'
 import common from '../styles/common.style'
 import { useStateValue } from '../context/ContextProvider'
@@ -30,7 +31,7 @@ const CharactersMainInfo = (props) => {
     }
 
     const onPickerConfirm = (type) => {
-        const newCharacter = Object.assign({}, character)
+        const newCharacter = cloneDeep(character)
 
         if (type === 'vida') {
             const charMaxLife = calcMaxLife(character)
@@ -248,7 +249,7 @@ const CharactersMainInfo = (props) => {
                         <Image
                             style={styles.characterImage}
                             source={{
-                                uri: character.imagem,
+                                uri: `data:image/jpeg;base64,${character.imagem}`,
                             }}
                         />
                     </View>

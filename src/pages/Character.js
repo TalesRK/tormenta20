@@ -1,4 +1,5 @@
 import React from 'react'
+import { KeyboardAvoidingView } from 'react-native'
 import { View, StyleSheet } from 'react-native'
 
 import CharactersMainInfo from '../components/CharacterMainInfo'
@@ -7,10 +8,12 @@ import colors from '../styles/colors'
 
 const Character = () => {
     return (
-        <View style={{ backgroundColor: colors.black_1 }}>
-            <CharactersMainInfo style={styles.mainCharacterInfo} />
-            <CharacterTabs style={styles.characterTabsStyle} />
-        </View>
+        <KeyboardAvoidingView behavior="position">
+            <View style={{ backgroundColor: colors.black_1 }}>
+                <CharactersMainInfo style={styles.mainCharacterInfo} />
+                <CharacterTabs style={styles.characterTabsStyle} />
+            </View>
+        </KeyboardAvoidingView>
     )
 }
 

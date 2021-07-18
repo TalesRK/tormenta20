@@ -138,84 +138,72 @@ export const buyAttributes = {
             key: 'FOR',
             currentAttribute: 10,
             pointsBought: 0,
-            icon: (
-                <Icon
-                    size={30}
-                    name="arm-flex"
-                    type="material-community"
-                    color={colors.red_1}
-                />
-            ),
+            icon: {
+                size: 30,
+                name: 'arm-flex',
+                type: 'material-community',
+                color: colors.red_1,
+            },
         },
         {
             label: 'DES',
             key: 'DES',
             currentAttribute: 10,
             pointsBought: 0,
-            icon: (
-                <Icon
-                    size={30}
-                    name="run"
-                    type="material-community"
-                    color={colors.red_1}
-                />
-            ),
+            icon: {
+                size: 30,
+                name: 'run',
+                type: 'material-community',
+                color: colors.red_1,
+            },
         },
         {
             label: 'CON',
             key: 'CON',
             currentAttribute: 10,
             pointsBought: 0,
-            icon: (
-                <Icon
-                    size={30}
-                    name="heartbeat"
-                    type="font-awesome-5"
-                    color={colors.red_1}
-                />
-            ),
+            icon: {
+                size: 30,
+                name: 'heartbeat',
+                type: 'font-awesome-5',
+                color: colors.red_1,
+            },
         },
         {
             label: 'INT',
             key: 'INT',
             currentAttribute: 10,
             pointsBought: 0,
-            icon: (
-                <Icon
-                    size={30}
-                    name="brain"
-                    type="font-awesome-5"
-                    color={colors.red_1}
-                />
-            ),
+            icon: {
+                size: 30,
+                name: 'brain',
+                type: 'font-awesome-5',
+                color: colors.red_1,
+            },
         },
         {
             label: 'SAB',
             key: 'SAB',
             currentAttribute: 10,
             pointsBought: 0,
-            icon: (
-                <Icon
-                    size={30}
-                    name="meditation"
-                    type="material-community"
-                    color={colors.red_1}
-                />
-            ),
+            icon: {
+                size: 30,
+                name: 'meditation',
+                type: 'material-community',
+                color: colors.red_1,
+            },
         },
         {
             label: 'CAR',
             key: 'CAR',
             currentAttribute: 10,
             pointsBought: 0,
-            icon: (
-                <Icon
-                    size={30}
-                    name="grin-wink"
-                    type="font-awesome-5"
-                    color={colors.red_1}
-                />
-            ),
+            icon: {
+                size: 30,
+                name: 'grin-wink',
+                type: 'font-awesome-5',
+                color: colors.red_1,
+            },
         },
     ],
 }
@@ -228,84 +216,72 @@ export const rollAttributes = {
             key: 'FOR',
             currentAttribute: 10,
             hasFilled: false,
-            icon: (
-                <Icon
-                    size={30}
-                    name="arm-flex"
-                    type="material-community"
-                    color={colors.red_1}
-                />
-            ),
+            icon: {
+                size: 30,
+                name: 'arm-flex',
+                type: 'material-community',
+                color: colors.red_1,
+            },
         },
         {
             label: 'DES',
             key: 'DES',
             currentAttribute: 10,
             hasFilled: false,
-            icon: (
-                <Icon
-                    size={30}
-                    name="run"
-                    type="material-community"
-                    color={colors.red_1}
-                />
-            ),
+            icon: {
+                size: 30,
+                name: 'run',
+                type: 'material-community',
+                color: colors.red_1,
+            },
         },
         {
             label: 'CON',
             key: 'CON',
             currentAttribute: 10,
             hasFilled: false,
-            icon: (
-                <Icon
-                    size={30}
-                    name="heartbeat"
-                    type="font-awesome-5"
-                    color={colors.red_1}
-                />
-            ),
+            icon: {
+                size: 30,
+                name: 'heartbeat',
+                type: 'font-awesome-5',
+                color: colors.red_1,
+            },
         },
         {
             label: 'INT',
             key: 'INT',
             currentAttribute: 10,
             hasFilled: false,
-            icon: (
-                <Icon
-                    size={30}
-                    name="brain"
-                    type="font-awesome-5"
-                    color={colors.red_1}
-                />
-            ),
+            icon: {
+                size: 30,
+                name: 'brain',
+                type: 'font-awesome-5',
+                color: colors.red_1,
+            },
         },
         {
             label: 'SAB',
             key: 'SAB',
             currentAttribute: 10,
             hasFilled: false,
-            icon: (
-                <Icon
-                    size={30}
-                    name="meditation"
-                    type="material-community"
-                    color={colors.red_1}
-                />
-            ),
+            icon: {
+                size: 30,
+                name: 'meditation',
+                type: 'material-community',
+                color: colors.red_1,
+            },
         },
         {
             label: 'CAR',
             key: 'CAR',
             currentAttribute: 10,
             hasFilled: false,
-            icon: (
-                <Icon
-                    size={30}
-                    name="grin-wink"
-                    type="font-awesome-5"
-                    color={colors.red_1}
-                />
-            ),
+            icon: {
+                size: 30,
+                name: 'grin-wink',
+                type: 'font-awesome-5',
+                color: colors.red_1,
+            },
         },
     ],
 }
@@ -316,79 +292,67 @@ export const fillAttributes = {
             label: 'FOR',
             key: 'FOR',
             currentAttribute: 10,
-            icon: (
-                <Icon
-                    size={30}
-                    name="arm-flex"
-                    type="material-community"
-                    color={colors.red_1}
-                />
-            ),
+            icon: {
+                size: 30,
+                name: 'arm-flex',
+                type: 'material-community',
+                color: colors.red_1,
+            },
         },
         {
             label: 'DES',
             key: 'DES',
             currentAttribute: 10,
-            icon: (
-                <Icon
-                    size={30}
-                    name="run"
-                    type="material-community"
-                    color={colors.red_1}
-                />
-            ),
+            icon: {
+                size: 30,
+                name: 'run',
+                type: 'material-community',
+                color: colors.red_1,
+            },
         },
         {
             label: 'CON',
             key: 'CON',
             currentAttribute: 10,
-            icon: (
-                <Icon
-                    size={30}
-                    name="heartbeat"
-                    type="font-awesome-5"
-                    color={colors.red_1}
-                />
-            ),
+            icon: {
+                size: 30,
+                name: 'heartbeat',
+                type: 'font-awesome-5',
+                color: colors.red_1,
+            },
         },
         {
             label: 'INT',
             key: 'INT',
             currentAttribute: 10,
-            icon: (
-                <Icon
-                    size={30}
-                    name="brain"
-                    type="font-awesome-5"
-                    color={colors.red_1}
-                />
-            ),
+            icon: {
+                size: 30,
+                name: 'brain',
+                type: 'font-awesome-5',
+                color: colors.red_1,
+            },
         },
         {
             label: 'SAB',
             key: 'SAB',
             currentAttribute: 10,
-            icon: (
-                <Icon
-                    size={30}
-                    name="meditation"
-                    type="material-community"
-                    color={colors.red_1}
-                />
-            ),
+            icon: {
+                size: 30,
+                name: 'meditation',
+                type: 'material-community',
+                color: colors.red_1,
+            },
         },
         {
             label: 'CAR',
             key: 'CAR',
             currentAttribute: 10,
-            icon: (
-                <Icon
-                    size={30}
-                    name="grin-wink"
-                    type="font-awesome-5"
-                    color={colors.red_1}
-                />
-            ),
+            icon: {
+                size: 30,
+                name: 'grin-wink',
+                type: 'font-awesome-5',
+                color: colors.red_1,
+            },
         },
     ],
 }

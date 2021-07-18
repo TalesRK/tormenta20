@@ -7,6 +7,7 @@ import {
     View,
     TouchableOpacity,
 } from 'react-native'
+import { cloneDeep } from 'lodash'
 
 import colors from '../styles/colors'
 import commonStyle from '../styles/common.style'
@@ -15,9 +16,11 @@ import { Icon } from 'react-native-elements'
 import { useStateValue } from '../context/ContextProvider'
 
 const CreateCharacterClass = ({ navigation }) => {
-    const [characterClassState, setCharacterClass] = useState(characterClass)
+    const [characterClassState, setCharacterClass] = useState(
+        cloneDeep(characterClass)
+    )
     const [canProceed, setCanProceed] = useState(false)
-    const [{ characterCreation }, dispatch] = useStateValue()
+    const [, dispatch] = useStateValue()
 
     useEffect(() => {
         setCanProceed(
@@ -28,14 +31,14 @@ const CreateCharacterClass = ({ navigation }) => {
     }, [characterClassState])
 
     const expandCharacterClassItem = (index) => {
-        const updateCharacterClass = [...characterClassState]
+        const updateCharacterClass = cloneDeep(characterClassState)
         updateCharacterClass[index].expanded =
             !updateCharacterClass[index].expanded
         setCharacterClass(updateCharacterClass)
     }
 
     const selectCharacterClassItem = (index) => {
-        const updateCharacterClass = [...characterClassState]
+        const updateCharacterClass = cloneDeep(characterClassState)
         const selectedCharacterClass = updateCharacterClass[index]
         if (selectedCharacterClass.selected) {
             selectedCharacterClass.selected = false

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { TextInput, View } from 'react-native'
+import { cloneDeep } from 'lodash'
 
 import { useStateValue } from '../context/ContextProvider'
 import colors from '../styles/colors'
@@ -15,7 +16,7 @@ const ItemsTab = () => {
     }, [])
 
     const updateStoredValue = (value) => {
-        const newChar = Object.assign({}, character)
+        const newChar = cloneDeep(character)
         newChar.itemsText = value
 
         dispatch({

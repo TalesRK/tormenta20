@@ -59,7 +59,7 @@ const CreateCharacterDetails = ({ navigation }) => {
                     assets &&
                     assets.length > 0
                 ) {
-                    const image = assets[0].uri
+                    const image = assets[0].base64
                     setCharImg(image)
                 }
             }
@@ -183,7 +183,7 @@ const CreateCharacterDetails = ({ navigation }) => {
                                         overflow: 'hidden',
                                     }}
                                     source={{
-                                        uri: charImg,
+                                        uri: `data:image/jpeg;base64,${charImg}`,
                                     }}
                                     resizeMode="center"
                                 />

@@ -8,16 +8,18 @@ import {
     TouchableOpacity,
 } from 'react-native'
 import { Icon } from 'react-native-elements'
+import { cloneDeep } from 'lodash'
 
 import colors from '../styles/colors'
 import commonStyle from '../styles/common.style'
 import { proficiencies } from '../resources/proficiencies'
 import { useStateValue } from '../context/ContextProvider'
-import { getClassByKey } from '../resources/classes'
 import { calcModifierByKey } from '../resources/formulas'
 
 const CreateCharacterProficiencies = ({ navigation }) => {
-    const [proficienciesState, setProficiencies] = useState(proficiencies)
+    const [proficienciesState, setProficiencies] = useState(
+        cloneDeep(proficiencies)
+    )
     const [remainingSelect, setRemainingSelect] = useState(0)
     const [canProceed, setCanProceed] = useState(false)
     const [{ characterCreation }, dispatch] = useStateValue()
@@ -32,8 +34,7 @@ const CreateCharacterProficiencies = ({ navigation }) => {
     }, [remainingSelect])
 
     const mapInitialProficiencyData = () => {
-        const classe = getClassByKey(characterCreation.classe.key)
-        const newProficienciesState = [...proficienciesState]
+        const newProficienciesState = cloneDeep(proficienciesState)
 
         newProficienciesState.forEach((prof) => {
             const hasInClass = characterCreation.pericias.some(
@@ -49,8 +50,6 @@ const CreateCharacterProficiencies = ({ navigation }) => {
         const inteligenceBonus = calcModifierByKey(characterCreation, 'INT')
         setRemainingSelect(inteligenceBonus)
     }
-
-    const mapUpdatedCharacter = () => {}
 
     const goToNextPage = () => {
         if (canProceed) {
@@ -71,14 +70,14 @@ const CreateCharacterProficiencies = ({ navigation }) => {
     }
 
     const expandProficienciesItem = (index) => {
-        const updateProficiencies = [...proficienciesState]
+        const updateProficiencies = cloneDeep(proficienciesState)
         updateProficiencies[index].expanded =
             !updateProficiencies[index].expanded
         setProficiencies(updateProficiencies)
     }
 
     const selectProficienciesItem = (index) => {
-        const updateProficiencies = [...proficienciesState]
+        const updateProficiencies = cloneDeep(proficienciesState)
         const selProficiency = updateProficiencies[index]
         const newValue =
             selProficiency.cannotDesselect || !selProficiency.selected

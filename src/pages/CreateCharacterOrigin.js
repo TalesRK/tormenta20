@@ -6,6 +6,7 @@ import {
     View,
     TouchableOpacity,
 } from 'react-native'
+import { cloneDeep } from 'lodash'
 
 import colors from '../styles/colors'
 import commonStyle from '../styles/common.style'
@@ -15,7 +16,7 @@ import SingleDataList from '../components/SingleDataList'
 import { translateKey } from '../resources/constants'
 
 const CreateCharacterOrigin = ({ navigation }) => {
-    const [origins, setOrigins] = useState(initialOrigins)
+    const [origins, setOrigins] = useState(cloneDeep(initialOrigins))
     const [, dispatch] = useStateValue()
 
     const goToNextPage = () => {
@@ -51,7 +52,7 @@ const CreateCharacterOrigin = ({ navigation }) => {
     }
 
     const onSelectOrigin = (item, index) => {
-        const newData = [...origins]
+        const newData = cloneDeep(origins)
 
         const selectionValue = !newData[index].selected
         newData.map((item) => {
@@ -65,7 +66,7 @@ const CreateCharacterOrigin = ({ navigation }) => {
     }
 
     const onSelectOptions = (originIndex, optionIndex) => {
-        const newOrigins = [...origins]
+        const newOrigins = cloneDeep(origins)
         const selectedOrigin = newOrigins[originIndex]
         const selectedOption = selectedOrigin.options[optionIndex]
         const mustSelect = mapOptionSelectionsNeeded(selectedOrigin.options)
